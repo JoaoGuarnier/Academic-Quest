@@ -31,9 +31,15 @@ public class User implements Serializable, UserDetails {
 
     private String firstName;
     private String lastName;
+    
     @Column(unique = true)
     private String email;
+    
     private String password;
+    
+    private Integer isAluno;
+    
+    private Long turmaId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
