@@ -26,7 +26,7 @@ public class MateriaController {
 	}
 	
 	@GetMapping("/turma/{id}")
-	private ResponseEntity<List<MateriaDTO>> getAll(@PathVariable Long id) {
+	private ResponseEntity<List<MateriaDTO>> getByTurmaId(@PathVariable Long id) {
 		System.out.println("bati aq");
 		List<MateriaDTO> listMateriaDTO = materiaService.getByTurmaId(id);
 		return ResponseEntity.ok(listMateriaDTO);
