@@ -31,13 +31,12 @@ public class User implements Serializable, UserDetails {
 
     private String firstName;
     private String lastName;
+    private Integer isAluno;
     
     @Column(unique = true)
     private String email;
     
     private String password;
-    
-    private Integer isAluno;
     
     private Long turmaId;
 

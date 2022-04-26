@@ -74,6 +74,25 @@ public class GrupoService {
 		
 	}
 	
+	public List<UserDTO> buscarAlunosSemGrupo(Long id) {
+		
+		List<Long> buscaAlunosTurma = grupoRepository.buscaAlunosMateria(id);
+		List<Long> buscaAlunosComGrupoMateria = grupoRepository.buscaAlunosComGrupoMateria(id);
+		List<Long> alunosSemGrupo = new ArrayList<>();
+		
+		buscaAlunosTurma.stream().forEach(i -> {
+			if (!buscaAlunosComGrupoMateria.contains(i)) {
+				alunosSemGrupo.add(i);
+			}
+		});
+		
+		List<User> findByIdIn = userRepository.findByIdIn(alunosSemGrupo);
+		List<UserDTO> users = findByIdIn.stream().map(UserDTO::new).collect(Collectors.toList());
+		
+		return users;
+		
+	}
+	
 
 	private Grupo convertToEntity(GrupoPostDTO dto) {
 		
@@ -96,5 +115,7 @@ public class GrupoService {
 		return grupo;
 		
 	} 
+	
+	
 
 }

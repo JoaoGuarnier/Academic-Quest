@@ -1,6 +1,8 @@
 package com.academicquest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
+import com.academicquest.dto.UserDTO;
 import com.academicquest.service.GrupoService;
 
 @RestController
@@ -22,6 +25,7 @@ public class GrupoController {
 	
 	@Autowired
 	private GrupoService grupoService;
+	
 	
 	@PostMapping
 	private ResponseEntity<?> save(@RequestBody GrupoPostDTO dto) {
@@ -46,6 +50,12 @@ public class GrupoController {
 		return ResponseEntity.ok(grupoDTO);
 	}
 	
+	
+	@GetMapping("/alunos/materia/{id}")
+	private ResponseEntity<List<UserDTO>> getAlunosSemGrupoPorIdMateria(@PathVariable Long id) {
+		List<UserDTO> users = grupoService.buscarAlunosSemGrupo(id);
+		return ResponseEntity.ok(users);
+	}
 
 	
 	
