@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
+import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
+import com.academicquest.model.Grupo;
 import com.academicquest.service.GrupoService;
 
 @RestController
@@ -55,6 +58,12 @@ public class GrupoController {
 	private ResponseEntity<List<UserDTO>> getAlunosSemGrupoPorIdMateria(@PathVariable Long id) {
 		List<UserDTO> users = grupoService.buscarAlunosSemGrupo(id);
 		return ResponseEntity.ok(users);
+	}
+	
+	@PutMapping("/{id}")
+	private ResponseEntity<GrupoUpdateDTO> update(@RequestBody GrupoUpdateDTO grupoDto, @PathVariable Long id) {
+		GrupoUpdateDTO updateGrupo = grupoService.updateGrupo(grupoDto, id);
+		return ResponseEntity.ok(updateGrupo);	
 	}
 
 	

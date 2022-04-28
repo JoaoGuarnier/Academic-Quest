@@ -1,19 +1,21 @@
 package com.academicquest.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
+import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
@@ -36,7 +38,7 @@ public class GrupoService {
 	
 	
 	
-	@Transactional
+	@Transactional()
 	public Boolean save(GrupoPostDTO dto) {
 		
 		try {
@@ -55,6 +57,7 @@ public class GrupoService {
 		return grupoList.stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
 	}
 	
+	@Transactional(readOnly = true)
 	public GrupoDTO getById(Long id) {
 		
 		GrupoDTO grupoDTO = new GrupoDTO();
@@ -64,7 +67,7 @@ public class GrupoService {
 		
 		grupoDTO.setId(grupo.getId());
 		grupoDTO.setNome(grupo.getNome());
-		grupoDTO.setAlunoLiderId(grupo.getIdUserLider());
+		grupoDTO.setAlunoLiderId(grupo.getAlunoLider().getId());
 		grupoDTO.setMateriaId(grupo.getMateria().getId());
 		List<UserDTO> userDTOsList = grupo.getAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
 		grupoDTO.setAlunos(userDTOsList);
@@ -74,6 +77,7 @@ public class GrupoService {
 		
 	}
 	
+	@Transactional(readOnly = true)
 	public List<UserDTO> buscarAlunosSemGrupo(Long id) {
 		
 		List<Long> buscaAlunosTurma = grupoRepository.buscaAlunosMateria(id);
@@ -93,6 +97,32 @@ public class GrupoService {
 		
 	}
 	
+	
+	@Transactional
+	public GrupoUpdateDTO updateGrupo(GrupoUpdateDTO grupoUpdateDTO, Long id) {
+		
+		Grupo grupo = grupoRepository.getById(id);
+		User alunoLider = userRepository.getById(grupoUpdateDTO.getIdAlunoLider());
+
+		List<User> alunos = new ArrayList<>();
+		
+		grupoUpdateDTO.getIdAlunos().stream().forEach(l -> {
+			User aluno = userRepository.getById(l);
+			alunos.add(aluno);
+		});
+
+		grupo.setNome(grupoUpdateDTO.getNome());
+		grupo.setAlunoLider(alunoLider);
+		grupo.setAlunos(alunos);
+		
+		grupoRepository.save(grupo);
+
+		return grupoUpdateDTO;
+		
+	}
+	
+	
+	
 
 	private Grupo convertToEntity(GrupoPostDTO dto) {
 		
@@ -106,11 +136,12 @@ public class GrupoService {
 		});
 		
 		Materia materia = materiaRepository.getById(dto.getMateriaId());
+		User userLider = userRepository.getById(dto.getAlunoLiderId());
 		
 		grupo.setNome(dto.getNome());
 		grupo.setAlunos(alunos);
 		grupo.setMateria(materia);
-		grupo.setIdUserLider(dto.getAlunoLiderId());
+		grupo.setAlunoLider(userLider);
 		
 		return grupo;
 		

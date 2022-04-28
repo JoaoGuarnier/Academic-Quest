@@ -30,7 +30,7 @@ public class GrupoDTO implements Serializable {
 	public GrupoDTO(Grupo grupo) {
 		this.id = grupo.getId();
 		this.nome = grupo.getNome();
-		this.alunoLiderId = grupo.getIdUserLider();
+		this.alunoLiderId = grupo.getAlunoLider().getId();
 		this.materiaId = grupo.getMateria().getId();
 		
 		List<UserDTO> userDTOsList = grupo.getAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
