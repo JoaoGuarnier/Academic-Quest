@@ -30,7 +30,7 @@ public class Grupo {
 	
 	private String nome;
 	
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(name = "tb_grupo_user",
             joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
