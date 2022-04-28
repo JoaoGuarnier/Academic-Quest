@@ -40,6 +40,8 @@ public class Grupo {
     @JoinColumn(name = "materia_id")
 	private Materia materia;
     
-    private Long idUserLider;
+    @ManyToOne()
+    @JoinColumn(name = "user_lider_id")
+    private User alunoLider;
 
 }
