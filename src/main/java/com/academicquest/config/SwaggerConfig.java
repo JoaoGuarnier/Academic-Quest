@@ -22,11 +22,5 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-
-    private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo("My REST API", "Some custom description of API.", "API TOS", "Terms of service", "myeaddress@company.com", "License of API", "API license URL");
-        return apiInfo;
-    }
-
+    
 }
