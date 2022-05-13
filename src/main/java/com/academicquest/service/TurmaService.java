@@ -17,9 +17,7 @@ public class TurmaService {
 	private TurmaRepository turmaRepository;
 	
 	public List<TurmaDTO> getAll() {
-		List<Turma> listTurma = turmaRepository.findAll();
-		List<TurmaDTO> listTurmaDto = listTurma.stream().map(TurmaDTO::new).collect(Collectors.toList());
-		return listTurmaDto;
+		return turmaRepository.findAll().stream().map(TurmaDTO::new).collect(Collectors.toList());
 	}
 
 }

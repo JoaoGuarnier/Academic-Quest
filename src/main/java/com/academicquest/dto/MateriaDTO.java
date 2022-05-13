@@ -26,7 +26,6 @@ public class MateriaDTO implements Serializable {
 		this.id = materia.getId();
 		this.nome = materia.getNome();
 		this.professor = new UserDTO(materia.getProfessor());
-		this.turma = materia.getTurma();
 	}
 	
 	private Long id;
@@ -34,7 +33,6 @@ public class MateriaDTO implements Serializable {
 	private String nome;
 	
 	private UserDTO professor;
-	
-	private Turma turma;
+
 
 }
