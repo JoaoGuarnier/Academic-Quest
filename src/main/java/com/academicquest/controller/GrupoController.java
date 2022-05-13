@@ -31,13 +31,9 @@ public class GrupoController {
 	
 	
 	@PostMapping
-	private ResponseEntity<?> save(@RequestBody GrupoPostDTO dto) {
-		Boolean flag = grupoService.save(dto);
-		if (flag) {
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.internalServerError().build();
-		}
+	private ResponseEntity save(@RequestBody GrupoPostDTO dto) {
+		grupoService.save(dto);
+		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/materia/{id}")

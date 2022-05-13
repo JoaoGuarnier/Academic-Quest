@@ -39,22 +39,14 @@ public class GrupoService {
 	
 	
 	@Transactional()
-	public Boolean save(GrupoPostDTO dto) {
-		
-		try {
-			Grupo grupo = convertToEntity(dto);
-			grupoRepository.save(grupo);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
+	public void save(GrupoPostDTO dto) {
+		Grupo grupo = convertToEntity(dto);
+		grupoRepository.save(grupo);
 	}
-	
+
+	@Transactional(readOnly = true)
 	public List<GrupoMateriaDTO> getByMateriaId(Long id) {
-		List<Grupo> grupoList = grupoRepository.findByMateriaId(id);
-		return grupoList.stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
+		return grupoRepository.findByMateriaId(id).stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)

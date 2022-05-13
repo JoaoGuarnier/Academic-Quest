@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.academicquest.dto.MateriaDTO;
 import com.academicquest.model.Materia;
 import com.academicquest.repository.MateriaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -16,17 +17,15 @@ public class MateriaService {
 	
 	@Autowired
 	private MateriaRepository materiaRepository;
-	
+
+	@Transactional(readOnly = true)
 	public List<MateriaDTO> getAll() {
-		List<Materia> listMateria = materiaRepository.findAll();
-		List<MateriaDTO> listMateriaDto = listMateria.stream().map(MateriaDTO::new).collect(Collectors.toList());
-		return listMateriaDto;
+		return materiaRepository.findAll().stream().map(MateriaDTO::new).collect(Collectors.toList());
 	}
-	
+
+	@Transactional(readOnly = true)
 	public List<MateriaDTO> getByTurmaId(Long id) {
-		List<Materia> listMateria = materiaRepository.findByTurmaId(id);
-		List<MateriaDTO> listMateriaDto = listMateria.stream().map(MateriaDTO::new).collect(Collectors.toList());
-		return listMateriaDto;
+		 return materiaRepository.findByTurmaId(id).stream().map(MateriaDTO::new).collect(Collectors.toList());
 	}
 
 }
