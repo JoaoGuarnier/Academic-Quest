@@ -1,15 +1,8 @@
 package com.academicquest.dto;
 
 import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.academicquest.model.Materia;
-import com.academicquest.model.Turma;
-import com.academicquest.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,12 +5,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.academicquest.dto.MateriaDTO;
-import com.academicquest.model.Materia;
-import com.academicquest.repository.MateriaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.academicquest.dto.MateriaDTO;
+import com.academicquest.repository.MateriaRepository;
 
 @Service
 public class MateriaService {
@@ -27,5 +25,4 @@ public class MateriaService {
 	public List<MateriaDTO> getByTurmaId(Long id) {
 		 return materiaRepository.findByTurmaId(id).stream().map(MateriaDTO::new).collect(Collectors.toList());
 	}
-
 }

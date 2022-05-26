@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.util.List;
 
 @Entity
@@ -31,6 +35,7 @@ public class Projeto {
     private Materia materia;
 
     @OneToMany(mappedBy = "projeto")
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<Tarefa> tarefas;
 
 }

@@ -1,7 +1,6 @@
 package com.academicquest.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,8 +35,6 @@ public class GrupoService {
 	@Autowired
 	private MateriaRepository materiaRepository;
 	
-	
-	
 	@Transactional()
 	public void save(GrupoPostDTO dto) {
 		Grupo grupo = convertToEntity(dto);
@@ -65,8 +62,6 @@ public class GrupoService {
 		grupoDTO.setAlunos(userDTOsList);
 		
 		return grupoDTO;
-		
-		
 	}
 	
 	@Transactional(readOnly = true)
@@ -86,7 +81,6 @@ public class GrupoService {
 		List<UserDTO> users = findByIdIn.stream().map(UserDTO::new).collect(Collectors.toList());
 		
 		return users;
-		
 	}
 	
 	
@@ -110,11 +104,7 @@ public class GrupoService {
 		grupoRepository.save(grupo);
 
 		return grupoUpdateDTO;
-		
 	}
-	
-	
-	
 
 	private Grupo convertToEntity(GrupoPostDTO dto) {
 		
@@ -138,7 +128,4 @@ public class GrupoService {
 		return grupo;
 		
 	} 
-	
-	
-
 }

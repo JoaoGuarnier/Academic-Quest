@@ -11,8 +11,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TarefaPostDTO implements Serializable {
 
-    private String titulo;
+	private static final long serialVersionUID = 1L;
+	
+	private String titulo;
     private String descricao;
     private Long idProjeto;
-
 }
