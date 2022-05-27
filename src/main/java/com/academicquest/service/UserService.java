@@ -24,7 +24,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional(readOnly = true)
@@ -40,7 +39,6 @@ public class UserService implements UserDetailsService {
         UserDTO UserDTO = new UserDTO(User);
         return UserDTO;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

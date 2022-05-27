@@ -1,8 +1,6 @@
 package com.academicquest.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,6 @@ import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
-import com.academicquest.model.Grupo;
 import com.academicquest.service.GrupoService;
 
 @RestController
@@ -31,7 +28,7 @@ public class GrupoController {
 	
 	
 	@PostMapping
-	private ResponseEntity save(@RequestBody GrupoPostDTO dto) {
+	private ResponseEntity<?> save(@RequestBody GrupoPostDTO dto) {
 		grupoService.save(dto);
 		return ResponseEntity.ok().build();
 	}
@@ -61,8 +58,4 @@ public class GrupoController {
 		GrupoUpdateDTO updateGrupo = grupoService.updateGrupo(grupoDto, id);
 		return ResponseEntity.ok(updateGrupo);	
 	}
-
-	
-	
-
 }

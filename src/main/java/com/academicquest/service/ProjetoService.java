@@ -1,20 +1,19 @@
 package com.academicquest.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
-import com.academicquest.model.Turma;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.ProjetoRepository;
-import com.academicquest.repository.TurmaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjetoService {

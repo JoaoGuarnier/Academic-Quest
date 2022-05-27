@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,31 +23,31 @@ public class TarefaRepositoryTest {
 	@Autowired
 	private TarefaRepository repository;
 	
-    private long existingId;
     private long nonExistingId;
-
+    
     @BeforeEach
     public void setUp() {
-        existingId = 1;
         nonExistingId = 999;
     }
     
-    @Ignore
-    @DisplayName("Deve salvar um Materia.")
+    @Test
+    @DisplayName("Deve salvar um Tarefa.")
     public void saveMateria() {
     	
     	Tarefa tarefa = MockDadosTest.createTarefa();
     	
-    	tarefa = repository.save(tarefa);
+    	repository.save(tarefa);
 
         assertNotNull(tarefa);
     }
     
-    @Ignore
+    @Test
     @DisplayName("Deve deleta uma Materia quando tiver no banco")
     public void deleteExistir() {
     	
-    	repository.deleteById(existingId);
+        repository.save(MockDadosTest.createTarefa());
+
+    	repository.deleteById(1L);
     	
         Optional<Tarefa> result = repository.findById(1l);
         
@@ -64,11 +63,14 @@ public class TarefaRepositoryTest {
         });
     }
     
-    @Ignore
+    @Test
     @DisplayName("Deve retorna um True se o id, existe no banco")
     public void findByIdExistir() {
     	
-        Optional<Tarefa> optionalMateria = repository.findById(existingId);
+    	Tarefa tarefa = repository.save(MockDadosTest.createTarefa());
+    	
+        Optional<Tarefa> optionalMateria = repository.findById(tarefa.getId());
+        
         assertTrue(optionalMateria.isPresent());
     }
 

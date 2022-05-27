@@ -7,6 +7,12 @@ import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
+import com.academicquest.dto.MateriaDTO;
+import com.academicquest.dto.ProjetoDTO;
+import com.academicquest.dto.ProjetoPostDTO;
+import com.academicquest.dto.RoleDTO;
+import com.academicquest.dto.TarefaPostDTO;
+import com.academicquest.dto.TurmaDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
@@ -52,7 +58,7 @@ public class MockDadosTest {
 
 	public static Tarefa createTarefa() {
 		
-		Projeto projeto = new Projeto(1L, "Codao", "Phone", STATUS_PROJETO.CONCLUIDO, createMateria(), new ArrayList<Tarefa>());
+		Projeto projeto = new Projeto();
 
 		return new Tarefa(1L, "Banco de dados", "Noturno", projeto);
 	}
@@ -101,6 +107,11 @@ public class MockDadosTest {
 		
 		return new UserDTO(createUser());
 	}
+	
+	public static ProjetoDTO createProjetoDTO() {
+		
+		return new ProjetoDTO(createProjeto());
+	}
 
 	public static GrupoPostDTO createGrupoPostDTO() {
 		
@@ -110,6 +121,30 @@ public class MockDadosTest {
 		return new GrupoPostDTO("Codao", alunosId, 1L, 1L);
 	}
 	
+	public static ProjetoPostDTO createProjetoPostDTO() {
+		
+		return new ProjetoPostDTO("Codao", "Phone", 1L);
+	}
+	
+	public static RoleDTO createRoleDTO() {
+		
+		return new RoleDTO(createRole());
+	}
+	
+	public static TurmaDTO createTurmaDTO() {
+		
+		return new TurmaDTO(createTurma());
+	}
+	
+	public static TarefaPostDTO createTarefaPostDTO() {
+		
+		return new TarefaPostDTO("Banco de dados", "Noturno", 1L);
+	}
+	
+	public static MateriaDTO createMateriaDTO() {
+		
+		return new MateriaDTO(createMateria());
+	}
 	
 	public static GrupoUpdateDTO createGrupoUpdateDTO() {
 		
