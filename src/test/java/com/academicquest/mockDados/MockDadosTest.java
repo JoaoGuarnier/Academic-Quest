@@ -2,18 +2,6 @@ package com.academicquest.mockDados;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.academicquest.dto.GrupoDTO;
-import com.academicquest.dto.GrupoMateriaDTO;
-import com.academicquest.dto.GrupoPostDTO;
-import com.academicquest.dto.GrupoUpdateDTO;
-import com.academicquest.dto.MateriaDTO;
-import com.academicquest.dto.ProjetoDTO;
-import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.dto.RoleDTO;
-import com.academicquest.dto.TarefaPostDTO;
-import com.academicquest.dto.TurmaDTO;
-import com.academicquest.dto.UserDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
@@ -91,66 +79,5 @@ public class MockDadosTest {
 	public static Turma createTurma() {
 
 		return new Turma(1L, "token", 1, "Nortuno");
-	}
-	
-	public static GrupoDTO createGrupoDTO() {
-		
-		return new GrupoDTO(createGrupo());
-	}
-	
-	public static GrupoMateriaDTO createGrupoMateriaDTO() {
-		
-		return new GrupoMateriaDTO(createGrupo());
-	}
-	
-	public static UserDTO createUserDTO() {
-		
-		return new UserDTO(createUser());
-	}
-	
-	public static ProjetoDTO createProjetoDTO() {
-		
-		return new ProjetoDTO(createProjeto());
-	}
-
-	public static GrupoPostDTO createGrupoPostDTO() {
-		
-		List<Long> alunosId = new ArrayList<Long>();
-		alunosId.add(1L);
-		
-		return new GrupoPostDTO("Codao", alunosId, 1L, 1L);
-	}
-	
-	public static ProjetoPostDTO createProjetoPostDTO() {
-		
-		return new ProjetoPostDTO("Codao", "Phone", 1L);
-	}
-	
-	public static RoleDTO createRoleDTO() {
-		
-		return new RoleDTO(createRole());
-	}
-	
-	public static TurmaDTO createTurmaDTO() {
-		
-		return new TurmaDTO(createTurma());
-	}
-	
-	public static TarefaPostDTO createTarefaPostDTO() {
-		
-		return new TarefaPostDTO("Banco de dados", "Noturno", 1L);
-	}
-	
-	public static MateriaDTO createMateriaDTO() {
-		
-		return new MateriaDTO(createMateria());
-	}
-	
-	public static GrupoUpdateDTO createGrupoUpdateDTO() {
-		
-		List<Long> alunosId = new ArrayList<Long>();
-		alunosId.add(1L);
-		
-		return new GrupoUpdateDTO("Codao", 1L, alunosId);
 	}
 }

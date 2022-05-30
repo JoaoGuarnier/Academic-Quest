@@ -1,5 +1,6 @@
 package com.academicquest.service;
 
+import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoPostDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,7 +40,7 @@ public class ProjetoServiceTest {
 	@Test
 	public void deleteShouldDeleteResoucerWhenIdExist() {
 
-		ProjetoPostDTO projetoDto = MockDadosTest.createProjetoPostDTO();
+		ProjetoPostDTO projetoDto = createProjetoPostDTO();
 
 		Projeto projeto = projetoRepository.save(MockDadosTest.createProjeto());
 

@@ -1,5 +1,7 @@
 package com.academicquest.service;
 
+import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoPostDTO;
+import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -47,7 +49,7 @@ public class GrupoServiceTest {
 	@Test
 	public void deleteShouldDeleteResoucerWhenIdExist() {
 
-		GrupoPostDTO grupoDto = MockDadosTest.createGrupoPostDTO();
+		GrupoPostDTO grupoDto = createGrupoPostDTO();
 
 		Grupo grupo = grupoRepository.save(MockDadosTest.createGrupo());
 
@@ -112,7 +114,7 @@ public class GrupoServiceTest {
 	@Test
 	public void updateGrupo() {
 
-		GrupoUpdateDTO grupoDto = MockDadosTest.createGrupoUpdateDTO();
+		GrupoUpdateDTO grupoDto = createGrupoUpdateDTO();
 
 		Grupo grupo = grupoRepository.save(MockDadosTest.createGrupo());
 
