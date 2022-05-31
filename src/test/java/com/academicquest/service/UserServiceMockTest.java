@@ -1,26 +1,25 @@
 package com.academicquest.service;
 
-import static com.academicquest.mockDados.MockDadosTest.createMateria;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,13 +27,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.UserDTO;
 import com.academicquest.mockDados.MockDadosTest;
-import com.academicquest.model.Materia;
 import com.academicquest.model.User;
-import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.UserRepository;
 import com.academicquest.service.exception.ResourceNotFoundException;
 
@@ -47,83 +43,87 @@ public class UserServiceMockTest {
 	@Mock
 	private UserRepository userRepository;
 	
-	private long existingId;
-	private long nonExistingId;
+	private long userId;
+	private long notUserId;
+	private String userEmail;
+	private String notUserEmail;
     private PageImpl<User> page;
 	private User user;
 	
 	@BeforeEach
-	public void setUp() throws Exception {
-		existingId = 1L;
-		nonExistingId = 999;
-		user = createUser();
-		page = new PageImpl<>(List.of(user));
-
-        Mockito.when(userRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
-
-        Mockito.doReturn(Optional.of(user)).when(userRepository).findById(existingId);
-		Mockito.doReturn(Optional.empty()).when(userRepository).findById(nonExistingId);
+	public void setUpUserServiceMock() throws Exception {
 		
-		Mockito.doReturn(user).when(userRepository).findByEmail("aaaaa");
-		Mockito.doReturn(user).when(userRepository).findByEmail("qqqqqq");
+		userId       = 1L;
+		notUserId    = 999;
+		notUserEmail = "test";
+		user         = createUser();
+		page         = new PageImpl<>(List.of(user));
+		userEmail    = MockDadosTest.createUser().getEmail();
+		
+        when(userRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
-		Mockito.when(userRepository.save(ArgumentMatchers.any())).thenReturn(user);
+        doReturn(Optional.of(user)).when(userRepository).findById(userId);
+        doThrow(ResourceNotFoundException.class).when(userRepository).findById(notUserId);
+		
+		doReturn(user).when(userRepository).findByEmail(userEmail);
+		
+		doThrow(UsernameNotFoundException.class).when(userRepository).findByEmail(notUserEmail);
+
+		when(userRepository.save(any())).thenReturn(user);
 	}
 
-//	@Test
-//	public void findById() {
-//		
-//		UserDTO turmaDto = userService.findById(existingId);
-//		
-//		assertThat(turmaDto).isNotNull();
-//	}
-//	
-//	@Test
-//	public void getByNotMId() {
-//		
-//		Executable executable = () -> userService.findById(nonExistingId);
-//		
-//		Exception expectedEx = assertThrows(ResourceNotFoundException.class, executable);
-//		
-//		assertEquals(expectedEx.getMessage(), "Entity not found"); 
-//	}
+	@Test
+	@DisplayName("Deve traser por id um usuario Mock")
+	public void getUserId() {
+		
+		UserDTO turmaDto = userService.findById(userId);
+		
+		assertThat(turmaDto).isNotNull();
+		verify(userRepository, times(1)).findById(userId);
+	}
 	
 	@Test
-	public void findAll() {
+	@DisplayName("Deve mostra mensagem do exception Mock, para o id que nao existe")
+	public void getNotUserId() {
 		
-		PageRequest pageRequest = PageRequest.of(0,10);
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.findById(notUserId);
+			});
+		verify(userRepository, times(1)).findById(notUserId);
+	}
+	
+	@Test
+	@DisplayName("Deve retorna uma page por os id Mock")
+	public void findPageUserAll() {
+		
+		PageRequest pageRequest  = PageRequest.of(0,10);
 		
 		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
 		
 		assertThat(projetoDto).isNotEmpty();
+		verify(userRepository, times(1)).findAll(pageRequest);
 	}
 	
-	@Ignore
-	public void findNotAll() {
-		PageRequest pageRequest = PageRequest.of(150,101);
+	@Test
+	@DisplayName("Deve lançar uma mensagem da exception Mock, para quando não existe email")
+	public void getNotUserUsernameEmail() {
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
-	
-		assertThat(projetoDto).isNullOrEmpty();
+		assertThrows(UsernameNotFoundException.class, () -> {
+			userService.loadUserByUsername(notUserEmail);
+			});
+		
+		verify(userRepository, times(1)).findByEmail(notUserEmail);
 	}
 	
-//	@Test
-//	public void loadUserNotByUsername() {
-//		
-//		Executable executable = () -> userService.loadUserByUsername("teste");
-//		
-//		Exception expectedEx = assertThrows(UsernameNotFoundException.class, executable);
-//		
-//		assertEquals(expectedEx.getMessage(), "User not found"); 
-//	}
-//	
-//	@Test
-//	public void loadUserByUsername() {
-//		
-//		userRepository.save(MockDadosTest.createUser());
-//		
-//		UserDetails user = userService.loadUserByUsername("leon.codao@gmail.com");
-//		
-//		assertThat(user).isNotNull();
-//	}
+	@Test
+	@DisplayName("Deve traser o email existente Mock")
+	public void getUserUsernameEmail() {
+		
+		userRepository.save(createUser());
+		
+		UserDetails user = userService.loadUserByUsername(userEmail);
+		
+		assertThat(user).isNotNull();
+		verify(userRepository, times(1)).findByEmail(userEmail);
+	}
 }

@@ -1,12 +1,14 @@
 package com.academicquest.service;
 
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoPostDTO;
+import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Projeto;
 import com.academicquest.repository.ProjetoRepository;
 
@@ -28,51 +29,56 @@ public class ProjetoServiceTest {
 	@Autowired
 	private ProjetoService projetoService;
 
-	private Long existingId;
-	private Long nonExistingId;
+	private Long projetoId;
+	private Long notProjetoId;
 
 	@BeforeEach
-	void setUp() throws Exception {
-		existingId = 1l;
-		nonExistingId = 999l;
+	void setUpProjetoService() throws Exception {
+		
+		projetoId    = 1l;
+		notProjetoId = 999l;
 	}
 
 	@Test
-	public void deleteShouldDeleteResoucerWhenIdExist() {
+	@DisplayName("Deve salvar um ProjetoService")
+	public void saveProjeto() {
 
 		ProjetoPostDTO projetoDto = createProjetoPostDTO();
 
-		Projeto projeto = projetoRepository.save(MockDadosTest.createProjeto());
+		Projeto projeto = projetoRepository.save(createProjeto());
 
 		projetoService.save(projetoDto);
 
 		assertEquals(projetoDto.getNome(),      projeto.getNome());
-		assertEquals(projetoDto.getIdMateria(), projeto.getMateria().getId());
 		assertEquals(projetoDto.getDescricao(), projeto.getDescricao());
+		assertEquals(projetoDto.getIdMateria(), projeto.getMateria().getId());
 	}
 
 	@Test
-	public void getNotByTurmaId() {
+	@DisplayName("Se a lista de todas as Materia tiver elemento retorna um true, e se o id existe no banco")
+	public void getMateriaId() {
 		
-		projetoRepository.save(MockDadosTest.createProjeto());
+		projetoRepository.save(createProjeto());
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(existingId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(projetoId);
 
 		assertThat(projetoDto).isNotEmpty();
 	}
 
 	@Test
-	public void getByTurmaId() {
+	@DisplayName("Se a lista de todas as Materia estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
+	public void getNotMateriaId() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(nonExistingId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(notProjetoId);
 
 		assertThat(projetoDto).isNullOrEmpty();
 	}
 	
 	@Test
-	public void getNotAll() {
+	@DisplayName("Se a lista de todos os Projeto tiver elemento retorna um true")
+	public void getProjetoAll() {
 		
-		projetoRepository.save(MockDadosTest.createProjeto());
+		projetoRepository.save(createProjeto());
 		
 		List<ProjetoDTO> projetoDto = projetoService.getAll();
 		
@@ -80,7 +86,8 @@ public class ProjetoServiceTest {
 	}
 	
 	@Test
-	public void getAll() {
+	@DisplayName("Se a lista de todos os Projeto estiver vazia ou nula deve retorna um False")
+	public void getNotProjetoAll() {
 
 		List<ProjetoDTO> projetoDto = projetoService.getAll();
 		projetoDto.clear();

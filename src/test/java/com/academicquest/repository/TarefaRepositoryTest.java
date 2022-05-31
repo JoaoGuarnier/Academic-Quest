@@ -1,5 +1,6 @@
 package com.academicquest.repository;
 
+import static com.academicquest.mockDados.MockDadosTest.createTarefa;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Tarefa;
 
 @DataJpaTest
@@ -23,18 +23,18 @@ public class TarefaRepositoryTest {
 	@Autowired
 	private TarefaRepository repository;
 	
-    private long nonExistingId;
+    private long notTarefaId;
     
     @BeforeEach
-    public void setUp() {
-        nonExistingId = 999;
+    public void setUpTarefa() {
+        notTarefaId = 999;
     }
     
     @Test
     @DisplayName("Deve salvar um Tarefa.")
-    public void saveMateria() {
+    public void saveTarefa() {
     	
-    	Tarefa tarefa = MockDadosTest.createTarefa();
+    	Tarefa tarefa = createTarefa();
     	
     	repository.save(tarefa);
 
@@ -42,12 +42,12 @@ public class TarefaRepositoryTest {
     }
     
     @Test
-    @DisplayName("Deve deleta uma Materia quando tiver no banco")
-    public void deleteExistir() {
+    @DisplayName("Deve deleta uma Tarefa quando tiver no banco")
+    public void deleteTarefaExistente() {
     	
-        repository.save(MockDadosTest.createTarefa());
+        repository.save(createTarefa());
 
-    	repository.deleteById(1L);
+    	repository.deleteById(1l);
     	
         Optional<Tarefa> result = repository.findById(1l);
         
@@ -55,19 +55,19 @@ public class TarefaRepositoryTest {
     }
 
     @Test
-    @DisplayName("Deve lanca uma exception quando nao existir  o resultado no banco")
-    public void deletaELancaException() {
+    @DisplayName("Deve lanca uma exception quando nao existir o resultado no banco")
+    public void deletaTarefaNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(nonExistingId);
+        	repository.deleteById(notTarefaId);
         });
     }
     
     @Test
     @DisplayName("Deve retorna um True se o id, existe no banco")
-    public void findByIdExistir() {
+    public void findByIdTarefaExistente() {
     	
-    	Tarefa tarefa = repository.save(MockDadosTest.createTarefa());
+    	Tarefa tarefa = repository.save(createTarefa());
     	
         Optional<Tarefa> optionalMateria = repository.findById(tarefa.getId());
         
@@ -76,9 +76,9 @@ public class TarefaRepositoryTest {
 
     @Test
     @DisplayName("Deve retorna um False se o id, existe no banco")
-    public void findByIdNotExistir() {
+    public void findByIdTarefaNaoExistente() {
     	
-        Optional<Tarefa> optionalMateria = repository.findById(nonExistingId);
+        Optional<Tarefa> optionalMateria = repository.findById(notTarefaId);
         assertFalse(optionalMateria.isPresent());
     }
 }

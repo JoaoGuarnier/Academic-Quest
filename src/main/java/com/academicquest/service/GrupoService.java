@@ -37,7 +37,9 @@ public class GrupoService {
 	
 	@Transactional()
 	public void save(GrupoPostDTO dto) {
+		
 		Grupo grupo = convertToEntity(dto);
+		
 		grupoRepository.save(grupo);
 	}
 
@@ -54,11 +56,13 @@ public class GrupoService {
 		Optional<Grupo> grupoOptional = grupoRepository.findById(id);
 		Grupo grupo = grupoOptional.orElseThrow(() -> new EntityNotFoundException("Grupo não encontrado"));
 		
-		grupoDTO.setId(grupo.getId());
-		grupoDTO.setNome(grupo.getNome());
+		grupoDTO.setId          (grupo.getId());
+		grupoDTO.setNome        (grupo.getNome());
+		grupoDTO.setMateriaId   (grupo.getMateria().getId());
 		grupoDTO.setAlunoLiderId(grupo.getAlunoLider().getId());
-		grupoDTO.setMateriaId(grupo.getMateria().getId());
+		
 		List<UserDTO> userDTOsList = grupo.getAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
+		
 		grupoDTO.setAlunos(userDTOsList);
 		
 		return grupoDTO;
@@ -87,7 +91,8 @@ public class GrupoService {
 	@Transactional
 	public GrupoUpdateDTO updateGrupo(GrupoUpdateDTO grupoUpdateDTO, Long id) {
 		
-		Grupo grupo = grupoRepository.getById(id);
+		Grupo grupo     = grupoRepository.getById(id);
+		
 		User alunoLider = userRepository.getById(grupoUpdateDTO.getIdAlunoLider());
 
 		List<User> alunos = new ArrayList<>();
@@ -97,9 +102,9 @@ public class GrupoService {
 			alunos.add(aluno);
 		});
 
-		grupo.setNome(grupoUpdateDTO.getNome());
+		grupo.setAlunos    (alunos);
 		grupo.setAlunoLider(alunoLider);
-		grupo.setAlunos(alunos);
+		grupo.setNome      (grupoUpdateDTO.getNome());
 		
 		grupoRepository.save(grupo);
 
@@ -118,14 +123,14 @@ public class GrupoService {
 		});
 		
 		Materia materia = materiaRepository.getById(dto.getMateriaId());
-		User userLider = userRepository.getById(dto.getAlunoLiderId());
 		
-		grupo.setNome(dto.getNome());
-		grupo.setAlunos(alunos);
-		grupo.setMateria(materia);
+		User userLider  = userRepository.getById(dto.getAlunoLiderId());
+		
+		grupo.setAlunos    (alunos);
+		grupo.setMateria   (materia);
 		grupo.setAlunoLider(userLider);
+		grupo.setNome      (dto.getNome());
 		
 		return grupo;
-		
 	} 
 }

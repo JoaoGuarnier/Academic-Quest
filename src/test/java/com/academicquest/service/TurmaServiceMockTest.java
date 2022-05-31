@@ -1,20 +1,25 @@
 package com.academicquest.service;
 
+import static com.academicquest.mockDados.MockDadosTest.createTurma;
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.academicquest.dto.TurmaDTO;
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Turma;
 import com.academicquest.repository.TurmaRepository;
 
@@ -28,31 +33,38 @@ public class TurmaServiceMockTest {
 	private TurmaRepository turmaRepository;
 	
 	private Turma turma;
-	private List<Turma> a;
+	private List<Turma> listTurma;
 	
 	@BeforeEach
-	public void setUp() throws Exception {
-		turma = MockDadosTest.createTurma();
-		a = new ArrayList<>(List.of(turma));
+	public void setUpTurmaServiceMock() throws Exception {
+		
+		turma     = createTurma();
+		listTurma = new ArrayList<>(of(turma));
 
-		Mockito.doReturn(List.of()).when(turmaRepository).findAll();
-		Mockito.when(turmaRepository.findAll()).thenReturn(a);
+		doReturn(of()).when(turmaRepository).findAll();
+		when(turmaRepository.findAll()).thenReturn(listTurma);
 	}
 
 	@Test
-	public void getAll() {
+	@DisplayName("Retorna uma lista de Turma Mock se tiver elementos na lista")
+	public void getTurmaAll() {
 		
 		List<TurmaDTO> turmaDto = turmaService.getAll();
 		
 		assertThat(turmaDto).isNotEmpty();
+		
+		verify(turmaRepository, times(1)).findAll();
 	}
 	
 	@Test
-	public void getNotAll() {
+	@DisplayName("Retorna uma lista de Turma Mock se nao tiver elementos na lista")
+	public void getNotTurmaAll() {
 
 		List<TurmaDTO> turmaDto = turmaService.getAll();
 		turmaDto.clear();
 	
 		assertThat(turmaDto).isNullOrEmpty();
+		
+		verify(turmaRepository, times(1)).findAll();
 	}
 }

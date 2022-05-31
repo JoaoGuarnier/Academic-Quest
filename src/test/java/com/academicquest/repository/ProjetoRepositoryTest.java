@@ -1,5 +1,6 @@
 package com.academicquest.repository;
 
+import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Projeto;
 
 @DataJpaTest
@@ -29,19 +29,19 @@ public class ProjetoRepositoryTest {
 	@Autowired
 	private ProjetoRepository repository;
 	
-    private Long existingId;
-    private Long nonExistingId;
+    private Long projetoId;
+    private Long notProjetoId;
 
     @BeforeEach
-    public void setUp() throws Exception  {
-        existingId = 1L;
-        nonExistingId = 999L;
-        repository.save(MockDadosTest.createProjeto());
+    public void setUpProjeto() throws Exception  {
+        projetoId = 1L;
+        notProjetoId = 999L;
+        repository.save(createProjeto());
     }
     
     @Test
-    @Order(0)
-    @DisplayName("Deve deleta uma Materia quando tiver no banco")
+    @Order(1)
+    @DisplayName("Deve deleta uma Projeto quando tiver no banco")
     public void deleteExistir() {
     	
     	repository.deleteById(1L);
@@ -52,43 +52,42 @@ public class ProjetoRepositoryTest {
     }
     
     @Test
+    @Order(2)
+    @DisplayName("Deve retorna um False se o id, nao existe no banco")
+    public void findByIdNaoExistir() {
+    	
+        Optional<Projeto> optionalProjeto = repository.findById(notProjetoId);
+        assertFalse(optionalProjeto.isPresent());
+    }
+    
+    @Test
+    @Order(3)
+    @DisplayName("Deve lanca uma exception quando nao existir o resultado no banco")
+    public void deletaNaoExistente() {
+    	
+    	assertThrows(EmptyResultDataAccessException.class,() -> {
+    		repository.deleteById(notProjetoId);
+    	});
+    }
+    
+    @Test
     @Order(4)
     @DisplayName("Deve salvar um Projeto.")
     public void saveProjeto() {
     	
-    	Projeto projeto = MockDadosTest.createProjeto();
+    	Projeto projeto = createProjeto();
     	
     	projeto = repository.save(projeto);
 
         assertNotNull(projeto);
     }
-    
-    @Test
-    @Order(3)
-    @DisplayName("Deve lanca uma exception quando nao existir  o resultado no banco")
-    public void deletaELancaException() {
-    	
-        assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(nonExistingId);
-        });
-    }
-    
-  
 
     @Test
-    @Order(2)
-    @DisplayName("Deve retorna um False se o id, existe no banco")
-    public void findByIdNotExistir() {
-    	
-        Optional<Projeto> optionalProjeto = repository.findById(nonExistingId);
-        assertFalse(optionalProjeto.isPresent());
-    }
-
-    @Test
+    @Order(5)
     @DisplayName("Deve retorna um True se o id, existe no banco")
-    public void findByIdExistir3() {
+    public void findByIdExistir() {
     	
-    	Projeto projeto = repository.save(MockDadosTest.createProjeto());
+    	Projeto projeto = repository.save(createProjeto());
     	
     	Optional<Projeto> optionalProjeto = repository.findById(projeto.getId());
     	
@@ -97,11 +96,11 @@ public class ProjetoRepositoryTest {
     
     @Test
     @Order(6)
-    @DisplayName("Se a lista estiver vazia ou null, deve retorna um False se o id nao existe no banco")
-    public void findByTurmaIdNotExistir() {
+    @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False e se o id nao existe no banco")
+    public void findByTurmaIdNaoExistir() {
     	
-    	List<Projeto> optionalMateria = repository.findyByMateriaId(nonExistingId);
-    	assertThat(optionalMateria).isNullOrEmpty();
+    	List<Projeto> optionalProjeto = repository.findyByMateriaId(notProjetoId);
+    	assertThat(optionalProjeto).isNullOrEmpty();
     }
     
     @Test
@@ -109,7 +108,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void findByTurmaIdExistir() {
     	
-    	List<Projeto> optionalMateria = repository.findyByMateriaId(existingId);
-    	assertThat(optionalMateria).isNotEmpty();
+    	List<Projeto> optionalProjeto = repository.findyByMateriaId(projetoId);
+    	assertThat(optionalProjeto).isNotEmpty();
     }
 }

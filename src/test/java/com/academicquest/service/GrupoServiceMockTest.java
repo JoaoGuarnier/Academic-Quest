@@ -2,10 +2,17 @@ package com.academicquest.service;
 
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoPostDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
+import static com.academicquest.mockDados.MockDadosTest.createGrupo;
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +20,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -26,7 +34,6 @@ import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoPostDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Grupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
@@ -47,31 +54,33 @@ public class GrupoServiceMockTest {
 	@Mock
 	private MateriaRepository materiaRepository;
 
-	private long existingId;
-	private long nonExistingId;
+	private long grupoId;
+	private long notGrupoId;
 	private Grupo grupo;
 
 	@BeforeEach
-	public void setUp() throws Exception {
-		existingId = 1L;
-		nonExistingId = 999;
-		grupo = MockDadosTest.createGrupo();
+	public void setUprupoServiceMock() throws Exception {
+		grupoId    = 1L;
+		notGrupoId = 999;
+		grupo      = createGrupo();
 		
-		Mockito.doReturn(grupo).when(grupoRepository).getById(existingId);
-		Mockito.doReturn(Optional.of(grupo)).when(grupoRepository).findById(existingId);
-		Mockito.doThrow(EntityNotFoundException.class).when(grupoRepository).getById(nonExistingId);
+		doReturn(grupo).when(grupoRepository).getById(grupoId);
 		
-		Mockito.doReturn(List.of(grupo.getId())).when(grupoRepository).buscaAlunosMateria(existingId);
-		Mockito.doReturn(List.of()).when(grupoRepository).buscaAlunosMateria(nonExistingId);
+		doReturn(Optional.of(grupo)).when(grupoRepository).findById(grupoId);
+		doThrow(EntityNotFoundException.class).when(grupoRepository).getById(notGrupoId);
+		
+		doReturn(of(grupo.getId())).when(grupoRepository).buscaAlunosMateria(grupoId);
+		doReturn(of()).when(grupoRepository).buscaAlunosMateria(notGrupoId);
 
-		Mockito.doReturn(List.of(grupo)).when(grupoRepository).findByMateriaId(existingId);
-		Mockito.doReturn(List.of()).when(grupoRepository).findByMateriaId(nonExistingId);
+		doReturn(of(grupo)).when(grupoRepository).findByMateriaId(grupoId);
+		doReturn(of()).when(grupoRepository).findByMateriaId(notGrupoId);
 
-		Mockito.when(grupoRepository.save(ArgumentMatchers.any())).thenReturn(grupo);
+		when(grupoRepository.save(ArgumentMatchers.any())).thenReturn(grupo);
 	}
 	
     @Test
-    public void saveShouldReturnDto() {
+    @DisplayName("Deve salvar um GrupoServiceMock.")
+    public void saveGrupoServiceExistente() {
     	
 		GrupoPostDTO grupoDto = createGrupoPostDTO();
 
@@ -81,59 +90,69 @@ public class GrupoServiceMockTest {
     }
 
 	@Test
-	public void updateShouldReturnDtoWhenIdExists() {
+	@DisplayName("Deve alterar um GrupoUpdateDto Mock por id.")
+	public void updateGrupo() {
+		
 		GrupoUpdateDTO grupoUpdateDto = createGrupoUpdateDTO();
-		GrupoUpdateDTO result = grupoService.updateGrupo(grupoUpdateDto, existingId);
+		
+		GrupoUpdateDTO result = grupoService.updateGrupo(grupoUpdateDto, grupoId);
+		
 		assertNotNull(result);
 	}
 
 	@Test
+	@DisplayName("Deve retornar exception ao alterar um GrupoUpdateDto Mock por id.")
 	public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		
 		GrupoUpdateDTO grupoUpdateDto = createGrupoUpdateDTO();
+		
 		assertThrows(EntityNotFoundException.class, () -> {
-			grupoService.updateGrupo(grupoUpdateDto, nonExistingId);
+			grupoService.updateGrupo(grupoUpdateDto, notGrupoId);
 		});
 	}
 
 	@Test
-	public void findByIdShouldReturnDtoWhenIdExists() {
+	@DisplayName("Deve retorna um grupo Mock se o id, existe no banco")
+	public void getGrupoId() {
 		
-		
-		GrupoDTO grupoDto2 = grupoService.getById(existingId);
+		GrupoDTO grupoDto2 = grupoService.getById(grupoId);
 		
 		assertNotNull(grupoDto2);
-		Mockito.verify(grupoRepository, Mockito.times(1)).findById(existingId);
+		verify(grupoRepository, Mockito.times(1)).findById(grupoId);
 	}
 
 	@Test
-	public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+	@DisplayName("Deve lanca uma exception Mock quando o valor nao existir no banco")
+	public void getNotGrupoId() {
 		
-		Executable executable = () -> grupoService.getById(nonExistingId);
+		Executable executable = () -> grupoService.getById(notGrupoId);
 		
 		Exception expectedEx = assertThrows(EntityNotFoundException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado"); 
 		
-		Mockito.verify(grupoRepository, Mockito.times(1)).findById(nonExistingId);
+		verify(grupoRepository, times(1)).findById(notGrupoId);
 	}
 	
 	@Test
-	public void buscarAlunosSemGrupo() {
+	@DisplayName("Se a lista Alunos Sem Grupo Mock tiver elemento, retorna um true, e se o id existe no banco")
+	public void getAlunosSemGrupo() {
 
-		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(existingId);
+		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(grupoId);
 
 		assertThat(userDto2).isNullOrEmpty();
 		
-		Mockito.verify(grupoRepository, Mockito.times(1)).buscaAlunosMateria(existingId);
+		verify(grupoRepository, times(1)).buscaAlunosMateria(grupoId);
 	}
 
 	@Test
-	public void buscarNotListAlunosSemGrupo() {
+	@DisplayName("Se a lista Alunos Sem Grupo Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
+	public void getNotAlunosSemGrupo() {
 
-		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(nonExistingId);
+		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(notGrupoId);
 
 		assertThat(userDto2).isNullOrEmpty();
 		
-		Mockito.verify(grupoRepository, Mockito.times(1)).buscaAlunosMateria(nonExistingId);
+		verify(grupoRepository, times(1)).buscaAlunosMateria(notGrupoId);
 	}
 }

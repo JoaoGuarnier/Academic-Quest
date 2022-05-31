@@ -1,5 +1,6 @@
 package com.academicquest.repository;
 
+import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.User;
 
 @DataJpaTest
@@ -26,21 +26,21 @@ public class UserRepositoryTest {
 	@Autowired
 	private UserRepository repository;
 	
-    private Long existingId;
-    private Long nonExistingId;
-    private List<Long> listId = new ArrayList<>();
-    private List<Long> nonExistinglistId = new ArrayList<>();
+    private Long UserId;
+    private Long notUserId;
+    private List<Long> listUserId = new ArrayList<>();
+    private List<Long> notlistUserId = new ArrayList<>();
 
     @BeforeEach
-    public void setUp() throws Exception  {
-    	existingId = 1L;
-    	nonExistingId = 999L;
-        listId.add(existingId);
+    public void setUpUser() throws Exception  {
+    	UserId = 1L;
+    	notUserId = 999L;
+        listUserId.add(UserId);
     }
     
     @Test
-    @DisplayName("Deve deleta uma Materia quando tiver no banco")
-    public void deleteExistir() {
+    @DisplayName("Deve deleta uma User quando tiver no banco")
+    public void deleteUserExistir() {
     	
     	repository.deleteById(1L);
     	
@@ -53,7 +53,7 @@ public class UserRepositoryTest {
     @DisplayName("Deve salvar um User.")
     public void saveUser() {
     	
-    	User user = MockDadosTest.createUser();
+    	User user = createUser();
     	
     	user = repository.save(user);
 
@@ -61,29 +61,27 @@ public class UserRepositoryTest {
     }
     
     @Test
-    @DisplayName("Deve lanca uma exception quando nao existir  o resultado no banco")
-    public void deletaELancaException() {
+    @DisplayName("Deve lanca uma exception quando nao existir o resultado no banco")
+    public void deletaUserNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(nonExistingId);
+        	repository.deleteById(notUserId);
         });
     }
-    
-  
 
     @Test
     @DisplayName("Deve retorna um False se o id, existe no banco")
-    public void findByIdNotExistir() {
+    public void findByIdUserNotExistente() {
     	
-        Optional<User> optionalUser = repository.findById(nonExistingId);
+        Optional<User> optionalUser = repository.findById(notUserId);
         assertFalse(optionalUser.isPresent());
     }
 
     @Test
     @DisplayName("Deve retorna um True se o id, existe no banco")
-    public void findByIdExistir3() {
+    public void findByIdUserExistente() {
     	
-    	User user = repository.save(MockDadosTest.createUser());
+    	User user = repository.save(createUser());
     	
     	Optional<User> optionalUser = repository.findById(user.getId());
     	
@@ -91,34 +89,34 @@ public class UserRepositoryTest {
     }
     
     @Test
-    @DisplayName("Se a lista estiver vazia ou null, deve retorna um False se o id nao existe no banco")
-    public void findByTurmaIdNotExistir() {
+    @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False se o id nao existe no banco")
+    public void findByTurmaIdUserNaoExistente() {
     	
-    	List<User> optionalMateria = repository.findByIdIn(nonExistinglistId);
-    	assertThat(optionalMateria).isNullOrEmpty();
+    	List<User> listUser = repository.findByIdIn(notlistUserId);
+    	assertThat(listUser).isNullOrEmpty();
     }
     
     @Test
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
-    public void findByTurmaIdExistir() {
+    public void findByTurmaIdUserExistente() {
     	
-    	List<User> optionalUser = repository.findByIdIn(listId);
-    	assertThat(optionalUser).isNotEmpty();
+    	List<User> listUser = repository.findByIdIn(listUserId);
+    	assertThat(listUser).isNotEmpty();
     }
     
     @Test
-    @DisplayName("Se a lista estiver vazia ou null, deve retorna um False se o id nao existe no banco")
-    public void findByEmailNotExistir() {
+    @DisplayName("Deve retorna um False se o email nao existe no banco")
+    public void findByEmailUserNaoExistente() {
     	
-    	User optionalUser = repository.findByEmail("Mateus@gmail.com");
-    	assertThat(optionalUser).isNull();
+    	User user = repository.findByEmail("Mateus@gmail.com");
+    	assertThat(user).isNull();
     }
     
     @Test
-    @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
-    public void findByEmailExistir() {
+    @DisplayName("Deve retorna um False se o email existe no banco")
+    public void findByEmailUserExistente() {
     	
-    	User optionalUser = repository.findByEmail("joao@gmail.com");
-    	assertThat(optionalUser).isNotNull();
+    	User user = repository.findByEmail("joao@gmail.com");
+    	assertThat(user).isNotNull();
     }
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,33 +20,37 @@ public class MateriaServiceTest {
 	@Autowired
 	private MateriaService materiaService;
 
-	private Long existingId;
-	private Long nonExistingId;
+	private Long materiaId;
+	private Long notMateriaId;
 
 	@BeforeEach
-	void setUp() throws Exception {
-		existingId = 1l;
-		nonExistingId = 999l;
+	void setUpMateriaService() throws Exception {
+		
+		materiaId    = 1l;
+		notMateriaId = 999l;
 	}
 
 	@Test
-	public void getNotByTurmaId() {
+	@DisplayName("Se a lista de todas as turma tiver elemento retorna um true, e se o id existe no banco")
+	public void getTurmaId() {
 
-		List<MateriaDTO> materiaDto = materiaService.getByTurmaId(existingId);
+		List<MateriaDTO> materiaDto = materiaService.getByTurmaId(materiaId);
 
 		assertThat(materiaDto).isNotEmpty();
 	}
 
 	@Test
-	public void getByTurmaId() {
+	@DisplayName("Se a lista de todas as turma estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
+	public void getNotTurmaId() {
 
-		List<MateriaDTO> userDto2 = materiaService.getByTurmaId(nonExistingId);
+		List<MateriaDTO> userDto2 = materiaService.getByTurmaId(notMateriaId);
 
 		assertThat(userDto2).isNullOrEmpty();
 	}
 	
 	@Test
-	public void getNotAll() {
+	@DisplayName("Se a lista de todas as Materia tiver elemento retorna um true")
+	public void getMateriaAll() {
 		
 		List<MateriaDTO> materiaDto = materiaService.getAll();
 		
@@ -53,7 +58,8 @@ public class MateriaServiceTest {
 	}
 	
 	@Test
-	public void getAll() {
+	@DisplayName("Se a lista de todas as Materia estiver vazia ou nula deve retorna um False")
+	public void getNotMateriaAll() {
 
 		List<MateriaDTO> userDto2 = materiaService.getAll();
 		userDto2.clear();

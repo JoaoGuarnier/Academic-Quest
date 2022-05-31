@@ -37,5 +37,4 @@ public class Projeto {
     @OneToMany(mappedBy = "projeto")
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Tarefa> tarefas;
-
 }

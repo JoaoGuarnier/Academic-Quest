@@ -1,10 +1,12 @@
 package com.academicquest.service;
 
+import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.UserDTO;
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.repository.UserRepository;
 import com.academicquest.service.exception.ResourceNotFoundException;
 
@@ -30,27 +31,30 @@ public class UserServiceTest {
 	@Autowired
 	private UserService userService;
 	
-	private Long existingId;
-	private Long nonExistingId;
+	private Long userId;
+	private Long notUserId;
 
 	@BeforeEach
-	void setUp() throws Exception {
-		existingId = 1l;
-		nonExistingId = 999l;
+	void setUpUserService() throws Exception {
+		
+		userId    = 1l;
+		notUserId = 999l;
 	}
 
 	@Test
-	public void findById() {
+	@DisplayName("Deve traser por id um usuario")
+	public void getUserId() {
 		
-		UserDTO turmaDto = userService.findById(existingId);
+		UserDTO turmaDto = userService.findById(userId);
 		
 		assertThat(turmaDto).isNotNull();
 	}
 	
 	@Test
-	public void getByNotMId() {
+	@DisplayName("Deve mostra mensagem do exception, para o id que nao existe")
+	public void getNotUserId() {
 		
-		Executable executable = () -> userService.findById(nonExistingId);
+		Executable executable = () -> userService.findById(notUserId);
 		
 		Exception expectedEx = assertThrows(ResourceNotFoundException.class, executable);
 		
@@ -58,7 +62,8 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void findAll() {
+	@DisplayName("Deve retorna uma page por os id")
+	public void findPageUserAll() {
 		
 		PageRequest pageRequest = PageRequest.of(0,10);
 		
@@ -68,7 +73,9 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void findNotAll() {
+	@DisplayName("Deve retorna uma page vazia caso dos id")
+	public void findNotPageUserAll() {
+		
 		PageRequest pageRequest = PageRequest.of(50,10);
 		
 		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
@@ -77,7 +84,8 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void loadUserNotByUsername() {
+	@DisplayName("Deve lançar uma mensagem da exception, para quando não existe  email")
+	public void getNotUserUsernameEmail() {
 		
 		Executable executable = () -> userService.loadUserByUsername("teste");
 		
@@ -87,9 +95,10 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void loadUserByUsername() {
+	@DisplayName("Deve traser o email existente")
+	public void getUserUsernameEmail() {
 		
-		userRepository.save(MockDadosTest.createUser());
+		userRepository.save(createUser());
 		
 		UserDetails user = userService.loadUserByUsername("leon.codao@gmail.com");
 		

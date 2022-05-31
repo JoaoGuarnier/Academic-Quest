@@ -27,7 +27,6 @@ public class MockDadosTest {
 
 		return grupo;
 	}
-	
 
 	public static Projeto createProjeto() {
 

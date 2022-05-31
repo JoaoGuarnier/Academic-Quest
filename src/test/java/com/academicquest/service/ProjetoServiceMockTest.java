@@ -1,16 +1,23 @@
 package com.academicquest.service;
 
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoPostDTO;
+import static com.academicquest.mockDados.MockDadosTest.createProjeto;
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -18,8 +25,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Projeto;
+import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.ProjetoRepository;
 
 @ExtendWith(SpringExtension.class)
@@ -31,79 +38,92 @@ public class ProjetoServiceMockTest {
 	@Mock
 	private ProjetoRepository projetoRepository;
 	
-	private long existingId;
-	private long nonExistingId;
+	@Mock
+    private MateriaRepository materiaRepository;
+	
+	private long projetoId;
+	private long notProjetoId;
 	private Projeto projeto;
-	private List<Projeto> a;
+	private List<Projeto> listPorjeto;
 	
 	@BeforeEach
-	public void setUp() throws Exception {
-		existingId = 1L;
-		nonExistingId = 999;
-		projeto = MockDadosTest.createProjeto();
-		a = new ArrayList<>(List.of(projeto));
-
-		Mockito.doReturn(List.of()).when(projetoRepository).findAll();
-		Mockito.when(projetoRepository.findAll()).thenReturn(a);
-
-		Mockito.doReturn(List.of(projeto)).when(projetoRepository).findyByMateriaId(existingId);
-		Mockito.doReturn(List.of()).when(projetoRepository).findyByMateriaId(nonExistingId);
+	public void setUpProjetoServiceMock() throws Exception {
 		
-		Mockito.when(projetoRepository.save(projeto)).thenReturn(projeto);
+		projetoId    = 1L;
+		notProjetoId = 999;
+		projeto      = createProjeto();
+		listPorjeto  = new ArrayList<>(of(projeto));
+
+		doReturn(of()).when(projetoRepository).findAll();
+		when(projetoRepository.findAll()).thenReturn(listPorjeto);
+
+		doReturn(of(projeto)).when(projetoRepository).findyByMateriaId(projetoId);
+		doReturn(of()).when(projetoRepository).findyByMateriaId(notProjetoId);
+		
+		Mockito.when(projetoRepository.save(ArgumentMatchers.any())).thenReturn(projeto);
 	}
 
-	@Ignore
-	public void deleteShouldDeleteResoucerWhenIdExist() {
+	@Test
+	@DisplayName("Deve salvar um ProjetoServiceMock")
+	public void saveProjeto() {
 
 		ProjetoPostDTO projetoDto = createProjetoPostDTO();
 
-		//Projeto projeto = projetoRepository.save(createProjeto());
+		Projeto projeto = projetoRepository.save(createProjeto());
 
 		projetoService.save(projetoDto);
 		
-//		assertEquals(projetoDto.getNome(),      projeto.getNome());
-//		assertEquals(projetoDto.getIdMateria(), projeto.getMateria().getId());
-//		assertEquals(projetoDto.getDescricao(), projeto.getDescricao());
+		assertEquals(projetoDto.getNome(),      projeto.getNome());
+		assertEquals(projetoDto.getIdMateria(), projeto.getMateria().getId());
+		assertEquals(projetoDto.getDescricao(), projeto.getDescricao());
 	}
 
 	@Test
-	public void getNotByTurmaId() {
+	@DisplayName("Se a lista de todas as Materia Mock tiver elemento retorna um true, e se o id existe no banco")
+	public void getMateriaId() {
 		
-		projetoRepository.save(MockDadosTest.createProjeto());
+		projetoRepository.save(createProjeto());
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(existingId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(projetoId);
 
 		assertThat(projetoDto).isNotEmpty();
-		verify(projetoRepository, Mockito.times(1)).findyByMateriaId(existingId);
+		
+		verify(projetoRepository, times(1)).findyByMateriaId(projetoId);
 	}
 
 	@Test
-	public void getByTurmaId() {
+	@DisplayName("Se a lista de todas as Materia Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
+	public void getNotMateriaId() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(nonExistingId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(notProjetoId);
 
 		assertThat(projetoDto).isNullOrEmpty();
-		verify(projetoRepository, Mockito.times(1)).findyByMateriaId(nonExistingId);
+		
+		verify(projetoRepository, times(1)).findyByMateriaId(notProjetoId);
 	}
 	
 	@Test
-	public void getNotAll() {
+	@DisplayName("Se a lista de todos os Projeto Mock tiver elemento retorna um true")
+	public void getProjetoAll() {
 		
-		projetoRepository.save(MockDadosTest.createProjeto());
+		projetoRepository.save(createProjeto());
 		
 		List<ProjetoDTO> projetoDto = projetoService.getAll();
 		
 		assertThat(projetoDto).isNotEmpty();
-		verify(projetoRepository, Mockito.times(1)).findAll();
+		
+		verify(projetoRepository, times(1)).findAll();
 	}
 	
 	@Test
-	public void getAll() {
+	@DisplayName("Se a lista de todos os Projeto Mock estiver vazia ou nula deve retorna um False")
+	public void getNotProjetoAll() {
 
 		List<ProjetoDTO> projetoDto = projetoService.getAll();
 		projetoDto.clear();
 	
 		assertThat(projetoDto).isNullOrEmpty();
-		verify(projetoRepository, Mockito.times(1)).findAll();
+		
+		verify(projetoRepository, times(1)).findAll();
 	}
 }
