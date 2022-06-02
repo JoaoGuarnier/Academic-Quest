@@ -26,11 +26,11 @@ public class GrupoController {
 	@Autowired
 	private GrupoService grupoService;
 	
-	
 	@PostMapping
-	private ResponseEntity<?> save(@RequestBody GrupoPostDTO dto) {
+	private ResponseEntity<GrupoPostDTO> save(@RequestBody GrupoPostDTO dto) {
 		grupoService.save(dto);
-		return ResponseEntity.ok().build();
+
+        return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/materia/{id}")
