@@ -23,5 +23,4 @@ public class TurmaController {
 		List<TurmaDTO> listTurmaDto = turmaService.getAll();
 		return ResponseEntity.ok(listTurmaDto);
 	}
-
 }

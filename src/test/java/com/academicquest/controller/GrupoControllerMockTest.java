@@ -2,25 +2,18 @@ package com.academicquest.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceException;
-
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -51,9 +43,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class GrupoControllerMockTest {
-	
-//    @Autowired
-//    protected WebApplicationContext wac;
     
     @Autowired
     private WebApplicationContext context;
@@ -69,8 +58,6 @@ public class GrupoControllerMockTest {
 	
     private Long existingId;
     private Long nonExistingId;
-    private Long dependingId;
-    private GrupoPostDTO grupoPostDTO;
     private GrupoMateriaDTO grupoMateriaDTO;
     private UserDTO userDTO;
     private GrupoDTO grupoDTO;
@@ -83,13 +70,10 @@ public class GrupoControllerMockTest {
     	
         existingId      = 1l;
         nonExistingId   = 999l;
-        dependingId     = 666l;
         userDTO         = MockDadosDTOTest.createUserDTO();
         grupoDTO        = MockDadosDTOTest.createGrupoDTO();
         grupoMateriaDTO = MockDadosDTOTest.createGrupoMateriaDTO();
-        grupoPostDTO    = MockDadosDTOTest.createGrupoPostDTO();
         grupoUpdateDTO  = MockDadosDTOTest.createGrupoUpdateDTO();
-
 
         when(grupoService.getByMateriaId(existingId)).thenReturn(List.of(grupoMateriaDTO));
         when(grupoService.getByMateriaId(nonExistingId)).thenThrow(ResourceNotFoundException.class);
@@ -98,7 +82,7 @@ public class GrupoControllerMockTest {
         when(grupoService.buscarAlunosSemGrupo(nonExistingId)).thenThrow(ResourceNotFoundException.class);
         
         when(grupoService.getById(existingId)).thenReturn(grupoDTO);
-        when(grupoService.getById(nonExistingId)).thenThrow(EntityNotFoundException.class);
+        doThrow(ResourceNotFoundException.class).when(grupoService).getById(nonExistingId);
 
         when(grupoService.updateGrupo(any(), eq(existingId))).thenReturn(grupoUpdateDTO);
         when(grupoService.updateGrupo(any(), eq(nonExistingId))).thenThrow(ResourceNotFoundException.class);
@@ -165,7 +149,47 @@ public class GrupoControllerMockTest {
 								        		.get("/grupos/materia/{id}", existingId)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
+       //System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.[0].id").value(grupoDTO.getId()));
+        resultActions.andExpect(jsonPath("$.[0].nome").value(grupoDTO.getNome()));
+    }
+    
+    @Test
+    public void findAll() throws Exception{
+    	ResultActions resultActions = mockMvc.perform(
+							    			MockMvcRequestBuilders
+								    			.get("/grupos/materia/{id}", nonExistingId)
+								    			.accept(MediaType.APPLICATION_JSON)
+    			);
+    	resultActions.andExpect(status().isNotFound());
+    }
+    
+    @Test
+    public void getByMateriaId() throws Exception{
+    	
+    	ResultActions resultActions = mockMvc.perform(
+							    			MockMvcRequestBuilders
+								    			.get("/grupos/alunos/materia/{id}", existingId)
+								    			.accept(MediaType.APPLICATION_JSON)
+    			);
+    	//System.out.println(resultActions.andDo(print()));
+    	resultActions.andExpect(status().isOk());
+    	resultActions.andExpect(jsonPath("$.[0].id").value(grupoDTO.getId()));
+    	resultActions.andExpect(jsonPath("$.[0].firstName").value(userDTO.getFirstName()));
+    	resultActions.andExpect(jsonPath("$.[0].lastName").value(userDTO.getLastName()));
+    	resultActions.andExpect(jsonPath("$.[0].email").value(userDTO.getEmail()));
+    	resultActions.andExpect(jsonPath("$.[0].roles").isNotEmpty());
+    }
+    
+    @Test
+    public void getByNotMateriaId() throws Exception{
+    	ResultActions resultActions = mockMvc.perform(
+										MockMvcRequestBuilders
+							    			.get("/grupos/alunos/materia/{id}", nonExistingId)
+							    			.accept(MediaType.APPLICATION_JSON)
+    			);
+    	resultActions.andExpect(status().isNotFound());
     }
 
     @Test
@@ -183,7 +207,7 @@ public class GrupoControllerMockTest {
         resultActions.andExpect(jsonPath("$.alunoLiderId").exists());
     }
 
-    @Ignore
+    @Test
     public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders

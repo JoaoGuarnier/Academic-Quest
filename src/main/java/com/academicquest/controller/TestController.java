@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.academicquest.dto.PessoaTestDTO;
 
-
 @RestController
 @RequestMapping("/teste")
 public class TestController {
@@ -23,10 +22,5 @@ public class TestController {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.ok().body(pessoaTest);
-		
-		
 	}
-	
-	
-
 }

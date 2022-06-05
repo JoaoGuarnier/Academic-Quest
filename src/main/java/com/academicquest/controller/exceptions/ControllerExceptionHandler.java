@@ -1,20 +1,17 @@
 package com.academicquest.controller.exceptions;
 
-import org.springframework.http.HttpHeaders;
+import java.time.Instant;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.academicquest.service.exception.DatabaseException;
 import com.academicquest.service.exception.ResourceNotFoundException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 
 @ControllerAdvice
 public class ControllerExceptionHandler{

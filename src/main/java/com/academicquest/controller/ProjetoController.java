@@ -30,7 +30,7 @@ public class ProjetoController {
     }
 
     @PostMapping
-    private ResponseEntity save(@RequestBody ProjetoPostDTO projetoPostDTO) {
+    private ResponseEntity<?> save(@RequestBody ProjetoPostDTO projetoPostDTO) {
         projetoService.save(projetoPostDTO);
         return ResponseEntity.ok().build();
     }

@@ -13,10 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ValidationError extends StandardError implements Serializable {
 
-    private List<FieldMessage> errors = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
+	
+	private List<FieldMessage> errors = new ArrayList<>();
 
     public void addError(String fieldName, String message) {
         this.errors.add(new FieldMessage(fieldName,message));
     }
-
 }
