@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,26 +46,26 @@ public class ProjetoControllerTest {
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private Long existingId;
-    private Long nonExistingId;
+    private Long projetoId;
+    private Long notProjetoId;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
-    	mockMvc         = MockMvcBuilders.webAppContextSetup(context).build();
-    	
-        existingId      = 1l;
-        nonExistingId   = 999L;
+    	mockMvc      = MockMvcBuilders.webAppContextSetup(context).build();
+        projetoId    = 1l;
+        notProjetoId = 999L;
         
         materiaRepository.save(MockDadosTest.createProjeto());
     }
    
     //TODO: Esse teste precisar ser tratado no service para id que nao existe, sem tratamento nao conseguer captura o not found
     @Ignore
-    public void findAllShould() throws Exception{
+    @DisplayName("Buscar os projetos por materias id que nao existe no banco e retorna um 404")
+    public void BuscarNotProjetoMateriaId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/projetos/materia/{id}", nonExistingId)
+								        		.get("/projetos/materia/{id}", notProjetoId)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         System.out.println(resultActions.andDo(print()));
@@ -72,11 +73,12 @@ public class ProjetoControllerTest {
     }
     
     @Test
-    public void findAll() throws Exception{
+    @DisplayName("Buscar os projetos por materias id e retornar 200 e se os valores existe")
+    public void BuscarProjetoMateriaId() throws Exception{
     	
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/projetos/materia/{id}", existingId)
+								    			.get("/projetos/materia/{id}", projetoId)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
     	System.out.println(resultActions.andDo(print()));
@@ -89,7 +91,8 @@ public class ProjetoControllerTest {
     }
     
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Buscar os projetos por materias id e retornar 200 e se os valores existe")
+    public void buscarListaProjetos() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
 								        		.get("/projetos")
@@ -106,7 +109,8 @@ public class ProjetoControllerTest {
     
     //TODO: Esse teste precisa retorna 201 mais ele rotorna 200 precisa arrumar no controller
     @Ignore
-    public void saveShouldReturnProductDto() throws Exception {
+    @DisplayName("Testa o save e retorna o 201 se todos os valores estiverem certo")
+    public void saveProjeto() throws Exception {
     	
         String jsonBody = objectMapper.writeValueAsString(MockDadosDTOTest.createProjetoPostDTO());
         ResultActions resultActions = mockMvc.perform(

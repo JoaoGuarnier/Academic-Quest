@@ -15,15 +15,11 @@ public class MockDadosTest {
 
 	public static Grupo createGrupo() {
 
-		List<Tarefa> tarefaList = new ArrayList<>();
-
-		tarefaList.add(createTarefa());
-
 		List<User> userList = new ArrayList<>();
 
 		userList.add(createUser());
 
-		Grupo grupo = new Grupo(1l, "Codao", userList, createMateria(), createUser());
+		Grupo grupo = new Grupo(1l, "Joao", userList, createMateria(), createUser());
 
 		return grupo;
 	}
@@ -38,7 +34,7 @@ public class MockDadosTest {
 
 		userList.add(createUser());
 
-		Projeto projeto = new Projeto(1L, "Codao", "Phone", STATUS_PROJETO.CONCLUIDO, createMateria(), tarefaList);
+		Projeto projeto = new Projeto(1L, "Leon", "Noturno", STATUS_PROJETO.CONCLUIDO, createMateria(), tarefaList);
 
 		return projeto;
 	}
@@ -52,7 +48,7 @@ public class MockDadosTest {
 
 	public static Materia createMateria() {
 
-		Materia materia = new Materia(1L, "Phone", createUser(), createTurma());
+		Materia materia = new Materia(1L, "Leon", createUser(), createTurma());
 
 		return materia;
 	}
@@ -65,7 +61,7 @@ public class MockDadosTest {
 		rolesList.add(createRole());
 		rolesList.add(createRole());
 
-		return new User(1L, "Codao", "Alves", 1, "leon.codao@gmail.com", "senha123", 1L, rolesList);
+		return new User(1L, "Joao", "Alves", 1, "leon.Joao@gmail.com", "adivinha123", 1L, rolesList);
 	}
 
 	public static Role createRole() {

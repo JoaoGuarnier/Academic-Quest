@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,6 @@ public class TurmaControllerMockTest {
     @MockBean
     private TurmaService turmaService;
     
-    
     @Autowired
     private MockMvc mockMvc;
 	
@@ -57,7 +57,8 @@ public class TurmaControllerMockTest {
     }
     
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Retorna 200 com uma lista com todas as turmas e verifica se existe")
+    public void buscarTodasTurmas() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
 								        		.get("/turmas")

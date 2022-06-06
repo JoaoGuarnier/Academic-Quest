@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -50,45 +51,44 @@ public class MateriaControllerMockTest {
     @Autowired
     private MockMvc mockMvc;
 	
-    private Long existingId;
-    private Long nonExistingId;
+    private Long materiaId;
+    private Long notMateriaId;
     private List<MateriaDTO> materiaDTO;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
-        existingId    = 1l;
-        nonExistingId = 999l;
+        materiaId     = 1l;
+        notMateriaId  = 999l;
         materiaDTO 	  = new ArrayList<>(of(createMateriaDTO()));
         mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
 
-        when(materiaService.getByTurmaId(existingId)).thenReturn(materiaDTO);
-        when(materiaService.getByTurmaId(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+        when(materiaService.getByTurmaId(materiaId)).thenReturn(materiaDTO);
+        when(materiaService.getByTurmaId(notMateriaId)).thenThrow(ResourceNotFoundException.class);
 
         when(materiaRepository.save(any())).thenReturn(materiaDTO);
         when(materiaService.getAll()).thenReturn(materiaDTO);
     }
-   
     
     @Test
-    public void findAllShould() throws Exception{
+    @DisplayName("Buscar a materias da turma por id que nao existe e retorna 404")
+    public void buscarTodasTurmasId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/materias/turma/{id}", nonExistingId)
+								        		.get("/materias/turma/{id}", notMateriaId)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
-     //   System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isNotFound());
     }
     
     @Test
-    public void findAll() throws Exception{
+    @DisplayName("Buscar a materias da turma por id que existe, e retorna 200 e se os valores existe")
+    public void buscarNotTodasTurmasId() throws Exception {
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/materias/turma/{id}", existingId)
+								    			.get("/materias/turma/{id}", materiaId)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
-    //	System.out.println(resultActions.andDo(print()));
     	resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.[0].id").exists());
         resultActions.andExpect(jsonPath("$.[0].nome").exists());
@@ -96,13 +96,13 @@ public class MateriaControllerMockTest {
     }
     
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Testa a bucas de todas as materias e retorna uma lista com todas as materias")
+    public void buscarTodasMaterias() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
 								        		.get("/materias")
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
-     //   System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.[0].id").exists());
         resultActions.andExpect(jsonPath("$.[0].nome").exists());

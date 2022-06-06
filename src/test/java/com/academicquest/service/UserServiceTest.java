@@ -100,7 +100,7 @@ public class UserServiceTest {
 		
 		userRepository.save(createUser());
 		
-		UserDetails user = userService.loadUserByUsername("leon.codao@gmail.com");
+		UserDetails user = userService.loadUserByUsername("leon.Joao@gmail.com");
 		
 		assertThat(user).isNotNull();
 	}

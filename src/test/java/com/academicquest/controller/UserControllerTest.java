@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +33,27 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 	
-    private Long existingId;
-    private Long nonExistingId;
+    private Long userId;
+    private Long notUserId;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
-    	mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
-    	
-    	existingId    = 1l;
-    	nonExistingId = 999l;
+    	mockMvc   = MockMvcBuilders.webAppContextSetup(context).build();
+    	userId    = 1l;
+    	notUserId = 999l;
     }
     
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Retorna 200 com uma lista com todos os usuarios e verefica se valor existe")
+    public void buscarUsers() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
 								        		.get("/users")
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
-     //   System.out.println(resultActions.andDo(print()));
         
         resultActions.andExpect(status().isOk());
-        
         resultActions.andExpect(jsonPath("$.last")      	  .exists());
         resultActions.andExpect(jsonPath("$.size")			  .exists());
         resultActions.andExpect(jsonPath("$.sort") 			  .exists());
@@ -65,32 +64,30 @@ public class UserControllerTest {
         resultActions.andExpect(jsonPath("$.totalPages")	  .exists());
         resultActions.andExpect(jsonPath("$.totalElements")   .exists());
         resultActions.andExpect(jsonPath("$.numberOfElements").exists());
-        
         resultActions.andExpect(jsonPath("$.content")		  .isNotEmpty());
     }
     
     @Test
-    public void findByIdWhenId() throws Exception {
+    @DisplayName("Retorna 200 se o id existir e verifica se existe o valor")
+    public void buscarUserId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", existingId)
+								        		.get("/users/{id}", userId)
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
-      //  System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
-        
         resultActions.andExpect(jsonPath("$.id")       .exists());
         resultActions.andExpect(jsonPath("$.lastName") .exists());
         resultActions.andExpect(jsonPath("$.firstName").exists());
-        
         resultActions.andExpect(jsonPath("$.roles").isNotEmpty());
     }
 
     @Test
-    public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+    @DisplayName("Retorna 404 se o id nao existir")
+    public void buscarNotUserId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", nonExistingId)
+								        		.get("/users/{id}", notUserId)
 								        		.accept(MediaType.APPLICATION_JSON)
         		);
         resultActions.andExpect(status().isNotFound());

@@ -1,5 +1,10 @@
 package com.academicquest.controller;
 
+import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoDTO;
+import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoMateriaDTO;
+import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
+import static com.academicquest.mockDados.MockDadosDTOTest.createUserDTO;
+import static java.util.List.of;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -8,10 +13,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -56,48 +60,49 @@ public class GrupoControllerMockTest {
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private Long existingId;
-    private Long nonExistingId;
-    private GrupoMateriaDTO grupoMateriaDTO;
+    private Long grupoId;
+    private Long notGrupoId;
     private UserDTO userDTO;
     private GrupoDTO grupoDTO;
+    private GrupoMateriaDTO grupoMateriaDTO;
     private GrupoUpdateDTO grupoUpdateDTO;
 
     @BeforeEach
-    void setUp() throws Exception {
+    public void setUpGrupoControllerMock() throws Exception {
     	
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     	
-        existingId      = 1l;
-        nonExistingId   = 999l;
-        userDTO         = MockDadosDTOTest.createUserDTO();
-        grupoDTO        = MockDadosDTOTest.createGrupoDTO();
-        grupoMateriaDTO = MockDadosDTOTest.createGrupoMateriaDTO();
-        grupoUpdateDTO  = MockDadosDTOTest.createGrupoUpdateDTO();
+        grupoId     	= 1l;
+        notGrupoId      = 999l;
+        userDTO         = createUserDTO();
+        grupoDTO        = createGrupoDTO();
+        grupoMateriaDTO = createGrupoMateriaDTO();
+        grupoUpdateDTO  = createGrupoUpdateDTO();
 
-        when(grupoService.getByMateriaId(existingId)).thenReturn(List.of(grupoMateriaDTO));
-        when(grupoService.getByMateriaId(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.getByMateriaId(grupoId)).thenReturn(of(grupoMateriaDTO));
+        when(grupoService.getByMateriaId(notGrupoId)).thenThrow(ResourceNotFoundException.class);
 
-        when(grupoService.buscarAlunosSemGrupo(existingId)).thenReturn(List.of(userDTO));
-        when(grupoService.buscarAlunosSemGrupo(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.buscarAlunosSemGrupo(grupoId)).thenReturn(of(userDTO));
+        when(grupoService.buscarAlunosSemGrupo(notGrupoId)).thenThrow(ResourceNotFoundException.class);
         
-        when(grupoService.getById(existingId)).thenReturn(grupoDTO);
-        doThrow(ResourceNotFoundException.class).when(grupoService).getById(nonExistingId);
+        when(grupoService.getById(grupoId)).thenReturn(grupoDTO);
+        doThrow(ResourceNotFoundException.class).when(grupoService).getById(notGrupoId);
 
-        when(grupoService.updateGrupo(any(), eq(existingId))).thenReturn(grupoUpdateDTO);
-        when(grupoService.updateGrupo(any(), eq(nonExistingId))).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.updateGrupo(any(), eq(grupoId))).thenReturn(grupoUpdateDTO);
+        when(grupoService.updateGrupo(any(), eq(notGrupoId))).thenThrow(ResourceNotFoundException.class);
 
         doNothing().when(grupoService).save(Mockito.any(GrupoPostDTO.class));
     }
     
     @Test
-    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+    @DisplayName("Testar o update do grupos e retorna 200 se o id existir e os valores estiverem certos")
+    public void updateGrupo() throws Exception {
     	
         String jsonBody = objectMapper.writeValueAsString(grupoUpdateDTO);
         ResultActions resultActions =
                 mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/grupos/{id}", existingId)
+                                .put("/grupos/{id}", grupoId)
                                 .content(jsonBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -110,7 +115,8 @@ public class GrupoControllerMockTest {
     }
     
     @Test
-    public void updateShouldReturnProductDtoWhenIdExists() throws Exception {
+    @DisplayName("Testar o update do grupos e retorna 404 se tiver o id nao existe")
+    public void updateNotGrupo() throws Exception {
 
     	GrupoUpdateDTO grupoUpdatetDTO = MockDadosDTOTest.createGrupoUpdateDTO();
 
@@ -119,7 +125,7 @@ public class GrupoControllerMockTest {
         ResultActions resultActions =
                 mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/grupos/{id}", nonExistingId)
+                                .put("/grupos/{id}", notGrupoId)
                                 .content(jsonBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -129,7 +135,8 @@ public class GrupoControllerMockTest {
     }
     //Libera essa notação depois de fazer a liberaçãono controller
     @Ignore
-    public void saveShouldReturnProductDto() throws Exception {
+    @DisplayName("Testar o save do grupos e retorna 201 se tiver funcional o save")
+    public void saveGrupo() throws Exception {
     	
         String jsonBody = objectMapper.writeValueAsString(MockDadosDTOTest.createGrupoPostDTO());
         
@@ -143,37 +150,38 @@ public class GrupoControllerMockTest {
     }
     
     @Test
-    public void findAllShould() throws Exception{
+    @DisplayName("Testa o retorno do findByMateriaId se tras infomações dos materias e se o velor é existente")
+    public void buscarMateriaId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/materia/{id}", existingId)
+								        		.get("/grupos/materia/{id}", grupoId)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
-       //System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.[0].id").value(grupoDTO.getId()));
         resultActions.andExpect(jsonPath("$.[0].nome").value(grupoDTO.getNome()));
     }
     
     @Test
-    public void findAll() throws Exception{
+    @DisplayName("Testar se o id nao existente retorna a mensagem da exception e se é 404")
+    public void buscarNotMateriaId() throws Exception{
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/grupos/materia/{id}", nonExistingId)
+								    			.get("/grupos/materia/{id}", notGrupoId)
 								    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isNotFound());
     }
     
     @Test
-    public void getByMateriaId() throws Exception{
+    @DisplayName("Testa o retorno do buscaAlunosMateriaId se tras infomações dos materias dos alunos e se o velor é existente")
+    public void buscarAlunosMateriaId() throws Exception{
     	
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/grupos/alunos/materia/{id}", existingId)
+								    			.get("/grupos/alunos/materia/{id}", grupoId)
 								    			.accept(MediaType.APPLICATION_JSON)
     			);
-    	//System.out.println(resultActions.andDo(print()));
     	resultActions.andExpect(status().isOk());
     	resultActions.andExpect(jsonPath("$.[0].id").value(grupoDTO.getId()));
     	resultActions.andExpect(jsonPath("$.[0].firstName").value(userDTO.getFirstName()));
@@ -183,23 +191,24 @@ public class GrupoControllerMockTest {
     }
     
     @Test
-    public void getByNotMateriaId() throws Exception{
+    @DisplayName("Testar se o id nao existente retorna a mensagem da exception e se é 404")
+    public void buscarNotAlunosMateriaId() throws Exception {
     	ResultActions resultActions = mockMvc.perform(
 										MockMvcRequestBuilders
-							    			.get("/grupos/alunos/materia/{id}", nonExistingId)
+							    			.get("/grupos/alunos/materia/{id}", notGrupoId)
 							    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isNotFound());
     }
 
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Testa o retorno do getbyId se tras infomações dos grupos e se o velor é existente")
+    public void buscarGrupoId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/{id}", existingId)
+								        		.get("/grupos/{id}", grupoId)
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
-     //   System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.id").exists());
         resultActions.andExpect(jsonPath("$.nome").exists());
@@ -208,10 +217,11 @@ public class GrupoControllerMockTest {
     }
 
     @Test
-    public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+    @DisplayName("Testar se o id nao existente retorna a mensagem da exception e se é 404")
+    public void buscarNotGrupoId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/{id}", nonExistingId)
+								        		.get("/grupos/{id}", notGrupoId)
 								        		.accept(MediaType.APPLICATION_JSON)
         		);
         resultActions.andExpect(status().isNotFound());

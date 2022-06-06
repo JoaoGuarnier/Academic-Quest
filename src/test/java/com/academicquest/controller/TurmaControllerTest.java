@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,6 @@ public class TurmaControllerTest {
     @Autowired
     private MockMvc mockMvc;
 	
-
     @BeforeEach
     public void setUp() throws Exception {
     	
@@ -40,13 +40,13 @@ public class TurmaControllerTest {
     }
     
     @Test
-    public void findByIdWhenIdExists() throws Exception {
+    @DisplayName("Retorna 200 com uma lista com todas as turmas e verifica se existe")
+    public void buscarTodasTurmas() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
 								        		.get("/turmas")
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
-      //  System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.[0].id").exists());
         resultActions.andExpect(jsonPath("$.[0].curso").exists());
