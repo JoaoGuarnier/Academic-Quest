@@ -32,7 +32,7 @@ public class ProjetoService {
 
     @Transactional(readOnly = true)
     public List<ProjetoDTO> getByMateriaId(Long id) {
-        return projetoRepository.findyByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
+        return projetoRepository.findByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional()
