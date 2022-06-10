@@ -9,7 +9,5 @@ import java.util.Optional;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
-    @Query(value = "select * from tb_projeto where materia_id = :materiaId", nativeQuery = true)
-    List<Projeto> findyByMateriaId(Long materiaId);
-
+    List<Projeto> findByMateriaId(Long materiaId);
 }
