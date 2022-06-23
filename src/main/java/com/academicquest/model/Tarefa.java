@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.time.LocalDate;
 
 @Entity
@@ -25,7 +26,8 @@ public class Tarefa {
 
     private LocalDate dataEntrega;
 
-    private byte[] arquivoUpload;
+    @Lob
+    private Blob arquivoUpload;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Projeto projeto;
