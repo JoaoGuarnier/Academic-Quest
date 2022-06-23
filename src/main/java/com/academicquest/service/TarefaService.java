@@ -2,6 +2,7 @@ package com.academicquest.service;
 
 import com.academicquest.dto.TarefaDTO;
 import com.academicquest.dto.TarefaPostDTO;
+import com.academicquest.dto.TarefaProjetoDTO;
 import com.academicquest.model.Upload;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaRepository;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TarefaService {
@@ -48,17 +51,30 @@ public class TarefaService {
 
     }
 
+    public TarefaDTO getById(Long id) {
+        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        return new TarefaDTO(tarefa);
+    }
+
+    public List<TarefaProjetoDTO> getByProjetoId(Long projetoId) {
+        List<Long> tarefaIds = tarefaRepository.findIdByProjetoId(projetoId);
+        List<TarefaProjetoDTO> tarefaDTOList = new ArrayList<>();
+        tarefaIds.stream().forEach(tarefaId -> {
+            Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new EntityNotFoundException());
+            tarefaDTOList.add(new TarefaProjetoDTO(tarefa));
+        });
+
+        return tarefaDTOList;
+
+    }
+
+
     private Upload getUpload(TarefaPostDTO tarefaPostDto) throws IOException {
         Upload upload = new Upload();
         upload.setTitulo(tarefaPostDto.getArquivoUpload().getOriginalFilename());
         upload.setFormato(tarefaPostDto.getArquivoUpload().getContentType());
         upload.setArquivoUpload(tarefaPostDto.getArquivoUpload().getBytes());
         return upload;
-    }
-
-    public TarefaDTO getById(Long id) {
-        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        return new TarefaDTO(tarefa);
     }
 
 }
