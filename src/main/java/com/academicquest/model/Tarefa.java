@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_tarefa")
@@ -17,9 +18,14 @@ public class Tarefa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
+    private String nome;
 
     private String descricao;
+
+    private LocalDate dataEntrega;
+
+    @Lob
+    private byte[] arquivoUpload;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Projeto projeto;
