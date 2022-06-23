@@ -1,14 +1,14 @@
 package com.academicquest.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_upload")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Upload {
@@ -22,6 +22,7 @@ public class Upload {
     private String formato;
 
     @OneToOne(mappedBy = "upload")
+    @JsonIgnore
     private Tarefa tarefa;
 
     @Lob

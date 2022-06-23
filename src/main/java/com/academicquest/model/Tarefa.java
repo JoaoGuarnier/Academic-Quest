@@ -1,15 +1,14 @@
 package com.academicquest.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_tarefa")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tarefa {
@@ -28,6 +27,8 @@ public class Tarefa {
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
+
 }
