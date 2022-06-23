@@ -29,7 +29,7 @@ public class TarefaController {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(tarefaSalva.getId()).toUri();
 
-            return ResponseEntity.created(uri).build();
+            return ResponseEntity.created(uri).body(tarefaSalva);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
