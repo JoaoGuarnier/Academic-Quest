@@ -3,6 +3,7 @@ package com.academicquest.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class Tarefa {
     private LocalDate dataEntrega;
 
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] arquivoUpload;
 
     @ManyToOne(fetch = FetchType.LAZY)
