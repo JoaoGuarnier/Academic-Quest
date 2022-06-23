@@ -25,8 +25,6 @@ public class Tarefa {
 
     private LocalDate dataEntrega;
 
-    @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] arquivoUpload;
 
     @ManyToOne(fetch = FetchType.LAZY)
