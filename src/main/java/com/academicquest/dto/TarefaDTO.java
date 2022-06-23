@@ -20,6 +20,8 @@ public class TarefaDTO {
 
     private String nomeArquivo;
 
+    private byte[] arquivo;
+
     public TarefaDTO(Tarefa tarefa, String nomeArquivoUpload) {
 
         this.id = tarefa.getId();
@@ -30,4 +32,10 @@ public class TarefaDTO {
 
     }
 
+    public TarefaDTO(Tarefa tarefa) {
+        this.id = tarefa.getId();
+        this.nome = tarefa.getNome();
+        this.descricao = tarefa.getDescricao();
+        this.arquivo = tarefa.getArquivoUpload();
+    }
 }

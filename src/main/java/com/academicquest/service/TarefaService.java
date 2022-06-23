@@ -43,6 +43,11 @@ public class TarefaService {
 
         return tarefaDTO;
 
-
     }
+
+    public TarefaDTO getById(Long id) {
+        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        return new TarefaDTO(tarefa);
+    }
+
 }
