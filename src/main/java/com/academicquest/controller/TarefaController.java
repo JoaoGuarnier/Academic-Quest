@@ -50,11 +50,7 @@ public class TarefaController {
         List<TarefaProjetoDTO> tarefas = tarefaService.getByProjetoId(id);
         return ResponseEntity.ok().body(tarefas);
     }
-
-    @GetMapping("/test")
-    private ResponseEntity<List<Tarefa>> teste2() {
-        return ResponseEntity.ok().body(tarefaService.findAll());
-    }
+    
 
 
 }

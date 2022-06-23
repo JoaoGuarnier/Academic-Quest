@@ -77,7 +77,4 @@ public class TarefaService {
         return upload;
     }
 
-    public List<Tarefa> findAll() {
-        return tarefaRepository.findAll();
-    }
 }
