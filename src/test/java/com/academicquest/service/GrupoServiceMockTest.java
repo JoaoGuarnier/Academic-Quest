@@ -38,6 +38,7 @@ import com.academicquest.model.Grupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.UserRepository;
+import com.academicquest.service.exception.BadRequestException;
 
 @ExtendWith(SpringExtension.class)
 public class GrupoServiceMockTest {
@@ -127,7 +128,7 @@ public class GrupoServiceMockTest {
 		
 		Executable executable = () -> grupoService.getById(notGrupoId);
 		
-		Exception expectedEx = assertThrows(EntityNotFoundException.class, executable);
+		Exception expectedEx = assertThrows(BadRequestException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado"); 
 		
@@ -138,7 +139,7 @@ public class GrupoServiceMockTest {
 	@DisplayName("Se a lista Alunos Sem Grupo Mock tiver elemento, retorna um true, e se o id existe no banco")
 	public void getAlunosSemGrupo() {
 
-		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(grupoId);
+		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(1L);
 
 		assertThat(userDto2).isNullOrEmpty();
 		
@@ -148,10 +149,12 @@ public class GrupoServiceMockTest {
 	@Test
 	@DisplayName("Se a lista Alunos Sem Grupo Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotAlunosSemGrupo() {
-
-		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(notGrupoId);
-
-		assertThat(userDto2).isNullOrEmpty();
+		
+		Executable executable = () -> grupoService.buscarAlunosSemGrupo(notGrupoId);
+		
+		Exception expectedEx = assertThrows(BadRequestException.class, executable);
+		
+		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
 		
 		verify(grupoRepository, times(1)).buscaAlunosMateria(notGrupoId);
 	}

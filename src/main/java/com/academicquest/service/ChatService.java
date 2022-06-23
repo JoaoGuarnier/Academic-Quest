@@ -1,8 +1,15 @@
 package com.academicquest.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,9 +33,10 @@ public class ChatService {
 	private ChatRepository chatRepository;
 	
 	@Transactional
-	public void save(ChatPostDto dto) {
+	public void save(ChatPostDto dto) throws ParseException {
 		
-		Chat chat = convertToEntity(dto);
+		Chat chat = dto.convertDTOToEntity();
+//		Chat chat = convertToEntity(dto);
 		
 		chatRepository.save(chat);
 	}
@@ -39,7 +47,7 @@ public class ChatService {
 		ChatDto chatDTO = new ChatDto();
 		
 		Optional<Chat> chatOptional = chatRepository.findById(id);
-		Chat chat = chatOptional.orElseThrow(() -> new EntityNotFoundException("mensagem não encontrado"));
+		Chat chat = chatOptional.orElseThrow(() -> new EntityNotFoundException("Mensagem não encontrado"));
 		
 		chatDTO.setId       (chat.getId());
 		chatDTO.setMensagem (chat.getMensagem());
@@ -50,7 +58,7 @@ public class ChatService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<ChatDto> getChats(User user, String mensagem) {
+	public List<ChatDto> getChats() {
 		
 		
 		return chatRepository.findAll(Sort.by(Sort.Direction.ASC, "dataHoras")).stream().map(ChatDto::new).collect(Collectors.toList());
@@ -62,22 +70,23 @@ public class ChatService {
 		return chatRepository.findAll().stream().map(ChatDto::new).collect(Collectors.toList());
 	}
 	
-	private Chat convertToEntity(ChatPostDto dto) {
+	private Chat convertToEntity(ChatPostDto dto) throws ParseException {
 		
 		Chat chat = new Chat();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss");
 		
 		
 		
 		LocalDateTime now = LocalDateTime.now();
 		
 		String formatDateTime = now.format(formatter);
+		Locale locale = new Locale("pt", "BR");
+
 		
-		
-		LocalDateTime formatDateTime2 = LocalDateTime.parse(formatDateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+		LocalDateTime formatDateTime2 = LocalDateTime.parse(formatDateTime, DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss", locale));
 		
 //		LocalDateTime formatDateTime3 = formatDateTime;
-		dto.setDataHoras(formatDateTime);
+//		dto.setDataHoras(formatDateTime);
 		
 		
 		System.out.println("teste1111 : " + now);
@@ -94,4 +103,5 @@ public class ChatService {
 		
 		return chat;
 	} 
+	
 }

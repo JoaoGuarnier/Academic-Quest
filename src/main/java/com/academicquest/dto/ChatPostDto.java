@@ -2,11 +2,18 @@ package com.academicquest.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import javax.validation.constraints.NotEmpty;
+
+import org.modelmapper.ModelMapper;
 
 import com.academicquest.model.Chat;
 import com.academicquest.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +26,18 @@ public class ChatPostDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message="O mensagem nao pode ser ser nulo, tem que ser preenchido")
 	private String mensagem;
 	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-	private String dataHoras;
-	
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
+	private LocalDateTime dataHoras;
+	//id do user
 	private User user;
+	//id da tarefa
+	public Chat convertDTOToEntity() {
+		this.dataHoras = LocalDateTime.now();
+		return new ModelMapper().map(this, Chat.class);
+	}
 }

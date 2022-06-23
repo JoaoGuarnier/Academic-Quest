@@ -3,7 +3,7 @@ package com.academicquest.components;
 import org.springframework.validation.BindingResult;
 
 public class Util {
-
+	
     public static String errorHandling(String[] fields, BindingResult bindingResult) {
         StringBuilder errors = new StringBuilder();
 

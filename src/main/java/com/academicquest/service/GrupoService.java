@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +20,7 @@ import com.academicquest.model.User;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.UserRepository;
+import com.academicquest.service.exception.BadRequestException;
 
 @Service
 public class GrupoService {
@@ -45,7 +44,12 @@ public class GrupoService {
 
 	@Transactional(readOnly = true)
 	public List<GrupoMateriaDTO> getByMateriaId(Long id) {
-		return grupoRepository.findByMateriaId(id).stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
+		List<GrupoMateriaDTO> grupoMateriaDtoList = grupoRepository.findByMateriaId(id).stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
+		
+		if(grupoMateriaDtoList.isEmpty()) {
+			throw new BadRequestException("Grupo não encontrado buscarAlunosSemGrupo");
+		}
+		return grupoMateriaDtoList;
 	}
 	
 	@Transactional(readOnly = true)
@@ -54,7 +58,9 @@ public class GrupoService {
 		GrupoDTO grupoDTO = new GrupoDTO();
 		
 		Optional<Grupo> grupoOptional = grupoRepository.findById(id);
-		Grupo grupo = grupoOptional.orElseThrow(() -> new EntityNotFoundException("Grupo não encontrado"));
+		Grupo grupo = grupoOptional.orElseThrow(() -> new BadRequestException("Grupo não encontrado"));
+		
+
 		
 		grupoDTO.setId          (grupo.getId());
 		grupoDTO.setNome        (grupo.getNome());
@@ -75,6 +81,10 @@ public class GrupoService {
 		List<Long> buscaAlunosComGrupoMateria = grupoRepository.buscaAlunosComGrupoMateria(id);
 		List<Long> alunosSemGrupo = new ArrayList<>();
 		
+		if(!buscaAlunosTurma.contains(id) && !buscaAlunosComGrupoMateria.contains(id)) {
+			throw new BadRequestException("Grupo não encontrado buscarAlunosSemGrupo");
+		}
+		
 		buscaAlunosTurma.stream().forEach(i -> {
 			if (!buscaAlunosComGrupoMateria.contains(i)) {
 				alunosSemGrupo.add(i);
@@ -94,6 +104,7 @@ public class GrupoService {
 		Grupo grupo     = grupoRepository.getById(id);
 		
 		User alunoLider = userRepository.getById(grupoUpdateDTO.getIdAlunoLider());
+
 
 		List<User> alunos = new ArrayList<>();
 		

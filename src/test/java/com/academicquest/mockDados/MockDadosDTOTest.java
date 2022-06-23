@@ -1,5 +1,6 @@
 package com.academicquest.mockDados;
 
+import static com.academicquest.mockDados.MockDadosTest.createChat;
 import static com.academicquest.mockDados.MockDadosTest.createGrupo;
 import static com.academicquest.mockDados.MockDadosTest.createMateria;
 import static com.academicquest.mockDados.MockDadosTest.createProjeto;
@@ -11,6 +12,8 @@ import static com.academicquest.mockDados.MockDadosTest.createUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.academicquest.dto.ChatDto;
+import com.academicquest.dto.ChatPostDto;
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
@@ -24,7 +27,7 @@ import com.academicquest.dto.TurmaDTO;
 import com.academicquest.dto.UserDTO;
 
 public class MockDadosDTOTest {
-
+	
 	public static GrupoDTO createGrupoDTO() {
 		
 		return new GrupoDTO(createGrupo());
@@ -84,5 +87,15 @@ public class MockDadosDTOTest {
 	public static MateriaDTO createMateriaDTO() {
 		
 		return new MateriaDTO(createMateria());
+	}
+	
+	public static ChatDto createChatDTO() {
+		
+		return new ChatDto(createChat());
+	}
+	
+	public static ChatPostDto createChatPostDTO() {
+		
+		return new ChatPostDto(createChat().getMensagem(), createChat().getDataHoras(), createChat().getUser());
 	}
 }

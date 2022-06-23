@@ -27,6 +27,7 @@ import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.repository.GrupoRepository;
+import com.academicquest.service.exception.BadRequestException;
 
 @SpringBootTest
 @Transactional
@@ -77,9 +78,11 @@ public class GrupoServiceTest {
 	@DisplayName("Se a lista Grupo estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotGrupo() {
 
-		List<GrupoMateriaDTO> grupoDto = grupoService.getByMateriaId(notGrupoId);
-
-		assertThat(grupoDto).isNullOrEmpty();
+		Executable executable = () -> grupoService.getByMateriaId(notGrupoId);
+		
+		Exception expectedEx = assertThrows(BadRequestException.class, executable);
+		
+		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
 	}
 
 	@Test
@@ -97,7 +100,7 @@ public class GrupoServiceTest {
 		
 		Executable executable = () -> grupoService.getById(notGrupoId);
 		
-		Exception expectedEx = assertThrows(EntityNotFoundException.class, executable);
+		Exception expectedEx = assertThrows(BadRequestException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado"); 
 	}
@@ -114,10 +117,12 @@ public class GrupoServiceTest {
 	@Test
 	@DisplayName("Se a lista Alunos Sem Grupo estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotAlunosSemGrupo() {
-
-		List<UserDTO> grupoDto = grupoService.buscarAlunosSemGrupo(notGrupoId);
-
-		assertThat(grupoDto).isNullOrEmpty();
+		
+		Executable executable = () -> grupoService.buscarAlunosSemGrupo(notGrupoId);
+		
+		Exception expectedEx = assertThrows(BadRequestException.class, executable);
+		
+		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
 	}
 
 	@Test

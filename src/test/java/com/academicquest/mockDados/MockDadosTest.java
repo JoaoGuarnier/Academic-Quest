@@ -1,8 +1,10 @@
 package com.academicquest.mockDados;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.academicquest.enums.STATUS_PROJETO;
+import com.academicquest.model.Chat;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
@@ -74,5 +76,10 @@ public class MockDadosTest {
 	public static Turma createTurma() {
 
 		return new Turma(1L, "token", 1, "Nortuno");
+	}
+	
+	public static Chat createChat() {
+		
+		return new Chat(1L, "Bom dia!", LocalDateTime.now(), createUser());
 	}
 }

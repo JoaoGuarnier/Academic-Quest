@@ -21,14 +21,14 @@ public class ChatDto implements Serializable {
 	
 	private String mensagem;
 	
-	private String dataHoras;
+	private LocalDateTime dataHoras;
 	
 	private User user;
 	
 	public ChatDto(Chat chat) {
-		this.id = chat.getId();
-		this.mensagem = chat.getMensagem();
+		this.mensagem  = chat.getMensagem();
 		this.dataHoras = chat.getDataHoras();
-		this.user = chat.getUser();
+		this.id        = chat.getId();
+		this.user      = chat.getUser();
 	}
 }
