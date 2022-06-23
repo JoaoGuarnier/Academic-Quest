@@ -2,6 +2,7 @@ package com.academicquest.service;
 
 import com.academicquest.dto.TarefaDTO;
 import com.academicquest.dto.TarefaPostDTO;
+import com.academicquest.model.Upload;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaRepository;
 import com.academicquest.model.Projeto;
@@ -29,8 +30,11 @@ public class TarefaService {
         Tarefa tarefa = new Tarefa();
         tarefa.setNome(tarefaPostDto.getNome());
         tarefa.setDescricao(tarefaPostDto.getDescricao());
-        tarefa.setArquivoUpload(tarefaPostDto.getArquivoUpload().getBytes());
         tarefa.setDataEntrega(LocalDate.parse(tarefaPostDto.getDataEntrega()));
+
+        Upload upload = getUpload(tarefaPostDto);
+
+        tarefa.setUpload(upload);
 
         Projeto projeto = projetoRepository.findById(tarefaPostDto.getIdProjeto()).orElseThrow(() -> new EntityNotFoundException());
 
@@ -40,9 +44,16 @@ public class TarefaService {
 
         TarefaDTO tarefaDTO = new TarefaDTO(tarefaSalva, tarefaPostDto.getArquivoUpload().getOriginalFilename());
 
-
         return tarefaDTO;
 
+    }
+
+    private Upload getUpload(TarefaPostDTO tarefaPostDto) throws IOException {
+        Upload upload = new Upload();
+        upload.setTitulo(tarefaPostDto.getArquivoUpload().getOriginalFilename());
+        upload.setFormato(tarefaPostDto.getArquivoUpload().getContentType());
+        upload.setArquivoUpload(tarefaPostDto.getArquivoUpload().getBytes());
+        return upload;
     }
 
     public TarefaDTO getById(Long id) {

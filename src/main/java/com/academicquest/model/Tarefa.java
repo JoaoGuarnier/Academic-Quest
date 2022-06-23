@@ -24,9 +24,10 @@ public class Tarefa {
 
     private LocalDate dataEntrega;
 
-    @Lob
-    private byte[] arquivoUpload;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "upload_id", referencedColumnName = "id")
+    private Upload upload;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
 }
