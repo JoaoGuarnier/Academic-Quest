@@ -3,10 +3,8 @@ package com.academicquest.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.time.LocalDate;
 
 @Entity
@@ -27,7 +25,7 @@ public class Tarefa {
     private LocalDate dataEntrega;
 
     @Lob
-    private Blob arquivoUpload;
+    private byte[] arquivoUpload;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Projeto projeto;
