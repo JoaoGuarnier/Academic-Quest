@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.User_ID;
+import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static java.util.List.of;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -44,23 +46,18 @@ public class UserControllerMockTest {
     @Autowired
     private MockMvc mockMvc;
 	
-    private Long existingId;
-    private Long nonExistingId;
     private PageImpl<UserDTO> userPageDTO;
     private UserDTO userDTO;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
-        existingId    = 1l;
-        nonExistingId = 999l;
-    	
     	mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
         userPageDTO   = new PageImpl<>(of(MockDadosDTOTest.createUserDTO()));
         userDTO   = MockDadosDTOTest.createUserDTO();
         
-        when(userService.findById(existingId)).thenReturn(userDTO);
-        doThrow(ResourceNotFoundException.class).when(userService).findById(nonExistingId);
+        when(userService.findById(User_ID)).thenReturn(userDTO);
+        doThrow(ResourceNotFoundException.class).when(userService).findById(User_ID_NAO_EXISTE);
 
         when(userService.findAll(any())).thenReturn(userPageDTO);
     }
@@ -94,7 +91,7 @@ public class UserControllerMockTest {
     public void findByIdWhenId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", existingId)
+								        		.get("/users/{id}", User_ID)
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
         //System.out.println(resultActions.andDo(print()));
@@ -111,7 +108,7 @@ public class UserControllerMockTest {
     public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", nonExistingId)
+								        		.get("/users/{id}", User_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         		);
         resultActions.andExpect(status().isNotFound());

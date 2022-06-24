@@ -1,5 +1,7 @@
 package com.academicquest.service;
 
+import static com.academicquest.components.UtilMock.User_ID;
+import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,8 +45,6 @@ public class UserServiceMockTest {
 	@Mock
 	private UserRepository userRepository;
 	
-	private long userId;
-	private long notUserId;
 	private String userEmail;
 	private String notUserEmail;
     private PageImpl<User> page;
@@ -53,8 +53,6 @@ public class UserServiceMockTest {
 	@BeforeEach
 	public void setUpUserServiceMock() throws Exception {
 		
-		userId       = 1L;
-		notUserId    = 999;
 		notUserEmail = "test";
 		user         = createUser();
 		page         = new PageImpl<>(List.of(user));
@@ -62,8 +60,8 @@ public class UserServiceMockTest {
 		
         when(userRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
-        doReturn(Optional.of(user)).when(userRepository).findById(userId);
-        doThrow(ResourceNotFoundException.class).when(userRepository).findById(notUserId);
+        doReturn(Optional.of(user)).when(userRepository).findById(User_ID);
+        doThrow(ResourceNotFoundException.class).when(userRepository).findById(User_ID_NAO_EXISTE);
 		
 		doReturn(user).when(userRepository).findByEmail(userEmail);
 		
@@ -76,10 +74,10 @@ public class UserServiceMockTest {
 	@DisplayName("Deve traser por id um usuario Mock")
 	public void getUserId() {
 		
-		UserDTO turmaDto = userService.findById(userId);
+		UserDTO turmaDto = userService.findById(User_ID);
 		
 		assertThat(turmaDto).isNotNull();
-		verify(userRepository, times(1)).findById(userId);
+		verify(userRepository, times(1)).findById(User_ID);
 	}
 	
 	@Test
@@ -87,9 +85,9 @@ public class UserServiceMockTest {
 	public void getNotUserId() {
 		
 		assertThrows(ResourceNotFoundException.class, () -> {
-			userService.findById(notUserId);
+			userService.findById(User_ID_NAO_EXISTE);
 			});
-		verify(userRepository, times(1)).findById(notUserId);
+		verify(userRepository, times(1)).findById(User_ID_NAO_EXISTE);
 	}
 	
 	@Test

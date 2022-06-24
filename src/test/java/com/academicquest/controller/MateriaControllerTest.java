@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.Materia_ID;
+import static com.academicquest.components.UtilMock.Materia_ID_NAO_EXISTE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,14 +34,9 @@ public class MateriaControllerTest {
     @Autowired
     private MockMvc mockMvc;
 	
-    private Long materiaId;
-    private Long notMateriaId;
-
     @BeforeEach
     public void setUpMateriaController() throws Exception {
     	
-        materiaId    = 1l;
-        notMateriaId = 999l;
         mockMvc      = MockMvcBuilders.webAppContextSetup(context).build();
     }
     
@@ -48,7 +45,7 @@ public class MateriaControllerTest {
     public void buscarNotTurmasId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/materias/turma/{id}", notMateriaId)
+								        		.get("/materias/turma/{id}", Materia_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         resultActions.andExpect(status().isNotFound());
@@ -59,7 +56,7 @@ public class MateriaControllerTest {
     public void buscarTurmasId() throws Exception{
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/materias/turma/{id}", materiaId)
+								    			.get("/materias/turma/{id}", Materia_ID)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
     	resultActions.andExpect(status().isOk());

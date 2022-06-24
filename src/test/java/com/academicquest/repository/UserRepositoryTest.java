@@ -1,5 +1,7 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.User_ID;
+import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,16 +28,12 @@ public class UserRepositoryTest {
 	@Autowired
 	private UserRepository repository;
 	
-    private Long UserId;
-    private Long notUserId;
     private List<Long> listUserId = new ArrayList<>();
     private List<Long> notlistUserId = new ArrayList<>();
 
     @BeforeEach
     public void setUpUser() throws Exception  {
-    	UserId = 1L;
-    	notUserId = 999L;
-        listUserId.add(UserId);
+        listUserId.add(User_ID);
     }
     
     @Test
@@ -65,7 +63,7 @@ public class UserRepositoryTest {
     public void deletaUserNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(notUserId);
+        	repository.deleteById(User_ID_NAO_EXISTE);
         });
     }
 
@@ -73,7 +71,7 @@ public class UserRepositoryTest {
     @DisplayName("Deve retorna um False se o id, existe no banco")
     public void findByIdUserNotExistente() {
     	
-        Optional<User> optionalUser = repository.findById(notUserId);
+        Optional<User> optionalUser = repository.findById(User_ID_NAO_EXISTE);
         assertFalse(optionalUser.isPresent());
     }
 

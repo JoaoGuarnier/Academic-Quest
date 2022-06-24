@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.PROJETO_ID;
+import static com.academicquest.components.UtilMock.PROJETO_ID_NAO_EXISTE;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,16 +48,10 @@ public class ProjetoControllerTest {
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private Long projetoId;
-    private Long notProjetoId;
-
     @BeforeEach
     public void setUp() throws Exception {
     	
     	mockMvc      = MockMvcBuilders.webAppContextSetup(context).build();
-        projetoId    = 1l;
-        notProjetoId = 999L;
-        
         materiaRepository.save(MockDadosTest.createProjeto());
     }
    
@@ -65,7 +61,7 @@ public class ProjetoControllerTest {
     public void BuscarNotProjetoMateriaId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/projetos/materia/{id}", notProjetoId)
+								        		.get("/projetos/materia/{id}", PROJETO_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         System.out.println(resultActions.andDo(print()));
@@ -78,7 +74,7 @@ public class ProjetoControllerTest {
     	
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/projetos/materia/{id}", projetoId)
+								    			.get("/projetos/materia/{id}", PROJETO_ID)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
     	System.out.println(resultActions.andDo(print()));

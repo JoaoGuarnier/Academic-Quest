@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.Materia_ID;
+import static com.academicquest.components.UtilMock.Materia_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createMateriaDTO;
 import static java.util.List.of;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,20 +53,16 @@ public class MateriaControllerMockTest {
     @Autowired
     private MockMvc mockMvc;
 	
-    private Long materiaId;
-    private Long notMateriaId;
     private List<MateriaDTO> materiaDTO;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
-        materiaId     = 1l;
-        notMateriaId  = 999l;
         materiaDTO 	  = new ArrayList<>(of(createMateriaDTO()));
         mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
 
-        when(materiaService.getByTurmaId(materiaId)).thenReturn(materiaDTO);
-        when(materiaService.getByTurmaId(notMateriaId)).thenThrow(ResourceNotFoundException.class);
+        when(materiaService.getByTurmaId(Materia_ID)).thenReturn(materiaDTO);
+        when(materiaService.getByTurmaId(Materia_ID_NAO_EXISTE)).thenThrow(ResourceNotFoundException.class);
 
         when(materiaRepository.save(any())).thenReturn(materiaDTO);
         when(materiaService.getAll()).thenReturn(materiaDTO);
@@ -75,7 +73,7 @@ public class MateriaControllerMockTest {
     public void buscarTodasTurmasId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/materias/turma/{id}", notMateriaId)
+								        		.get("/materias/turma/{id}", Materia_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         resultActions.andExpect(status().isNotFound());
@@ -86,7 +84,7 @@ public class MateriaControllerMockTest {
     public void buscarNotTodasTurmasId() throws Exception {
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/materias/turma/{id}", materiaId)
+								    			.get("/materias/turma/{id}", Materia_ID)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
     	resultActions.andExpect(status().isOk());

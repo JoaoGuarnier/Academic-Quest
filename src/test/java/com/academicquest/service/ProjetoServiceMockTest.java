@@ -1,5 +1,7 @@
 package com.academicquest.service;
 
+import static com.academicquest.components.UtilMock.PROJETO_ID;
+import static com.academicquest.components.UtilMock.PROJETO_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoPostDTO;
 import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static java.util.List.of;
@@ -41,24 +43,19 @@ public class ProjetoServiceMockTest {
 	@Mock
     private MateriaRepository materiaRepository;
 	
-	private long projetoId;
-	private long notProjetoId;
 	private Projeto projeto;
 	private List<Projeto> listPorjeto;
 	
 	@BeforeEach
 	public void setUpProjetoServiceMock() throws Exception {
-		
-		projetoId    = 1L;
-		notProjetoId = 999;
 		projeto      = createProjeto();
 		listPorjeto  = new ArrayList<>(of(projeto));
 
 		doReturn(of()).when(projetoRepository).findAll();
 		when(projetoRepository.findAll()).thenReturn(listPorjeto);
 
-		doReturn(of(projeto)).when(projetoRepository).findyByMateriaId(projetoId);
-		doReturn(of()).when(projetoRepository).findyByMateriaId(notProjetoId);
+		doReturn(of(projeto)).when(projetoRepository).findyByMateriaId(PROJETO_ID);
+		doReturn(of()).when(projetoRepository).findyByMateriaId(PROJETO_ID_NAO_EXISTE);
 		
 		Mockito.when(projetoRepository.save(ArgumentMatchers.any())).thenReturn(projeto);
 	}
@@ -84,22 +81,22 @@ public class ProjetoServiceMockTest {
 		
 		projetoRepository.save(createProjeto());
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(projetoId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID);
 
 		assertThat(projetoDto).isNotEmpty();
 		
-		verify(projetoRepository, times(1)).findyByMateriaId(projetoId);
+		verify(projetoRepository, times(1)).findyByMateriaId(PROJETO_ID);
 	}
 
 	@Test
 	@DisplayName("Se a lista de todas as Materia Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotMateriaId() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(notProjetoId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID_NAO_EXISTE);
 
 		assertThat(projetoDto).isNullOrEmpty();
 		
-		verify(projetoRepository, times(1)).findyByMateriaId(notProjetoId);
+		verify(projetoRepository, times(1)).findyByMateriaId(PROJETO_ID_NAO_EXISTE);
 	}
 	
 	@Test

@@ -1,5 +1,7 @@
 package com.academicquest.service;
 
+import static com.academicquest.components.UtilMock.PROJETO_ID;
+import static com.academicquest.components.UtilMock.PROJETO_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoPostDTO;
 import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,6 @@ public class ProjetoServiceTest {
 
 	@Autowired
 	private ProjetoService projetoService;
-
-	private Long projetoId;
-	private Long notProjetoId;
-
-	@BeforeEach
-	void setUpProjetoService() throws Exception {
-		
-		projetoId    = 1l;
-		notProjetoId = 999l;
-	}
 
 	@Test
 	@DisplayName("Deve salvar um ProjetoService")
@@ -60,7 +51,7 @@ public class ProjetoServiceTest {
 		
 		projetoRepository.save(createProjeto());
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(projetoId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID);
 
 		assertThat(projetoDto).isNotEmpty();
 	}
@@ -69,7 +60,7 @@ public class ProjetoServiceTest {
 	@DisplayName("Se a lista de todas as Materia estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotMateriaId() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(notProjetoId);
+		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID_NAO_EXISTE);
 
 		assertThat(projetoDto).isNullOrEmpty();
 	}

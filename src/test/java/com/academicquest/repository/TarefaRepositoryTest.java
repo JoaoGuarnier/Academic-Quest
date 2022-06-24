@@ -1,5 +1,6 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.Tarefa_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createTarefa;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,8 @@ public class TarefaRepositoryTest {
 
 	@Autowired
 	private TarefaRepository repository;
-	
-    private long notTarefaId;
-    
-    @BeforeEach
-    public void setUpTarefa() {
-        notTarefaId = 999;
-    }
-    
-    @Test
+
+	@Test
     @DisplayName("Deve salvar um Tarefa.")
     public void saveTarefa() {
     	
@@ -59,7 +52,7 @@ public class TarefaRepositoryTest {
     public void deletaTarefaNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(notTarefaId);
+        	repository.deleteById(Tarefa_ID_NAO_EXISTE);
         });
     }
     
@@ -78,7 +71,7 @@ public class TarefaRepositoryTest {
     @DisplayName("Deve retorna um False se o id, existe no banco")
     public void findByIdTarefaNaoExistente() {
     	
-        Optional<Tarefa> optionalMateria = repository.findById(notTarefaId);
+        Optional<Tarefa> optionalMateria = repository.findById(Tarefa_ID_NAO_EXISTE);
         assertFalse(optionalMateria.isPresent());
     }
 }

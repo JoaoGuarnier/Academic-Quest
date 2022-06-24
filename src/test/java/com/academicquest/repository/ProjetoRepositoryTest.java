@@ -1,5 +1,7 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.PROJETO_ID;
+import static com.academicquest.components.UtilMock.PROJETO_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,14 +30,9 @@ public class ProjetoRepositoryTest {
 
 	@Autowired
 	private ProjetoRepository repository;
-	
-    private Long projetoId;
-    private Long notProjetoId;
 
     @BeforeEach
     public void setUpProjeto() throws Exception  {
-        projetoId = 1L;
-        notProjetoId = 999L;
         repository.save(createProjeto());
     }
     
@@ -56,7 +53,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Deve retorna um False se o id, nao existe no banco")
     public void findByIdNaoExistir() {
     	
-        Optional<Projeto> optionalProjeto = repository.findById(notProjetoId);
+        Optional<Projeto> optionalProjeto = repository.findById(PROJETO_ID_NAO_EXISTE);
         assertFalse(optionalProjeto.isPresent());
     }
     
@@ -66,7 +63,7 @@ public class ProjetoRepositoryTest {
     public void deletaNaoExistente() {
     	
     	assertThrows(EmptyResultDataAccessException.class,() -> {
-    		repository.deleteById(notProjetoId);
+    		repository.deleteById(PROJETO_ID_NAO_EXISTE);
     	});
     }
     
@@ -99,7 +96,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False e se o id nao existe no banco")
     public void findByTurmaIdNaoExistir() {
     	
-    	List<Projeto> optionalProjeto = repository.findyByMateriaId(notProjetoId);
+    	List<Projeto> optionalProjeto = repository.findyByMateriaId(PROJETO_ID_NAO_EXISTE);
     	assertThat(optionalProjeto).isNullOrEmpty();
     }
     
@@ -108,7 +105,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void findByTurmaIdExistir() {
     	
-    	List<Projeto> optionalProjeto = repository.findyByMateriaId(projetoId);
+    	List<Projeto> optionalProjeto = repository.findyByMateriaId(PROJETO_ID);
     	assertThat(optionalProjeto).isNotEmpty();
     }
 }

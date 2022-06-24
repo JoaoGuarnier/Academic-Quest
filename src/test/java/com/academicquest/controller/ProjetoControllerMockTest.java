@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.PROJETO_ID;
+import static com.academicquest.components.UtilMock.PROJETO_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoDTO;
 import static java.util.List.of;
 import static org.mockito.Mockito.doNothing;
@@ -58,8 +60,6 @@ public class ProjetoControllerMockTest {
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private Long projetoId;
-    private Long notProjetoId;
     private List<ProjetoDTO> projetoDTO;
 
     @BeforeEach
@@ -67,12 +67,10 @@ public class ProjetoControllerMockTest {
     	
     	mockMvc         = MockMvcBuilders.webAppContextSetup(context).build();
     	
-        projetoId       = 1l;
-        notProjetoId  	= 999l;
         projetoDTO 		= new ArrayList<>(of(createProjetoDTO()));
 
-        when(projetoService.getByMateriaId(projetoId)).thenReturn(projetoDTO);
-        when(projetoService.getByMateriaId(notProjetoId)).thenThrow(ResourceNotFoundException.class);
+        when(projetoService.getByMateriaId(PROJETO_ID)).thenReturn(projetoDTO);
+        when(projetoService.getByMateriaId(PROJETO_ID_NAO_EXISTE)).thenThrow(ResourceNotFoundException.class);
 
         when(projetoService.getAll()).thenReturn(projetoDTO);
         doNothing().when(projetoService).save(Mockito.any());
@@ -84,7 +82,7 @@ public class ProjetoControllerMockTest {
     public void BuscarNotProjetoMateriaId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/projetos/materia/{id}", notProjetoId)
+								        		.get("/projetos/materia/{id}", PROJETO_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         resultActions.andExpect(status().isNotFound());
@@ -95,7 +93,7 @@ public class ProjetoControllerMockTest {
     public void BuscarProjetoMateriaId() throws Exception{
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/projetos/materia/{id}", projetoId)
+								    			.get("/projetos/materia/{id}", PROJETO_ID)
 								    			.accept(MediaType.APPLICATION_JSON)
 	    			);
     	resultActions.andExpect(status().isOk());

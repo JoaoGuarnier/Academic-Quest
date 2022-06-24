@@ -1,13 +1,8 @@
 package com.academicquest.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -23,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.academicquest.dto.ChatDto;
 import com.academicquest.dto.ChatPostDto;
 import com.academicquest.model.Chat;
-import com.academicquest.model.User;
 import com.academicquest.repository.ChatRepository;
 
 @Service

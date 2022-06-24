@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.Grupo_ID;
+import static com.academicquest.components.UtilMock.Grupo_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoMateriaDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
@@ -60,8 +62,6 @@ public class GrupoControllerMockTest {
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private Long grupoId;
-    private Long notGrupoId;
     private UserDTO userDTO;
     private GrupoDTO grupoDTO;
     private GrupoMateriaDTO grupoMateriaDTO;
@@ -72,24 +72,22 @@ public class GrupoControllerMockTest {
     	
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     	
-        grupoId     	= 1l;
-        notGrupoId      = 999l;
         userDTO         = createUserDTO();
         grupoDTO        = createGrupoDTO();
         grupoMateriaDTO = createGrupoMateriaDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
 
-        when(grupoService.getByMateriaId(grupoId)).thenReturn(of(grupoMateriaDTO));
-        when(grupoService.getByMateriaId(notGrupoId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.getByMateriaId(Grupo_ID)).thenReturn(of(grupoMateriaDTO));
+        when(grupoService.getByMateriaId(Grupo_ID_NAO_EXISTE)).thenThrow(ResourceNotFoundException.class);
 
-        when(grupoService.buscarAlunosSemGrupo(grupoId)).thenReturn(of(userDTO));
-        when(grupoService.buscarAlunosSemGrupo(notGrupoId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.buscarAlunosSemGrupo(Grupo_ID)).thenReturn(of(userDTO));
+        when(grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE)).thenThrow(ResourceNotFoundException.class);
         
-        when(grupoService.getById(grupoId)).thenReturn(grupoDTO);
-        doThrow(ResourceNotFoundException.class).when(grupoService).getById(notGrupoId);
+        when(grupoService.getById(Grupo_ID)).thenReturn(grupoDTO);
+        doThrow(ResourceNotFoundException.class).when(grupoService).getById(Grupo_ID_NAO_EXISTE);
 
-        when(grupoService.updateGrupo(any(), eq(grupoId))).thenReturn(grupoUpdateDTO);
-        when(grupoService.updateGrupo(any(), eq(notGrupoId))).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.updateGrupo(any(), eq(Grupo_ID))).thenReturn(grupoUpdateDTO);
+        when(grupoService.updateGrupo(any(), eq(Grupo_ID_NAO_EXISTE))).thenThrow(ResourceNotFoundException.class);
 
         doNothing().when(grupoService).save(Mockito.any(GrupoPostDTO.class));
     }
@@ -102,7 +100,7 @@ public class GrupoControllerMockTest {
         ResultActions resultActions =
                 mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/grupos/{id}", grupoId)
+                                .put("/grupos/{id}", Grupo_ID)
                                 .content(jsonBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -125,7 +123,7 @@ public class GrupoControllerMockTest {
         ResultActions resultActions =
                 mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/grupos/{id}", notGrupoId)
+                                .put("/grupos/{id}", Grupo_ID_NAO_EXISTE)
                                 .content(jsonBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -154,7 +152,7 @@ public class GrupoControllerMockTest {
     public void buscarMateriaId() throws Exception{
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/materia/{id}", grupoId)
+								        		.get("/grupos/materia/{id}", Grupo_ID)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         resultActions.andExpect(status().isOk());
@@ -167,7 +165,7 @@ public class GrupoControllerMockTest {
     public void buscarNotMateriaId() throws Exception{
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/grupos/materia/{id}", notGrupoId)
+								    			.get("/grupos/materia/{id}", Grupo_ID_NAO_EXISTE)
 								    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isNotFound());
@@ -179,7 +177,7 @@ public class GrupoControllerMockTest {
     	
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/grupos/alunos/materia/{id}", grupoId)
+								    			.get("/grupos/alunos/materia/{id}", Grupo_ID)
 								    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isOk());
@@ -195,7 +193,7 @@ public class GrupoControllerMockTest {
     public void buscarNotAlunosMateriaId() throws Exception {
     	ResultActions resultActions = mockMvc.perform(
 										MockMvcRequestBuilders
-							    			.get("/grupos/alunos/materia/{id}", notGrupoId)
+							    			.get("/grupos/alunos/materia/{id}", Grupo_ID_NAO_EXISTE)
 							    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isNotFound());
@@ -206,7 +204,7 @@ public class GrupoControllerMockTest {
     public void buscarGrupoId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/{id}", grupoId)
+								        		.get("/grupos/{id}", Grupo_ID)
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
         resultActions.andExpect(status().isOk());
@@ -221,7 +219,7 @@ public class GrupoControllerMockTest {
     public void buscarNotGrupoId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/grupos/{id}", notGrupoId)
+								        		.get("/grupos/{id}", Grupo_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         		);
         resultActions.andExpect(status().isNotFound());

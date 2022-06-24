@@ -1,5 +1,7 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.Role_ID;
+import static com.academicquest.components.UtilMock.Role_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createRole;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,6 @@ public class RoleRepositoryTest {
 	@Autowired
 	private RoleRepository repository;
 	
-    private long roleId;
-    private long notRoleId;
-
-    @BeforeEach
-    public void setUpRole() {
-        roleId = 1;
-        notRoleId = 999;
-    }
-    
     @Test
     @DisplayName("Deve salvar um Role.")
     public void saveRole() {
@@ -47,7 +39,7 @@ public class RoleRepositoryTest {
     @DisplayName("Deve deleta uma Role quando tiver no banco")
     public void deleteRoleExistir() {
     	
-    	repository.deleteById(roleId);
+    	repository.deleteById(Role_ID);
     	
         Optional<Role> result = repository.findById(1l);
         
@@ -59,7 +51,7 @@ public class RoleRepositoryTest {
     public void deletaRoleNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(notRoleId);
+        	repository.deleteById(Role_ID_NAO_EXISTE);
         });
     }
     
@@ -67,7 +59,7 @@ public class RoleRepositoryTest {
     @DisplayName("Deve retorna um True se o id, existe no banco")
     public void findByIdRoleExistir() {
     	
-        Optional<Role> optionalRole = repository.findById(roleId);
+        Optional<Role> optionalRole = repository.findById(Role_ID);
         assertTrue(optionalRole.isPresent());
     }
 
@@ -75,7 +67,7 @@ public class RoleRepositoryTest {
     @DisplayName("Deve retorna um False se o id, existe no banco")
     public void findByIdRoleNaoExistente() {
     	
-        Optional<Role> optionalRole = repository.findById(notRoleId);
+        Optional<Role> optionalRole = repository.findById(Role_ID_NAO_EXISTE);
         assertFalse(optionalRole.isPresent());
     }
 }

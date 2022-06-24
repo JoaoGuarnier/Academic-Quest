@@ -1,5 +1,7 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.Turma_ID;
+import static com.academicquest.components.UtilMock.Turma_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createTurma;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,6 @@ public class TurmaRepositoryTest {
 	@Autowired
 	private TurmaRepository repository;
 	
-    private long turmaId;
-    private long notTurmaId;
-
-    @BeforeEach
-    public void setUpTurma() {
-        turmaId = 1;
-        notTurmaId = 999;
-    }
-    
     @Test
     @DisplayName("Deve salvar um Turma.")
     public void saveTurma() {
@@ -47,7 +39,7 @@ public class TurmaRepositoryTest {
     @DisplayName("Deve deleta uma Turma quando tiver no banco")
     public void deleteTurmaExistente() {
     	
-    	repository.deleteById(turmaId);
+    	repository.deleteById(Turma_ID);
     	
         Optional<Turma> result = repository.findById(1l);
         
@@ -59,7 +51,7 @@ public class TurmaRepositoryTest {
     public void deletaTurmaNaoExistente() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(notTurmaId);
+        	repository.deleteById(Turma_ID_NAO_EXISTE);
         });
     }
     
@@ -67,7 +59,7 @@ public class TurmaRepositoryTest {
     @DisplayName("Deve retorna um True se o id, existe no banco")
     public void findByIdTurmaExistir() {
     	
-        Optional<Turma> optionalTurma = repository.findById(turmaId);
+        Optional<Turma> optionalTurma = repository.findById(Turma_ID);
         assertTrue(optionalTurma.isPresent());
     }
 
@@ -75,7 +67,7 @@ public class TurmaRepositoryTest {
     @DisplayName("Deve retorna um False se o id, existe no banco")
     public void findByIdTurmaNotExistir() {
     	
-        Optional<Turma> optionalTurma = repository.findById(notTurmaId);
+        Optional<Turma> optionalTurma = repository.findById(Turma_ID_NAO_EXISTE);
         assertFalse(optionalTurma.isPresent());
     }
 }

@@ -1,5 +1,7 @@
 package com.academicquest.controller;
 
+import static com.academicquest.components.UtilMock.User_ID;
+import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,16 +34,11 @@ public class UserControllerTest {
     
     @Autowired
     private MockMvc mockMvc;
-	
-    private Long userId;
-    private Long notUserId;
 
     @BeforeEach
     public void setUp() throws Exception {
     	
     	mockMvc   = MockMvcBuilders.webAppContextSetup(context).build();
-    	userId    = 1l;
-    	notUserId = 999l;
     }
     
     @Test
@@ -72,7 +69,7 @@ public class UserControllerTest {
     public void buscarUserId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", userId)
+								        		.get("/users/{id}", User_ID)
 								        		.accept(MediaType.APPLICATION_JSON)
 		        		);
         resultActions.andExpect(status().isOk());
@@ -87,7 +84,7 @@ public class UserControllerTest {
     public void buscarNotUserId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/users/{id}", notUserId)
+								        		.get("/users/{id}", User_ID_NAO_EXISTE)
 								        		.accept(MediaType.APPLICATION_JSON)
         		);
         resultActions.andExpect(status().isNotFound());

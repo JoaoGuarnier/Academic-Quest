@@ -1,5 +1,7 @@
 package com.academicquest.repository;
 
+import static com.academicquest.components.UtilMock.Grupo_ID;
+import static com.academicquest.components.UtilMock.Grupo_ID_NAO_EXISTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,6 @@ public class GrupoRepositoryTest {
 	@Autowired
 	private GrupoRepository repository;
 	
-    private Long grupoId;
-    private Long notGrupoId;
-
-    @BeforeEach
-    public void setUpGrupo() throws Exception  {
-    	grupoId = 1L;
-    	notGrupoId = 999L;
-    }
-    
     @Test
     @DisplayName("Deve deleta uma Grupo quando tiver no banco")
     public void deleteGrupoExistir() {
@@ -61,7 +53,7 @@ public class GrupoRepositoryTest {
     public void deletaGrupoNaoExiste() {
     	
         assertThrows(EmptyResultDataAccessException.class,() -> {
-        	repository.deleteById(notGrupoId);
+        	repository.deleteById(Grupo_ID_NAO_EXISTE);
         });
     }
 
@@ -69,7 +61,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Deve retorna um False se o id, nao existe no banco")
     public void testarFindByIdNaoExistente() {
     	
-        Optional<Grupo> optionalGrupo = repository.findById(notGrupoId);
+        Optional<Grupo> optionalGrupo = repository.findById(Grupo_ID_NAO_EXISTE);
         assertFalse(optionalGrupo.isPresent());
     }
 
@@ -88,7 +80,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
     public void findByTurmaIdNaoExistir() {
     	
-    	List<Grupo> listGrupo = repository.findByMateriaId(notGrupoId);
+    	List<Grupo> listGrupo = repository.findByMateriaId(Grupo_ID_NAO_EXISTE);
     	assertThat(listGrupo).isNullOrEmpty();
     }
     
@@ -96,7 +88,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void findByTurmaIdExistir() {
     	
-    	List<Grupo> listGrupo = repository.findByMateriaId(grupoId);
+    	List<Grupo> listGrupo = repository.findByMateriaId(Grupo_ID);
     	assertThat(listGrupo).isNotEmpty();
     }
     
@@ -104,7 +96,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False se o id nao existe no banco")
     public void buscarAlunosMateriaNaoExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosMateria(notGrupoId);
+    	List<Long> listGrupo = repository.buscaAlunosMateria(Grupo_ID_NAO_EXISTE);
     	assertThat(listGrupo).isNullOrEmpty();
     }
     
@@ -112,7 +104,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void buscaAlunosMateriaExistente() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosMateria(grupoId);
+    	List<Long> listGrupo = repository.buscaAlunosMateria(Grupo_ID);
     	assertThat(listGrupo).isNotEmpty();
     }
     
@@ -120,7 +112,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um false, e se o id nao existe no banco")
     public void buscaAlunosComGrupoMateriaNaoExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(notGrupoId);
+    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(Grupo_ID_NAO_EXISTE);
     	assertThat(listGrupo).isNullOrEmpty();
     }
     
@@ -128,7 +120,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void buscaAlunosComGrupoMateriaExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(grupoId);
+    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(Grupo_ID);
     	assertThat(listGrupo).isNotEmpty();
     }
 }

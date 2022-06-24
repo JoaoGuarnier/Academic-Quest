@@ -1,5 +1,7 @@
 package com.academicquest.service;
 
+import static com.academicquest.components.UtilMock.Grupo_ID;
+import static com.academicquest.components.UtilMock.Grupo_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoPostDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
 import static com.academicquest.mockDados.MockDadosTest.createGrupo;
@@ -55,26 +57,22 @@ public class GrupoServiceMockTest {
 	@Mock
 	private MateriaRepository materiaRepository;
 
-	private long grupoId;
-	private long notGrupoId;
 	private Grupo grupo;
 
 	@BeforeEach
 	public void setUprupoServiceMock() throws Exception {
-		grupoId    = 1L;
-		notGrupoId = 999;
-		grupo      = createGrupo();
+		grupo = createGrupo();
 		
-		doReturn(grupo).when(grupoRepository).getById(grupoId);
+		doReturn(grupo).when(grupoRepository).getById(Grupo_ID);
 		
-		doReturn(Optional.of(grupo)).when(grupoRepository).findById(grupoId);
-		doThrow(EntityNotFoundException.class).when(grupoRepository).getById(notGrupoId);
+		doReturn(Optional.of(grupo)).when(grupoRepository).findById(Grupo_ID);
+		doThrow(EntityNotFoundException.class).when(grupoRepository).getById(Grupo_ID_NAO_EXISTE);
 		
-		doReturn(of(grupo.getId())).when(grupoRepository).buscaAlunosMateria(grupoId);
-		doReturn(of()).when(grupoRepository).buscaAlunosMateria(notGrupoId);
+		doReturn(of(grupo.getId())).when(grupoRepository).buscaAlunosMateria(Grupo_ID);
+		doReturn(of()).when(grupoRepository).buscaAlunosMateria(Grupo_ID_NAO_EXISTE);
 
-		doReturn(of(grupo)).when(grupoRepository).findByMateriaId(grupoId);
-		doReturn(of()).when(grupoRepository).findByMateriaId(notGrupoId);
+		doReturn(of(grupo)).when(grupoRepository).findByMateriaId(Grupo_ID);
+		doReturn(of()).when(grupoRepository).findByMateriaId(Grupo_ID_NAO_EXISTE);
 
 		when(grupoRepository.save(ArgumentMatchers.any())).thenReturn(grupo);
 	}
@@ -96,7 +94,7 @@ public class GrupoServiceMockTest {
 		
 		GrupoUpdateDTO grupoUpdateDto = createGrupoUpdateDTO();
 		
-		GrupoUpdateDTO result = grupoService.updateGrupo(grupoUpdateDto, grupoId);
+		GrupoUpdateDTO result = grupoService.updateGrupo(grupoUpdateDto, Grupo_ID);
 		
 		assertNotNull(result);
 	}
@@ -108,7 +106,7 @@ public class GrupoServiceMockTest {
 		GrupoUpdateDTO grupoUpdateDto = createGrupoUpdateDTO();
 		
 		assertThrows(EntityNotFoundException.class, () -> {
-			grupoService.updateGrupo(grupoUpdateDto, notGrupoId);
+			grupoService.updateGrupo(grupoUpdateDto, Grupo_ID_NAO_EXISTE);
 		});
 	}
 
@@ -116,23 +114,23 @@ public class GrupoServiceMockTest {
 	@DisplayName("Deve retorna um grupo Mock se o id, existe no banco")
 	public void getGrupoId() {
 		
-		GrupoDTO grupoDto2 = grupoService.getById(grupoId);
+		GrupoDTO grupoDto2 = grupoService.getById(Grupo_ID);
 		
 		assertNotNull(grupoDto2);
-		verify(grupoRepository, Mockito.times(1)).findById(grupoId);
+		verify(grupoRepository, Mockito.times(1)).findById(Grupo_ID);
 	}
 
 	@Test
 	@DisplayName("Deve lanca uma exception Mock quando o valor nao existir no banco")
 	public void getNotGrupoId() {
 		
-		Executable executable = () -> grupoService.getById(notGrupoId);
+		Executable executable = () -> grupoService.getById(Grupo_ID_NAO_EXISTE);
 		
 		Exception expectedEx = assertThrows(BadRequestException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado"); 
 		
-		verify(grupoRepository, times(1)).findById(notGrupoId);
+		verify(grupoRepository, times(1)).findById(Grupo_ID_NAO_EXISTE);
 	}
 	
 	@Test
@@ -143,19 +141,19 @@ public class GrupoServiceMockTest {
 
 		assertThat(userDto2).isNullOrEmpty();
 		
-		verify(grupoRepository, times(1)).buscaAlunosMateria(grupoId);
+		verify(grupoRepository, times(1)).buscaAlunosMateria(Grupo_ID);
 	}
 
 	@Test
 	@DisplayName("Se a lista Alunos Sem Grupo Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotAlunosSemGrupo() {
 		
-		Executable executable = () -> grupoService.buscarAlunosSemGrupo(notGrupoId);
+		Executable executable = () -> grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE);
 		
 		Exception expectedEx = assertThrows(BadRequestException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
 		
-		verify(grupoRepository, times(1)).buscaAlunosMateria(notGrupoId);
+		verify(grupoRepository, times(1)).buscaAlunosMateria(Grupo_ID_NAO_EXISTE);
 	}
 }

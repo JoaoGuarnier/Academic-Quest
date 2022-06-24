@@ -11,6 +11,7 @@ import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Materia;
+import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.ProjetoRepository;
