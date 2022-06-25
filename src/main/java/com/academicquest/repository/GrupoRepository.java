@@ -26,6 +26,9 @@ public interface GrupoRepository extends JpaRepository<Grupo, Long>{
 			+ "ON tbm.ID = tbg.MATERIA_ID\r\n"
 			+ "WHERE tbm.ID = :id", nativeQuery = true)
 	List<Long> buscaAlunosComGrupoMateria(@Param("id") Long idMateria);
+
+	@Query(value = "select id from tb_grupo where materia_id = :idMateria", nativeQuery = true)
+	List<Long> buscaGruposPorMateria(@Param("idMateria") Long idMateria);
 	
 	
 

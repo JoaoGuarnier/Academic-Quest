@@ -3,12 +3,14 @@ package com.academicquest.service;
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
 import com.academicquest.enums.STATUS_PROJETO;
+import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
-import com.academicquest.model.Turma;
+import com.academicquest.model.ProjetoGrupo;
+import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
+import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
-import com.academicquest.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,12 @@ public class ProjetoService {
 
     @Autowired
     private MateriaRepository materiaRepository;
+
+    @Autowired
+    private GrupoRepository grupoRepository;
+
+    @Autowired
+    private ProjetoGrupoRepository projetoGrupoRepository;
 
     @Transactional(readOnly = true)
     public List<ProjetoDTO> getAll() {
@@ -44,7 +52,23 @@ public class ProjetoService {
         Materia materia = materiaRepository.getById(idMateria);
 
         projeto.setMateria(materia);
-        projetoRepository.save(projeto);
+        Projeto projetoSalvo = projetoRepository.save(projeto);
+
+        criaRegistrosProjetoGrupo(projetoPostDTO,projetoSalvo);
+
+    }
+
+    private void criaRegistrosProjetoGrupo(ProjetoPostDTO projetoPostDTO, Projeto projeto) {
+
+        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateria(projetoPostDTO.getIdMateria());
+
+        idsGrupos.stream().forEach(idGrupo -> {
+            Grupo grupo = grupoRepository.findById(idGrupo).get();
+            ProjetoGrupo projetoGrupo = new ProjetoGrupo();
+            projetoGrupo.setGrupo(grupo);
+            projetoGrupo.setProjeto(projeto);
+            projetoGrupoRepository.save(projetoGrupo);
+        });
 
     }
 
