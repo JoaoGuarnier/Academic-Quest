@@ -29,17 +29,16 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
-	@PostMapping
-	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, BindingResult bindingResult) throws ParseException {
+	@PostMapping("/chatssss/{id}")
+	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, @PathVariable Long id, BindingResult bindingResult) throws ParseException {
 		
-        String errors = Util.errorHandling(new String[]{"mensagem", "dataHoras"}, bindingResult);
+        String errors = Util.errorHandling(new String[]{"mensagem"}, bindingResult);
 
-		
         if (!errors.isEmpty()) {
             throw new BadRequestException(errors);
         }
         
-        chatService.save(dto);
+        chatService.save(dto, id);
         
         return ResponseEntity.ok().build();
 	}

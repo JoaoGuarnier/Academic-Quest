@@ -24,7 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.academicquest.dto.MateriaDTO;
 import com.academicquest.model.Materia;
-import com.academicquest.model.Materia;
 import com.academicquest.repository.MateriaRepository;
 
 @ExtendWith(SpringExtension.class)

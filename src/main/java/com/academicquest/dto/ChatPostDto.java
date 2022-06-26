@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.modelmapper.ModelMapper;
-
-import com.academicquest.model.Chat;
 import com.academicquest.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -33,11 +30,6 @@ public class ChatPostDto implements Serializable {
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
 	private LocalDateTime dataHoras;
-	//id do user
 	private User user;
 	//id da tarefa
-	public Chat convertDTOToEntity() {
-		this.dataHoras = LocalDateTime.now();
-		return new ModelMapper().map(this, Chat.class);
-	}
 }

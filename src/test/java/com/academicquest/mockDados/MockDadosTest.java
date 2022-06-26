@@ -58,7 +58,7 @@ public class MockDadosTest {
 	public static User createUser() {
 
 		List<Role> rolesList = new ArrayList<>();
-
+		
 		rolesList.add(createRole());
 		rolesList.add(createRole());
 		rolesList.add(createRole());

@@ -10,24 +10,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.modelmapper.ModelMapper;
-
-import com.academicquest.dto.ChatPostDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Table(name = "tb_chat")
+@Setter
+
+@Getter
+
+@AllArgsConstructor
+
+@NoArgsConstructor
+
+@ToString
 
 @Entity
-@Table(name = "tb_chat")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Chat {
 	
 	@Id
@@ -41,7 +49,13 @@ public class Chat {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
 	private LocalDateTime  dataHoras;
 	
-    @ManyToOne()
+	
+	@JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "user_id")
 	private User user;
+	
+//	public ChatDtoTestetste convertDTOToEntity() {
+//		return new ModelMapper().map(this, ChatDtoTestetste.class);
+//	}
 }

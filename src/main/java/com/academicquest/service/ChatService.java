@@ -10,15 +10,17 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.ChatDto;
 import com.academicquest.dto.ChatPostDto;
 import com.academicquest.model.Chat;
+import com.academicquest.model.User;
 import com.academicquest.repository.ChatRepository;
+import com.academicquest.repository.UserRepository;
 
 @Service
 public class ChatService {
@@ -26,11 +28,16 @@ public class ChatService {
 	@Autowired
 	private ChatRepository chatRepository;
 	
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private ModelMapper modelMapper;
+	
 	@Transactional
-	public void save(ChatPostDto dto) throws ParseException {
+	public void save(ChatPostDto dto, Long id) throws ParseException {
 		
-		Chat chat = dto.convertDTOToEntity();
-//		Chat chat = convertToEntity(dto);
+		Chat chat = convertToEntity(dto, id);
 		
 		chatRepository.save(chat);
 	}
@@ -54,46 +61,24 @@ public class ChatService {
 	@Transactional(readOnly = true)
 	public List<ChatDto> getChats() {
 		
-		
-		return chatRepository.findAll(Sort.by(Sort.Direction.ASC, "dataHoras")).stream().map(ChatDto::new).collect(Collectors.toList());
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ChatDto> getUserChat() {
-		
-		return chatRepository.findAll().stream().map(ChatDto::new).collect(Collectors.toList());
-	}
-	
-	private Chat convertToEntity(ChatPostDto dto) throws ParseException {
-		
-		Chat chat = new Chat();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss");
-		
-		
-		
-		LocalDateTime now = LocalDateTime.now();
-		
-		String formatDateTime = now.format(formatter);
-		Locale locale = new Locale("pt", "BR");
+		List<Chat> chat = chatRepository.findAll();
+		List<ChatDto> tetste = chat.stream().map(user -> modelMapper.map(user, ChatDto.class)).collect(Collectors.toList());
 
-		
-		LocalDateTime formatDateTime2 = LocalDateTime.parse(formatDateTime, DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm:ss", locale));
-		
-//		LocalDateTime formatDateTime3 = formatDateTime;
-//		dto.setDataHoras(formatDateTime);
-		
-		
-		System.out.println("teste1111 : " + now);
-		System.out.println("teste2222 : " + formatDateTime);
-		System.out.println("teste3333 : " + formatDateTime2);
-//		System.out.println("teste3333 : " + );
-		System.out.println("teste3333 : " + dto.getDataHoras());
-		
-		
+		return tetste;
+	}
+	
+	@Transactional
+	private Chat convertToEntity(ChatPostDto dto, Long id) throws ParseException {
+
+		Chat chat = new Chat();
+		User user = userRepository.getById(id);
+
+		dto.setDataHoras(LocalDateTime.now());
+		dto.setUser(user);
 		
 		chat.setDataHoras(dto.getDataHoras());
 		chat.setMensagem (dto.getMensagem());
-		chat.setUser     (dto.getUser());
+		chat.setUser     (user);
 		
 		return chat;
 	} 
