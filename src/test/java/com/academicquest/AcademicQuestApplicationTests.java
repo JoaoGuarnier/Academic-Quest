@@ -1,10 +1,10 @@
-package com.devsuperior.dscatalog;
+package com.academicquest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DscatalogApplicationTests {
+class AcademicQuestApplicationTests {
 
 	@Test
 	void contextLoads() {

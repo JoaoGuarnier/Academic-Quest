@@ -27,7 +27,7 @@ public class TarefaController {
 
         try{
             TarefaPostDTO tarefaPostDto = TarefaPostDTO.builder().nome(nome).descricao(descricao).arquivoUpload(arquivoUpload).dataEntrega(dataEntrega).idProjeto(idProjeto).build();
-            TarefaDTO tarefaSalva = tarefaService.criarTarefa(tarefaPostDto);
+            TarefaDTO tarefaSalva = tarefaService.save(tarefaPostDto);
 
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(tarefaSalva.getId()).toUri();
