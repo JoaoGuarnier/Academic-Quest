@@ -31,4 +31,7 @@ public class Tarefa {
     @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
 
+    @OneToOne(mappedBy = "grupo")
+    private TarefaGrupo tarefaGrupo;
+
 }
