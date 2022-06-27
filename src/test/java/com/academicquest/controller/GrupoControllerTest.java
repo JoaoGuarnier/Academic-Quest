@@ -4,6 +4,7 @@ import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
 import static com.academicquest.mockDados.MockDadosTest.createGrupo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,8 +66,6 @@ public class GrupoControllerTest {
         notGrupoId   	= 999l;
         grupoDTO        = createGrupoDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
-        
-        grupoRepository.save(createGrupo());
     }
     
     @Test
@@ -132,8 +131,8 @@ public class GrupoControllerTest {
         				);
        //System.out.println(resultActions.andDo(print()));
         resultActions.andExpect(status().isOk());
-        resultActions.andExpect(jsonPath("$.[0].id").value(grupoDTO.getId()));
-        resultActions.andExpect(jsonPath("$.[0].nome").value(grupoDTO.getNome()));
+        resultActions.andExpect(jsonPath("$.[0].id").value(MockDadosDTOTest.createGrupoMateriaDTO().getId()));
+        resultActions.andExpect(jsonPath("$.[0].nome").value(MockDadosDTOTest.createGrupoMateriaDTO().getNome()));
     }
     
     //TODO: Esse teste precisar ser tratado no service para id que nao existe, sem tratamento nao conseguer captura o not found
@@ -151,10 +150,9 @@ public class GrupoControllerTest {
     @Test
     @DisplayName("Testa o retorno do buscaAlunosMateriaId se tras infomações dos materias dos alunos e se o velor é existente")
     public void buscarAlunosMateriaId() throws Exception{
-    	
     	ResultActions resultActions = mockMvc.perform(
 							    			MockMvcRequestBuilders
-								    			.get("/grupos/alunos/materia/{id}", 2l)
+								    			.get("/grupos/alunos/materia/{id}", 1L)
 								    			.accept(MediaType.APPLICATION_JSON)
     			);
     	resultActions.andExpect(status().isOk());

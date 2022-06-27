@@ -52,7 +52,6 @@ public class GrupoServiceTest {
 	public void saveGrupoServiceExistente() {
 
 		GrupoPostDTO grupoDto = createGrupoPostDTO();
-
 		Grupo grupo = grupoRepository.save(createGrupo());
 
 		grupoService.save(grupoDto);

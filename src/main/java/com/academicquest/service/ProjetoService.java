@@ -61,7 +61,7 @@ public class ProjetoService {
         projeto.setMateria(materia);
         Projeto projetoSalvo = projetoRepository.save(projeto);
 
-        criaRegistrosProjetoGrupo(projetoPostDTO,projetoSalvo);
+        criaRegistrosProjetoGrupo(projetoPostDTO, projetoSalvo);
 
     }
 
