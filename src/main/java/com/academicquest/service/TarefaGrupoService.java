@@ -1,16 +1,15 @@
 package com.academicquest.service;
 
 import com.academicquest.dto.*;
-import com.academicquest.model.Grupo;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +21,7 @@ public class TarefaGrupoService {
     @Autowired
     private GrupoRepository grupoRepository;
 
+    @Transactional
     public List<TarefaGrupoSimplesDTO> getByTarefaId(Long tarefaId) {
         List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.findByTarefaId(tarefaId);
         List<TarefaGrupoSimplesDTO> tarefaGrupoSimplesDTOS = tarefaGrupos.stream().map(TarefaGrupoSimplesDTO::new).collect(Collectors.toList());
