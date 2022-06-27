@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_tarefa_grupo")
@@ -28,7 +28,7 @@ public class TarefaGrupo {
 
     private Double nota;
 
-    private LocalDate dataEntrega;
+    private LocalDateTime dataEntrega;
 
     @Enumerated(EnumType.STRING)
     private STATUS_TAREFA_GRUPO statusTarefaGrupo = STATUS_TAREFA_GRUPO.PENDENTE;
@@ -36,6 +36,8 @@ public class TarefaGrupo {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
+
+    private String consideracoes;
 
 
 }
