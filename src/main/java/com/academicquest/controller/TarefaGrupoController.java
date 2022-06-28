@@ -1,14 +1,12 @@
 package com.academicquest.controller;
 
 import com.academicquest.dto.TarefaGrupoDTO;
+import com.academicquest.dto.TarefaGrupoPutDTO;
 import com.academicquest.dto.TarefaGrupoSimplesDTO;
 import com.academicquest.service.TarefaGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +28,13 @@ public class TarefaGrupoController {
         TarefaGrupoDTO tarefaGrupoDTO = tarefaGrupoService.getById(id);
         return ResponseEntity.ok().body(tarefaGrupoDTO);
     }
+
+    @PutMapping("/{idTarefaGrupo}")
+    private ResponseEntity avaliarTarefaGrupo(@PathVariable Long idTarefaGrupo, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
+        tarefaGrupoService.avaliarTarefaGrupo(idTarefaGrupo,tarefaGrupoPutDTO);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }

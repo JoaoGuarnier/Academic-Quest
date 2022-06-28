@@ -1,6 +1,7 @@
 package com.academicquest.service;
 
 import com.academicquest.dto.*;
+import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,4 +54,11 @@ public class TarefaGrupoService {
     }
 
 
+    public void avaliarTarefaGrupo(Long idTarefaGrupo, TarefaGrupoPutDTO tarefaGrupoPutDTO) {
+        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new EntityNotFoundException());
+        tarefaGrupo.setNota(tarefaGrupoPutDTO.getNota());
+        tarefaGrupo.setConsideracoes(tarefaGrupoPutDTO.getConsideracoes());
+        tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.CORRIGIDA);
+        tarefaGrupoRepository.save(tarefaGrupo);
+    }
 }
