@@ -26,6 +26,8 @@ public class TarefaDTO {
 
     private byte[] upload;
 
+    private String formato;
+
 
 
     public TarefaDTO(Tarefa tarefa, String nomeArquivoUpload) {
@@ -35,6 +37,7 @@ public class TarefaDTO {
         this.nomeProjeto = tarefa.getProjeto().getNome();
         this.nomeArquivo = nomeArquivoUpload;
         this.upload = tarefa.getUpload().getArquivoUpload();
+        this.formato = tarefa.getUpload().getFormato();
         this.dataEntrega = tarefa.getDataEntrega();
     }
 
@@ -46,5 +49,6 @@ public class TarefaDTO {
         this.nomeArquivo = tarefa.getUpload().getTitulo();
         this.upload = tarefa.getUpload().getArquivoUpload();
         this.dataEntrega = tarefa.getDataEntrega();
+        this.formato = tarefa.getUpload().getFormato();
     }
 }
