@@ -96,7 +96,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False e se o id nao existe no banco")
     public void findByTurmaIdNaoExistir() {
     	
-    	List<Projeto> optionalProjeto = repository.findyByMateriaId(PROJETO_ID_NAO_EXISTE);
+    	List<Projeto> optionalProjeto = repository.findByMateriaId(notProjetoId);
     	assertThat(optionalProjeto).isNullOrEmpty();
     }
     
@@ -105,7 +105,7 @@ public class ProjetoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void findByTurmaIdExistir() {
     	
-    	List<Projeto> optionalProjeto = repository.findyByMateriaId(PROJETO_ID);
+    	List<Projeto> optionalProjeto = repository.findByMateriaId(projetoId);
     	assertThat(optionalProjeto).isNotEmpty();
     }
 }

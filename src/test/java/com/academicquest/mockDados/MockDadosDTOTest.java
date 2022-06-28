@@ -5,15 +5,15 @@ import static com.academicquest.mockDados.MockDadosTest.createGrupo;
 import static com.academicquest.mockDados.MockDadosTest.createMateria;
 import static com.academicquest.mockDados.MockDadosTest.createProjeto;
 import static com.academicquest.mockDados.MockDadosTest.createRole;
-import static com.academicquest.mockDados.MockDadosTest.createTarefa;
 import static com.academicquest.mockDados.MockDadosTest.createTurma;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.academicquest.dto.ChatDto;
-import com.academicquest.dto.ChatPostDto;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
@@ -48,7 +48,7 @@ public class MockDadosDTOTest {
 		List<Long> alunosId = new ArrayList<Long>();
 		alunosId.add(1L);
 		
-		return new GrupoPostDTO(createGrupo().getNome(), alunosId, createGrupo().getAlunoLider().getId(), createGrupo().getMateria().getId());
+		return new GrupoPostDTO(createGrupo().getNome(), alunosId, 1L, 1L);
 	}
 	
 	public static ProjetoDTO createProjetoDTO() {
@@ -65,8 +65,7 @@ public class MockDadosDTOTest {
 	}
 	
 	public static ProjetoPostDTO createProjetoPostDTO() {
-		
-		return new ProjetoPostDTO(createProjeto().getNome(), createProjeto().getDescricao(), createProjeto().getMateria().getId());
+		return new ProjetoPostDTO(createProjeto().getNome(), createProjeto().getDescricao(), 1L);
 	}
 	
 	public static RoleDTO createRoleDTO() {
@@ -80,8 +79,9 @@ public class MockDadosDTOTest {
 	}
 	
 	public static TarefaPostDTO createTarefaPostDTO() {
+		MultipartFile multipartFileToSend = new MockMultipartFile("aa", new byte[] {});
 		
-		return new TarefaPostDTO(createTarefa().getTitulo(), createTarefa().getDescricao(), createTarefa().getProjeto().getId());
+		return new TarefaPostDTO(1L, "Banco de dados", "Noturno", "aa", multipartFileToSend, 1L);
 	}
 	
 	public static MateriaDTO createMateriaDTO() {

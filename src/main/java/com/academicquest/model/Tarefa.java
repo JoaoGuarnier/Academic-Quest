@@ -1,20 +1,14 @@
 package com.academicquest.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_tarefa")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tarefa {
@@ -23,10 +17,21 @@ public class Tarefa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
+    private String nome;
 
     private String descricao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private LocalDate dataEntrega;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "upload_id", referencedColumnName = "id")
+    private Upload upload;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
+
+    @OneToOne(mappedBy = "grupo")
+    private TarefaGrupo tarefaGrupo;
+
 }

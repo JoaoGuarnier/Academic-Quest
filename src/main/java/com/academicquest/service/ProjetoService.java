@@ -10,10 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
 import com.academicquest.enums.STATUS_PROJETO;
+import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
+import com.academicquest.model.ProjetoGrupo;
+import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
+import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjetoService {
@@ -24,6 +34,12 @@ public class ProjetoService {
     @Autowired
     private MateriaRepository materiaRepository;
 
+    @Autowired
+    private GrupoRepository grupoRepository;
+
+    @Autowired
+    private ProjetoGrupoRepository projetoGrupoRepository;
+
     @Transactional(readOnly = true)
     public List<ProjetoDTO> getAll() {
         return projetoRepository.findAll().stream().map(ProjetoDTO::new).collect(Collectors.toList());
@@ -31,7 +47,7 @@ public class ProjetoService {
 
     @Transactional(readOnly = true)
     public List<ProjetoDTO> getByMateriaId(Long id) {
-        return projetoRepository.findyByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
+        return projetoRepository.findByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional()
@@ -43,7 +59,23 @@ public class ProjetoService {
         Materia materia = materiaRepository.getById(idMateria);
 
         projeto.setMateria(materia);
-        projetoRepository.save(projeto);
+        Projeto projetoSalvo = projetoRepository.save(projeto);
+
+        criaRegistrosProjetoGrupo(projetoPostDTO, projetoSalvo);
+
+    }
+
+    private void criaRegistrosProjetoGrupo(ProjetoPostDTO projetoPostDTO, Projeto projeto) {
+
+        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateria(projetoPostDTO.getIdMateria());
+
+        idsGrupos.stream().forEach(idGrupo -> {
+            Grupo grupo = grupoRepository.findById(idGrupo).get();
+            ProjetoGrupo projetoGrupo = new ProjetoGrupo();
+            projetoGrupo.setGrupo(grupo);
+            projetoGrupo.setProjeto(projeto);
+            projetoGrupoRepository.save(projetoGrupo);
+        });
 
     }
 
