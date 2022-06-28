@@ -1,6 +1,7 @@
 package com.academicquest.service;
 
 import com.academicquest.dto.*;
+import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,28 @@ public class TarefaGrupoService {
     public List<TarefaGrupoSimplesDTO> getByTarefaId(Long tarefaId) {
         List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.findByTarefaId(tarefaId);
         List<TarefaGrupoSimplesDTO> tarefaGrupoSimplesDTOS = tarefaGrupos.stream().map(TarefaGrupoSimplesDTO::new).collect(Collectors.toList());
-        return tarefaGrupoSimplesDTOS;
+        List<TarefaGrupoSimplesDTO> entregues = new ArrayList<>();
+        List<TarefaGrupoSimplesDTO> pendentes = new ArrayList<>();
+        List<TarefaGrupoSimplesDTO> corrigidas = new ArrayList<>();
+        
+        tarefaGrupoSimplesDTOS.stream().forEach(tarefaGrupoSimplesDTO -> {
+            if (tarefaGrupoSimplesDTO.getStatusTarefaGrupo() == STATUS_TAREFA_GRUPO.ENTREGUE) {
+                entregues.add(tarefaGrupoSimplesDTO);
+            }
+            if (tarefaGrupoSimplesDTO.getStatusTarefaGrupo() == STATUS_TAREFA_GRUPO.PENDENTE) {
+                pendentes.add(tarefaGrupoSimplesDTO);
+            }
+            if (tarefaGrupoSimplesDTO.getStatusTarefaGrupo() == STATUS_TAREFA_GRUPO.CORRIGIDA) {
+                corrigidas.add(tarefaGrupoSimplesDTO);
+            }
+        });
+
+        List<TarefaGrupoSimplesDTO> listaFinal = new ArrayList<>();
+        listaFinal.addAll(entregues);
+        listaFinal.addAll(pendentes);
+        listaFinal.addAll(corrigidas);
+
+        return listaFinal;
     }
 
     public TarefaGrupoDTO getById(Long id) {
@@ -52,4 +74,11 @@ public class TarefaGrupoService {
     }
 
 
+    public void avaliarTarefaGrupo(Long idTarefaGrupo, TarefaGrupoPutDTO tarefaGrupoPutDTO) {
+        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new EntityNotFoundException());
+        tarefaGrupo.setNota(tarefaGrupoPutDTO.getNota());
+        tarefaGrupo.setConsideracoes(tarefaGrupoPutDTO.getConsideracoes());
+        tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.CORRIGIDA);
+        tarefaGrupoRepository.save(tarefaGrupo);
+    }
 }
