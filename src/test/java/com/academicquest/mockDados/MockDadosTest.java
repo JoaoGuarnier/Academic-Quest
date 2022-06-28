@@ -1,6 +1,7 @@
 package com.academicquest.mockDados;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class MockDadosTest {
 		
 		Upload upload = new Upload();
 		
-		return new TarefaGrupo(1L, grupo, tarefa, 1.1d, LocalDate.now(), STATUS_TAREFA_GRUPO.ENTREGUE, upload);
+		return new TarefaGrupo(1L, grupo, tarefa, 1.1d, LocalDateTime.now(), STATUS_TAREFA_GRUPO.PENDENTE, upload, "Finalizamos");
 	}
 
 	public static Materia createMateria() {

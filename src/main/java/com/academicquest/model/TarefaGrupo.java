@@ -38,6 +38,4 @@ public class TarefaGrupo {
     private Upload upload;
 
     private String consideracoes;
-
-
 }
