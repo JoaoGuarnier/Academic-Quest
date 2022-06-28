@@ -56,8 +56,8 @@ public class ProjetoServiceMockTest {
 		doReturn(of()).when(projetoRepository).findAll();
 		when(projetoRepository.findAll()).thenReturn(listPorjeto);
 
-		doReturn(of(projeto)).when(projetoRepository).findByMateriaId(projetoId);
-		doReturn(of()).when(projetoRepository).findByMateriaId(notProjetoId);
+		doReturn(of(projeto)).when(projetoRepository).findByMateriaId(PROJETO_ID);
+		doReturn(of()).when(projetoRepository).findByMateriaId(PROJETO_ID_NAO_EXISTE);
 		
 		Mockito.when(projetoRepository.save(ArgumentMatchers.any())).thenReturn(projeto);
 	}
@@ -86,7 +86,7 @@ public class ProjetoServiceMockTest {
 
 		assertThat(projetoDto).isNotEmpty();
 		
-		verify(projetoRepository, times(1)).findByMateriaId(projetoId);
+		verify(projetoRepository, times(1)).findByMateriaId(PROJETO_ID);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class ProjetoServiceMockTest {
 
 		assertThat(projetoDto).isNullOrEmpty();
 		
-		verify(projetoRepository, times(1)).findByMateriaId(notProjetoId);
+		verify(projetoRepository, times(1)).findByMateriaId(PROJETO_ID_NAO_EXISTE);
 	}
 	
 	@Test

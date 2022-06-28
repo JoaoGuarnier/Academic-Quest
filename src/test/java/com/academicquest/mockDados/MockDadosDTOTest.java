@@ -14,6 +14,8 @@ import java.util.List;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.academicquest.dto.ChatDto;
+import com.academicquest.dto.ChatPostDto;
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;

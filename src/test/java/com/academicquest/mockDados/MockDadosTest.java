@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+import com.academicquest.model.Chat;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.Projeto;
