@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import com.academicquest.mockDados.MockDadosDTOTest;
 import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Chat;
 import com.academicquest.repository.ChatRepository;
+import com.academicquest.repository.TarefaGrupoRepository;
 
 @SpringBootTest
 @Transactional
@@ -35,6 +37,9 @@ public class ChatServiceTest {
 	
 	@Autowired
 	private ChatRepository repository;
+	
+    @Autowired
+    private TarefaGrupoRepository tarefaGrupo;
 	
     private Long chatId;
     private Long notChatId;
@@ -47,7 +52,7 @@ public class ChatServiceTest {
 	
 	@Test
 	@DisplayName("Deve salvar um ChatService.")
-	public void savechatServiceExistente() throws ParseException {
+	public void savechatServiceExistente() throws ParseException, IOException {
 
 		ChatPostDto chatDto = MockDadosDTOTest.createChatPostDTO();
 
@@ -90,7 +95,7 @@ public class ChatServiceTest {
 	@Test
 	@DisplayName("Retorna uma lista de Chat se nao tiver elementos na lista")
 	public void getChat() {
-		
+		tarefaGrupo.save(MockDadosTest.createTarefaGrupo());
 		Chat chat = repository.save(MockDadosTest.createChat());
 		
 		ChatDto a = chatService.getChat(chat.getId());

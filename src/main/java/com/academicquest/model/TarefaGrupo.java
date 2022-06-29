@@ -1,12 +1,27 @@
 package com.academicquest.model;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_tarefa_grupo")
@@ -24,6 +39,7 @@ public class TarefaGrupo {
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "tarefa_id")
+    @NotFound(action = NotFoundAction.IGNORE) 
     private Tarefa tarefa;
 
     private Double nota;
@@ -36,6 +52,11 @@ public class TarefaGrupo {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
-
+    
+//    @OneToOne(cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "chat_id")
+//    @NotFound(action = NotFoundAction.IGNORE) 
+//    private Chat chat;
+    
     private String consideracoes;
 }

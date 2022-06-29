@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.academicquest.model.Chat;
-import com.academicquest.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,12 +22,15 @@ public class ChatDto implements Serializable {
 	
 	private LocalDateTime dataHoras;
 	
-	private User user;
+	private Long user;
+	
+	private Long tarefaGrupo;
 	
 	public ChatDto(Chat chat) {
-		this.mensagem  = chat.getMensagem();
-		this.dataHoras = chat.getDataHoras();
-		this.id        = chat.getId();
-		this.user      = chat.getUser();
+		this.mensagem    = chat.getMensagem();
+		this.dataHoras   = chat.getDataHoras();
+		this.id          = chat.getId();
+		this.user        = chat.getUser().getId();
+		this.tarefaGrupo = chat.getTarefaGrupo().getId();
 	}
 }

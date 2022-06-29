@@ -53,7 +53,6 @@ public class TarefaService {
         TarefaDTO tarefaDTO = new TarefaDTO(tarefaSalva, tarefaPostDto.getArquivoUpload().getOriginalFilename());
         
         gerarRegistrosTarefaGrupo(tarefaSalva);
-
         return tarefaDTO;
 
     }

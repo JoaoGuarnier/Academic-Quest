@@ -1,5 +1,6 @@
 package com.academicquest.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ChatController {
 	private ChatService chatService;
 	
 	@PostMapping("/chatssss/{id}")
-	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, @PathVariable Long id, BindingResult bindingResult) throws ParseException {
+	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, @PathVariable Long id, BindingResult bindingResult) throws ParseException, IOException {
 		
         String errors = Util.errorHandling(new String[]{"mensagem"}, bindingResult);
 

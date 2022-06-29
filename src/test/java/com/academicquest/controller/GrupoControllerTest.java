@@ -4,9 +4,7 @@ import static com.academicquest.components.UtilMock.Grupo_ID;
 import static com.academicquest.components.UtilMock.Grupo_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
-import static com.academicquest.mockDados.MockDadosTest.createGrupo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

@@ -98,6 +98,6 @@ public class MockDadosDTOTest {
 	
 	public static ChatPostDto createChatPostDTO() {
 		
-		return new ChatPostDto(createChat().getMensagem(), createChat().getDataHoras(), createChat().getUser());
+		return new ChatPostDto(createChat().getMensagem(), createChat().getDataHoras(), createChat().getUser(), createChat().getTarefaGrupo().getId());
 	}
 }

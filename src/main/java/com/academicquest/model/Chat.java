@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -49,13 +52,15 @@ public class Chat {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
 	private LocalDateTime  dataHoras;
 	
-	
 	@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
 	private User user;
 	
-//	public ChatDtoTestetste convertDTOToEntity() {
-//		return new ModelMapper().map(this, ChatDtoTestetste.class);
-//	}
+	@JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "tarefa_grupo_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+    private TarefaGrupo tarefaGrupo;
+	
 }

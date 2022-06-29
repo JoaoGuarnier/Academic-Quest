@@ -112,6 +112,6 @@ public class MockDadosTest {
 	
 	public static Chat createChat() {
 		
-		return new Chat(1L, "Bom dia!", LocalDateTime.now(), createUser());
+		return new Chat(1L, "Bom dia!", LocalDateTime.now(), createUser(), createTarefaGrupo());
 	}
 }
