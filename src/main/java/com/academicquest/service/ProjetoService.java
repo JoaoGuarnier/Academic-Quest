@@ -2,6 +2,7 @@ package com.academicquest.service;
 
 import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.dto.ProjetoPostDTO;
+import com.academicquest.dto.ProjetoPutDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
@@ -89,4 +90,11 @@ public class ProjetoService {
         return new ProjetoDTO(projeto);
     }
 
+    public ProjetoDTO atualizarProjeto(ProjetoPutDTO projetoPutDTO, Long id) {
+        Projeto projeto = projetoRepository.findById(id).orElseThrow(() -> new ProjetoNaoEncontradoException("Projeto não encontrado"));
+        projeto.setNome(projetoPutDTO.getNome());
+        projeto.setDescricao(projetoPutDTO.getDescricao());
+        projeto = projetoRepository.save(projeto);
+        return new ProjetoDTO(projeto);
+    }
 }
