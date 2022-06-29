@@ -19,6 +19,5 @@ public class GrupoUpdateDTO implements Serializable{
 	private Long alunoLiderId;
 	
 	private List<Long> listaAlunosId;
-	
 
 }

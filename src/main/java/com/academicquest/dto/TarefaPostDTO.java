@@ -30,4 +30,5 @@ public class TarefaPostDTO implements Serializable{
     private MultipartFile arquivoUpload;
 
     private Long projetoId;
+
 }

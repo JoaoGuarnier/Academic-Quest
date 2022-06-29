@@ -22,13 +22,13 @@ public class MateriaController {
 	@GetMapping
 	private ResponseEntity<List<MateriaDTO>> buscarTodos() {
 		List<MateriaDTO> listaMateriaDTO = materiaService.buscarTodos();
-		return ResponseEntity.ok(listaMateriaDTO);
+		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
 	
 	@GetMapping("/turma/{id}")
 	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable Long id) {
 		List<MateriaDTO> listaMateriaDTO = materiaService.buscarPorTurmaId(id);
-		return ResponseEntity.ok(listaMateriaDTO);
+		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
 
 }

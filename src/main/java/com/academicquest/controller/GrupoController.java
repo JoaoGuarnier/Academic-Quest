@@ -1,5 +1,6 @@
 package com.academicquest.controller;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.service.GrupoService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/grupos")
@@ -28,41 +30,38 @@ public class GrupoController {
 	
 	@Autowired
 	private GrupoService grupoService;
-	
-	
+
 	@PostMapping
-	private ResponseEntity salvar(@RequestBody GrupoPostDTO grupoPostDTO) {
-		grupoService.salvar(grupoPostDTO);
-		return ResponseEntity.ok().build();
+	private ResponseEntity<GrupoDTO> salvar(@RequestBody GrupoPostDTO grupoPostDTO) {
+		GrupoDTO grupoDTO = grupoService.salvar(grupoPostDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(grupoDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(grupoDTO);
 	}
 	
 	@GetMapping("/materia/{id}")
 	private ResponseEntity<List<GrupoMateriaDTO>> buscarPorMateriaId(@PathVariable Long id) {
 		List<GrupoMateriaDTO> grupoMateriaDtoList = grupoService.buscarPorMateriaId(id);
-		return ResponseEntity.ok(grupoMateriaDtoList);
+		return ResponseEntity.ok().body(grupoMateriaDtoList);
 		
 	}
 	
 	@GetMapping("/{id}")
 	private ResponseEntity<GrupoDTO> buscarPorId(@PathVariable Long id) {
 		GrupoDTO grupoDTO = grupoService.buscarPorId(id);
-		return ResponseEntity.ok(grupoDTO);
+		return ResponseEntity.ok().body(grupoDTO);
 	}
-	
-	
+
 	@GetMapping("/alunos/materia/{id}")
 	private ResponseEntity<List<UserDTO>> buscarAlunosSemGrupoPorIdMateria(@PathVariable Long id) {
 		List<UserDTO> listaUserDTO = grupoService.buscarAlunosSemGrupo(id);
-		return ResponseEntity.ok(listaUserDTO);
+		return ResponseEntity.ok().body(listaUserDTO);
 	}
 	
 	@PutMapping("/{id}")
 	private ResponseEntity<GrupoUpdateDTO> atualizar(@RequestBody GrupoUpdateDTO grupoUpdateDTO, @PathVariable Long id) {
 		grupoUpdateDTO = grupoService.atualizarGrupo(grupoUpdateDTO, id);
-		return ResponseEntity.ok(grupoUpdateDTO);
+		return ResponseEntity.ok().body(grupoUpdateDTO);
 	}
-
-	
-	
 
 }

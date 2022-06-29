@@ -17,7 +17,6 @@ public class UserController {
 
     @Autowired
     private UserService UserService;
-    
 
     @GetMapping
     public ResponseEntity<Page<UserDTO>> buscarTodos(Pageable pageable) {
@@ -30,6 +29,5 @@ public class UserController {
         UserDTO UserDTO = UserService.buscarPorId(id);
         return ResponseEntity.ok().body(UserDTO);
     }
-    
 
 }

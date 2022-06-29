@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class TarefaGrupoPutDTO implements Serializable{
 
     private Double nota;
+
     private String consideracoes;
 
 }

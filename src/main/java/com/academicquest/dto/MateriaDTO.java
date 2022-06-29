@@ -34,5 +34,4 @@ public class MateriaDTO implements Serializable{
 	
 	private UserDTO professor;
 
-
 }

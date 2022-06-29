@@ -17,7 +17,7 @@ public class TarefaGrupoController {
     @Autowired
     private TarefaGrupoService tarefaGrupoService;
 
-    @GetMapping("/{idTarefa}")
+    @GetMapping("/{tarefaId}")
     private ResponseEntity<List<TarefaGrupoSimplesDTO>> buscarPorTarefaId(@PathVariable Long tarefaId) {
         List<TarefaGrupoSimplesDTO> listaTarefaGrupoSimplesDTO = tarefaGrupoService.buscarPorTarefaId(tarefaId);
         return ResponseEntity.ok().body(listaTarefaGrupoSimplesDTO);
@@ -29,12 +29,10 @@ public class TarefaGrupoController {
         return ResponseEntity.ok().body(tarefaGrupoDTO);
     }
 
-    @PutMapping("/{idTarefaGrupo}")
+    @PutMapping("/{tarefaGrupoId}")
     private ResponseEntity avaliarTarefaGrupo(@PathVariable Long tarefaGrupoId, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
         tarefaGrupoService.avaliarTarefaGrupo(tarefaGrupoId,tarefaGrupoPutDTO);
         return ResponseEntity.ok().build();
     }
-
-
 
 }

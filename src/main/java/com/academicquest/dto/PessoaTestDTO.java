@@ -10,5 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PessoaTestDTO  implements Serializable {
+
 	private String nome;
+
 }

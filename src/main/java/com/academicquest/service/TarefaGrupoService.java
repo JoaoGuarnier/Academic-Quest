@@ -5,6 +5,7 @@ import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
+import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,18 +42,16 @@ public class TarefaGrupoService {
                 corrigidas.add(tarefaGrupoSimplesDTO);
             }
         });
-
         List<TarefaGrupoSimplesDTO> listaFinal = new ArrayList<>();
         listaFinal.addAll(entregues);
         listaFinal.addAll(pendentes);
         listaFinal.addAll(corrigidas);
-
         return listaFinal;
     }
 
     @Transactional(readOnly = true)
     public TarefaGrupoDTO buscarPorId(Long id) {
-        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(id).orElseThrow(() -> new TarefaGrupoNaoEncontradoException("Tarefa grupo não encontrado"));
         TarefaGrupoDTO tarefaGrupoDTO = converterParaDto(tarefaGrupo);
         return tarefaGrupoDTO;
     }
@@ -74,13 +73,13 @@ public class TarefaGrupoService {
         }
     }
 
-
     @Transactional()
     public void avaliarTarefaGrupo(Long idTarefaGrupo, TarefaGrupoPutDTO tarefaGrupoPutDTO) {
-        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new EntityNotFoundException());
+        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new TarefaGrupoNaoEncontradoException("Tarefa grupo não encontrado"));
         tarefaGrupo.setNota(tarefaGrupoPutDTO.getNota());
         tarefaGrupo.setConsideracoes(tarefaGrupoPutDTO.getConsideracoes());
         tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.CORRIGIDA);
         tarefaGrupoRepository.save(tarefaGrupo);
     }
+
 }

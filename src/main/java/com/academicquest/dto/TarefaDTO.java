@@ -29,8 +29,6 @@ public class TarefaDTO implements Serializable{
 
     private String formato;
 
-
-
     public TarefaDTO(Tarefa tarefa, String nomeArquivoUpload) {
         this.id = tarefa.getId();
         this.nome = tarefa.getNome();
@@ -52,4 +50,5 @@ public class TarefaDTO implements Serializable{
         this.dataEntrega = tarefa.getDataEntrega();
         this.formato = tarefa.getUpload().getFormato();
     }
+
 }

@@ -31,5 +31,4 @@ public class UploadDTO implements Serializable{
         this.arquivoUpload = upload.getArquivoUpload();
     }
 
-
 }

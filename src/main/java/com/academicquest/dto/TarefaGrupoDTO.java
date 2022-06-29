@@ -15,7 +15,6 @@ public class TarefaGrupoDTO implements Serializable{
 
     private Long id;
 
-
     private String nomeTarefa;
 
     private String nomeGrupo;

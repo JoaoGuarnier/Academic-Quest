@@ -21,9 +21,6 @@ public class TarefaProjetoDTO implements Serializable{
 
     private LocalDate dataEntrega;
 
-
-
-
     public TarefaProjetoDTO(Tarefa tarefa) {
         this.id = tarefa.getId();
         this.nome = tarefa.getNome();

@@ -3,7 +3,7 @@ package com.academicquest.service;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.model.User;
 import com.academicquest.repository.UserRepository;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional(readOnly = true)
@@ -36,11 +35,10 @@ public class UserService implements UserDetailsService {
     public UserDTO buscarPorId(Long id) {
 
         Optional<User> optionalUser = userRepository.findById(id);
-        User User = optionalUser.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        User User = optionalUser.orElseThrow(() -> new GrupoNaoEncontradoException("Entity not found"));
         UserDTO UserDTO = new UserDTO(User);
         return UserDTO;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,4 +50,5 @@ public class UserService implements UserDetailsService {
         logger.info("User found: " + username);
         return user;
     }
+
 }

@@ -32,5 +32,4 @@ public class TarefaGrupoSimplesDTO implements Serializable{
         this.statusTarefaGrupo = tarefaGrupo.getStatusTarefaGrupo();
     }
 
-
 }
