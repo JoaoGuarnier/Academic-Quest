@@ -39,18 +39,18 @@ public class GrupoService {
 	
 	
 	@Transactional()
-	public void save(GrupoPostDTO dto) {
-		Grupo grupo = convertToEntity(dto);
+	public void salvar(GrupoPostDTO grupoPostDTO) {
+		Grupo grupo = converterParaEntidade(grupoPostDTO);
 		grupoRepository.save(grupo);
 	}
 
 	@Transactional(readOnly = true)
-	public List<GrupoMateriaDTO> getByMateriaId(Long id) {
+	public List<GrupoMateriaDTO> buscarPorMateriaId(Long id) {
 		return grupoRepository.findByMateriaId(id).stream().map(GrupoMateriaDTO::new).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)
-	public GrupoDTO getById(Long id) {
+	public GrupoDTO buscarPorId(Long id) {
 		
 		GrupoDTO grupoDTO = new GrupoDTO();
 		
@@ -61,8 +61,8 @@ public class GrupoService {
 		grupoDTO.setNome(grupo.getNome());
 		grupoDTO.setAlunoLiderId(grupo.getAlunoLider().getId());
 		grupoDTO.setMateriaId(grupo.getMateria().getId());
-		List<UserDTO> userDTOsList = grupo.getAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
-		grupoDTO.setAlunos(userDTOsList);
+		List<UserDTO> listaUserDTOs = grupo.getListaAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
+		grupoDTO.setListaAlunos(listaUserDTOs);
 		
 		return grupoDTO;
 		
@@ -72,8 +72,8 @@ public class GrupoService {
 	@Transactional(readOnly = true)
 	public List<UserDTO> buscarAlunosSemGrupo(Long id) {
 		
-		List<Long> buscaAlunosTurma = grupoRepository.buscaAlunosMateria(id);
-		List<Long> buscaAlunosComGrupoMateria = grupoRepository.buscaAlunosComGrupoMateria(id);
+		List<Long> buscaAlunosTurma = grupoRepository.buscarAlunosPorMateriaId(id);
+		List<Long> buscaAlunosComGrupoMateria = grupoRepository.buscaAlunosComGrupoPorMateriaId(id);
 		List<Long> alunosSemGrupo = new ArrayList<>();
 		
 		buscaAlunosTurma.stream().forEach(i -> {
@@ -88,57 +88,50 @@ public class GrupoService {
 		return users;
 		
 	}
-	
-	
+
 	@Transactional
-	public GrupoUpdateDTO updateGrupo(GrupoUpdateDTO grupoUpdateDTO, Long id) {
+	public GrupoUpdateDTO atualizarGrupo(GrupoUpdateDTO grupoUpdateDTO, Long id) {
 		
 		Grupo grupo = grupoRepository.getById(id);
-		User alunoLider = userRepository.getById(grupoUpdateDTO.getIdAlunoLider());
+		User alunoLider = userRepository.getById(grupoUpdateDTO.getAlunoLiderId());
 
-		List<User> alunos = new ArrayList<>();
+		List<User> listaAlunos = new ArrayList<>();
 		
-		grupoUpdateDTO.getIdAlunos().stream().forEach(l -> {
+		grupoUpdateDTO.getListaAlunosId().stream().forEach(l -> {
 			User aluno = userRepository.getById(l);
-			alunos.add(aluno);
+			listaAlunos.add(aluno);
 		});
 
 		grupo.setNome(grupoUpdateDTO.getNome());
 		grupo.setAlunoLider(alunoLider);
-		grupo.setAlunos(alunos);
+		grupo.setListaAlunos(listaAlunos);
 		
 		grupoRepository.save(grupo);
 
 		return grupoUpdateDTO;
 		
 	}
-	
-	
-	
 
-	private Grupo convertToEntity(GrupoPostDTO dto) {
+	private Grupo converterParaEntidade(GrupoPostDTO grupoPostDTO) {
 		
 		Grupo grupo = new Grupo();
 		
 		List<User> alunos = new ArrayList<>();
-		
-		dto.getAlunosId().stream().forEach( userId -> {
+
+		grupoPostDTO.getListaAlunosId().stream().forEach( userId -> {
 			User user = userRepository.getById(userId);
 			alunos.add(user);
 		});
 		
-		Materia materia = materiaRepository.getById(dto.getMateriaId());
-		User userLider = userRepository.getById(dto.getAlunoLiderId());
+		Materia materia = materiaRepository.getById(grupoPostDTO.getMateriaId());
+		User userLider = userRepository.getById(grupoPostDTO.getAlunoLiderId());
 		
-		grupo.setNome(dto.getNome());
-		grupo.setAlunos(alunos);
+		grupo.setNome(grupoPostDTO.getNome());
+		grupo.setListaAlunos(alunos);
 		grupo.setMateria(materia);
 		grupo.setAlunoLider(userLider);
 		
 		return grupo;
-		
 	} 
-	
-	
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query(value = "select id from tb_tarefa where projeto_id = :id", nativeQuery = true)
-    List<Long> findIdByProjetoId(@Param("id") Long id);
+    List<Long> buscarIdsTarefasPorProjetoId(@Param("id") Long id);
+
 
 }

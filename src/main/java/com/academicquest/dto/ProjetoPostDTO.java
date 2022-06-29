@@ -10,10 +10,10 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjetoPostDTO implements Serializable {
+public class ProjetoPostDTO implements Serializable{
 
     private String nome;
     private String descricao;
-    private Long idMateria;
+    private Long materiaId;
 
 }

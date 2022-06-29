@@ -23,7 +23,7 @@ public class TarefaGrupoService {
     private GrupoRepository grupoRepository;
 
     @Transactional
-    public List<TarefaGrupoSimplesDTO> getByTarefaId(Long tarefaId) {
+    public List<TarefaGrupoSimplesDTO> buscarPorTarefaId(Long tarefaId) {
         List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.findByTarefaId(tarefaId);
         List<TarefaGrupoSimplesDTO> tarefaGrupoSimplesDTOS = tarefaGrupos.stream().map(TarefaGrupoSimplesDTO::new).collect(Collectors.toList());
         List<TarefaGrupoSimplesDTO> entregues = new ArrayList<>();
@@ -50,13 +50,14 @@ public class TarefaGrupoService {
         return listaFinal;
     }
 
-    public TarefaGrupoDTO getById(Long id) {
+    @Transactional(readOnly = true)
+    public TarefaGrupoDTO buscarPorId(Long id) {
         TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        TarefaGrupoDTO tarefaGrupoDTO = convertToDto(tarefaGrupo);
+        TarefaGrupoDTO tarefaGrupoDTO = converterParaDto(tarefaGrupo);
         return tarefaGrupoDTO;
     }
 
-    private TarefaGrupoDTO convertToDto(TarefaGrupo tarefaGrupo) {
+    private TarefaGrupoDTO converterParaDto(TarefaGrupo tarefaGrupo) {
         try {
             TarefaGrupoDTO tarefaGrupoDTO = new TarefaGrupoDTO();
             tarefaGrupoDTO.setId(tarefaGrupo.getId());
@@ -74,6 +75,7 @@ public class TarefaGrupoService {
     }
 
 
+    @Transactional()
     public void avaliarTarefaGrupo(Long idTarefaGrupo, TarefaGrupoPutDTO tarefaGrupoPutDTO) {
         TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new EntityNotFoundException());
         tarefaGrupo.setNota(tarefaGrupoPutDTO.getNota());

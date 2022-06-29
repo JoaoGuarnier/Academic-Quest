@@ -31,35 +31,35 @@ public class GrupoController {
 	
 	
 	@PostMapping
-	private ResponseEntity save(@RequestBody GrupoPostDTO dto) {
-		grupoService.save(dto);
+	private ResponseEntity salvar(@RequestBody GrupoPostDTO grupoPostDTO) {
+		grupoService.salvar(grupoPostDTO);
 		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/materia/{id}")
-	private ResponseEntity<List<GrupoMateriaDTO>> getByMateriaId(@PathVariable Long id) {
-		List<GrupoMateriaDTO> grupoMateriaDtoList = grupoService.getByMateriaId(id);
+	private ResponseEntity<List<GrupoMateriaDTO>> buscarPorMateriaId(@PathVariable Long id) {
+		List<GrupoMateriaDTO> grupoMateriaDtoList = grupoService.buscarPorMateriaId(id);
 		return ResponseEntity.ok(grupoMateriaDtoList);
 		
 	}
 	
 	@GetMapping("/{id}")
-	private ResponseEntity<GrupoDTO> getById(@PathVariable Long id) {
-		GrupoDTO grupoDTO = grupoService.getById(id);
+	private ResponseEntity<GrupoDTO> buscarPorId(@PathVariable Long id) {
+		GrupoDTO grupoDTO = grupoService.buscarPorId(id);
 		return ResponseEntity.ok(grupoDTO);
 	}
 	
 	
 	@GetMapping("/alunos/materia/{id}")
-	private ResponseEntity<List<UserDTO>> getAlunosSemGrupoPorIdMateria(@PathVariable Long id) {
-		List<UserDTO> users = grupoService.buscarAlunosSemGrupo(id);
-		return ResponseEntity.ok(users);
+	private ResponseEntity<List<UserDTO>> buscarAlunosSemGrupoPorIdMateria(@PathVariable Long id) {
+		List<UserDTO> listaUserDTO = grupoService.buscarAlunosSemGrupo(id);
+		return ResponseEntity.ok(listaUserDTO);
 	}
 	
 	@PutMapping("/{id}")
-	private ResponseEntity<GrupoUpdateDTO> update(@RequestBody GrupoUpdateDTO grupoDto, @PathVariable Long id) {
-		GrupoUpdateDTO updateGrupo = grupoService.updateGrupo(grupoDto, id);
-		return ResponseEntity.ok(updateGrupo);	
+	private ResponseEntity<GrupoUpdateDTO> atualizar(@RequestBody GrupoUpdateDTO grupoUpdateDTO, @PathVariable Long id) {
+		grupoUpdateDTO = grupoService.atualizarGrupo(grupoUpdateDTO, id);
+		return ResponseEntity.ok(grupoUpdateDTO);
 	}
 
 	

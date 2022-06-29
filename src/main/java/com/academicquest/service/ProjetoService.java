@@ -34,21 +34,21 @@ public class ProjetoService {
     private ProjetoGrupoRepository projetoGrupoRepository;
 
     @Transactional(readOnly = true)
-    public List<ProjetoDTO> getAll() {
+    public List<ProjetoDTO> buscarTodos() {
         return projetoRepository.findAll().stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<ProjetoDTO> getByMateriaId(Long id) {
+    public List<ProjetoDTO> buscarPorMateriaId(Long id) {
         return projetoRepository.findByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional()
-    public void save(ProjetoPostDTO projetoPostDTO) {
+    public void salvar(ProjetoPostDTO projetoPostDTO) {
 
-        Projeto projeto = convertToEntity(projetoPostDTO);
+        Projeto projeto = converterParaEntidade(projetoPostDTO);
 
-        Long idMateria = projetoPostDTO.getIdMateria();
+        Long idMateria = projetoPostDTO.getMateriaId();
         Materia materia = materiaRepository.getById(idMateria);
 
         projeto.setMateria(materia);
@@ -58,9 +58,10 @@ public class ProjetoService {
 
     }
 
+    @Transactional()
     private void criaRegistrosProjetoGrupo(ProjetoPostDTO projetoPostDTO, Projeto projeto) {
 
-        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateria(projetoPostDTO.getIdMateria());
+        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateriaId(projetoPostDTO.getMateriaId());
 
         idsGrupos.stream().forEach(idGrupo -> {
             Grupo grupo = grupoRepository.findById(idGrupo).get();
@@ -73,7 +74,8 @@ public class ProjetoService {
     }
 
 
-    private Projeto convertToEntity(ProjetoPostDTO dto) {
+
+    private Projeto converterParaEntidade(ProjetoPostDTO dto) {
         Projeto projeto = new Projeto();
         projeto.setNome(dto.getNome());
         projeto.setDescricao(dto.getDescricao());

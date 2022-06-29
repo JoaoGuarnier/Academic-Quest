@@ -19,12 +19,12 @@ public class MateriaService {
 	private MateriaRepository materiaRepository;
 
 	@Transactional(readOnly = true)
-	public List<MateriaDTO> getAll() {
+	public List<MateriaDTO> buscarTodos() {
 		return materiaRepository.findAll().stream().map(MateriaDTO::new).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
-	public List<MateriaDTO> getByTurmaId(Long id) {
+	public List<MateriaDTO> buscarPorTurmaId(Long id) {
 		 return materiaRepository.findByTurmaId(id).stream().map(MateriaDTO::new).collect(Collectors.toList());
 	}
 

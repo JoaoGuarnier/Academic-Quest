@@ -28,12 +28,12 @@ public class UserService implements UserDetailsService {
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional(readOnly = true)
-    public Page<UserDTO> findAll(Pageable pageable) {
+    public Page<UserDTO> buscarTodos(Pageable pageable) {
         return userRepository.findAll(pageable).map(p -> new UserDTO(p));
     }
 
     @Transactional(readOnly = true)
-    public UserDTO findById(Long id) {
+    public UserDTO buscarPorId(Long id) {
 
         Optional<User> optionalUser = userRepository.findById(id);
         User User = optionalUser.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));

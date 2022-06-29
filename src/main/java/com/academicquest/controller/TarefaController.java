@@ -23,11 +23,11 @@ public class TarefaController {
 
 
     @PostMapping
-    private ResponseEntity criarTarefa(MultipartFile arquivoUpload,String nome, String descricao, String dataEntrega, Long idProjeto) {
+    private ResponseEntity salvar(MultipartFile arquivoUpload,String nome, String descricao, String dataEntrega, Long projetoId) {
 
         try{
-            TarefaPostDTO tarefaPostDto = TarefaPostDTO.builder().nome(nome).descricao(descricao).arquivoUpload(arquivoUpload).dataEntrega(dataEntrega).idProjeto(idProjeto).build();
-            TarefaDTO tarefaSalva = tarefaService.save(tarefaPostDto);
+            TarefaPostDTO tarefaPostDto = TarefaPostDTO.builder().nome(nome).descricao(descricao).arquivoUpload(arquivoUpload).dataEntrega(dataEntrega).projetoId(projetoId).build();
+            TarefaDTO tarefaSalva = tarefaService.salvar(tarefaPostDto);
 
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(tarefaSalva.getId()).toUri();
@@ -41,14 +41,14 @@ public class TarefaController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<TarefaDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(tarefaService.getById(id));
+    private ResponseEntity<TarefaDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(tarefaService.buscarPorId(id));
     }
 
     @GetMapping("/projeto/{id}")
-    private ResponseEntity<List<TarefaProjetoDTO>> getByProjetoId(@PathVariable Long id) {
-        List<TarefaProjetoDTO> tarefas = tarefaService.getByProjetoId(id);
-        return ResponseEntity.ok().body(tarefas);
+    private ResponseEntity<List<TarefaProjetoDTO>> buscarPorProjetoId(@PathVariable Long id) {
+        List<TarefaProjetoDTO> listaTarefas = tarefaService.buscarPorProjetoId(id);
+        return ResponseEntity.ok().body(listaTarefas);
     }
     
 

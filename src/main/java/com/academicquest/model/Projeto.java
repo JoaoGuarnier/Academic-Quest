@@ -31,6 +31,6 @@ public class Projeto {
     private Materia materia;
 
     @OneToMany(mappedBy = "projeto")
-    private List<Tarefa> tarefas;
+    private List<Tarefa> listaTarefas;
 
 }
