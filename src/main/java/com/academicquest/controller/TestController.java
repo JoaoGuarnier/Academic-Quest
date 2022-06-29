@@ -14,19 +14,17 @@ import com.academicquest.dto.PessoaTestDTO;
 public class TestController {
 	
 	@PostMapping
-	private ResponseEntity<PessoaTestDTO> testeMethod(@RequestBody PessoaTestDTO pessoaTest) {
+	private ResponseEntity<PessoaTestDTO> teste(@RequestBody PessoaTestDTO pessoaTeste) {
 		
 		try {
-			System.out.println(pessoaTest.getNome());
+			System.out.println(pessoaTeste.getNome());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.noContent().build();
 		}
-		return ResponseEntity.ok().body(pessoaTest);
+		return ResponseEntity.ok().body(pessoaTeste);
 		
 		
 	}
-	
-	
 
 }

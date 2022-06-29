@@ -9,11 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadDTO {
+public class UploadDTO implements Serializable{
 
     private Long id;
 
@@ -29,6 +30,5 @@ public class UploadDTO {
         this.formato = upload.getFormato();
         this.arquivoUpload = upload.getArquivoUpload();
     }
-
 
 }

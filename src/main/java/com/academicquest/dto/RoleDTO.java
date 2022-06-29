@@ -11,11 +11,12 @@ import com.academicquest.model.Role;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO implements Serializable {
+public class RoleDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+
     private String authority;
 
     public RoleDTO(Role role) {

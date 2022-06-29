@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
     List<Projeto> findByMateriaId(Long materiaId);
+
 }

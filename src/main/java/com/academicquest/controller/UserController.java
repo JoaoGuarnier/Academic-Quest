@@ -17,19 +17,17 @@ public class UserController {
 
     @Autowired
     private UserService UserService;
-    
 
     @GetMapping
-    public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
-        Page<UserDTO> UserDTOS = UserService.findAll(pageable);
+    public ResponseEntity<Page<UserDTO>> buscarTodos(Pageable pageable) {
+        Page<UserDTO> UserDTOS = UserService.buscarTodos(pageable);
         return ResponseEntity.ok().body(UserDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        UserDTO UserDTO = UserService.findById(id);
+    public ResponseEntity<UserDTO> buscarPorId(@PathVariable Long id) {
+        UserDTO UserDTO = UserService.buscarPorId(id);
         return ResponseEntity.ok().body(UserDTO);
     }
-    
 
 }

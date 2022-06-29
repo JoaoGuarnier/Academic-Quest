@@ -19,9 +19,9 @@ public class TurmaController {
 	private TurmaService turmaService;
 	
 	@GetMapping
-	private ResponseEntity<List<TurmaDTO>> getAll() {
-		List<TurmaDTO> listTurmaDto = turmaService.getAll();
-		return ResponseEntity.ok(listTurmaDto);
+	private ResponseEntity<List<TurmaDTO>> buscarTodos() {
+		List<TurmaDTO> listaTurmaDto = turmaService.buscarTodos();
+		return ResponseEntity.ok().body(listaTurmaDto);
 	}
 
 }

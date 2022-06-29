@@ -17,7 +17,7 @@ public class TokenVerifyController {
     private String tokenSenha;
 
     @GetMapping("/{token}")
-    private ResponseEntity testeToken(@PathVariable String token) {
+    private ResponseEntity validarToken(@PathVariable String token) {
         try {
             Jwts.parser().setSigningKey(tokenSenha.getBytes()).parseClaimsJws(token);
             return ResponseEntity.ok().build();

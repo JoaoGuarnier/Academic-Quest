@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TarefaProjetoDTO {
+public class TarefaProjetoDTO implements Serializable{
 
     private Long id;
 
@@ -19,9 +20,6 @@ public class TarefaProjetoDTO {
     private String descricao;
 
     private LocalDate dataEntrega;
-
-
-
 
     public TarefaProjetoDTO(Tarefa tarefa) {
         this.id = tarefa.getId();

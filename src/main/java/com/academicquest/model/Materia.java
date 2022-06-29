@@ -19,8 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Materia {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,7 +33,5 @@ public class Materia {
     @ManyToOne()
     @JoinColumn(name = "turma_id")
 	private Turma turma;
-	
-	
 
 }

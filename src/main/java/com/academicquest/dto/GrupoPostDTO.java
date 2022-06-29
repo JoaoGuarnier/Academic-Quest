@@ -16,7 +16,7 @@ public class GrupoPostDTO implements Serializable{
 
 	private String nome;
 	
-	private List<Long> alunosId;
+	private List<Long> listaAlunosId;
 	
 	private Long alunoLiderId;
 	

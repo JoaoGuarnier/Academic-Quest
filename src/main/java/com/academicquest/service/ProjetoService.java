@@ -11,11 +11,16 @@ import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
+import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.ProjetoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,34 +39,34 @@ public class ProjetoService {
     private ProjetoGrupoRepository projetoGrupoRepository;
 
     @Transactional(readOnly = true)
-    public List<ProjetoDTO> getAll() {
+    public List<ProjetoDTO> buscarTodos() {
         return projetoRepository.findAll().stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<ProjetoDTO> getByMateriaId(Long id) {
+    public List<ProjetoDTO> buscarPorMateriaId(Long id) {
         return projetoRepository.findByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional()
-    public void save(ProjetoPostDTO projetoPostDTO) {
-
-        Projeto projeto = convertToEntity(projetoPostDTO);
-
-        Long idMateria = projetoPostDTO.getIdMateria();
-        Materia materia = materiaRepository.getById(idMateria);
-
+    public ProjetoDTO salvar(ProjetoPostDTO projetoPostDTO) {
+        Projeto projeto = converterParaEntidade(projetoPostDTO);
+        Long idMateria = projetoPostDTO.getMateriaId();
+        Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new MateriaNaoEncontradaException("Matéria não encontrada"));
         projeto.setMateria(materia);
         Projeto projetoSalvo = projetoRepository.save(projeto);
-
-        criaRegistrosProjetoGrupo(projetoPostDTO,projetoSalvo);
-
+        try {
+            criaRegistrosProjetoGrupo(projetoPostDTO,projetoSalvo);
+        } catch (Exception e) {
+            throw new ErroAoCriarRegistrosProjetoGrupoException("Erro ao gerar registros do projeto grupo");
+        }
+        ProjetoDTO projetoDTO = new ProjetoDTO(projetoSalvo);
+        return projetoDTO;
     }
 
+    @Transactional()
     private void criaRegistrosProjetoGrupo(ProjetoPostDTO projetoPostDTO, Projeto projeto) {
-
-        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateria(projetoPostDTO.getIdMateria());
-
+        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateriaId(projetoPostDTO.getMateriaId());
         idsGrupos.stream().forEach(idGrupo -> {
             Grupo grupo = grupoRepository.findById(idGrupo).get();
             ProjetoGrupo projetoGrupo = new ProjetoGrupo();
@@ -69,16 +74,19 @@ public class ProjetoService {
             projetoGrupo.setProjeto(projeto);
             projetoGrupoRepository.save(projetoGrupo);
         });
-
     }
 
-
-    private Projeto convertToEntity(ProjetoPostDTO dto) {
+    private Projeto converterParaEntidade(ProjetoPostDTO dto) {
         Projeto projeto = new Projeto();
         projeto.setNome(dto.getNome());
         projeto.setDescricao(dto.getDescricao());
         projeto.setStatus(STATUS_PROJETO.EM_ANDAMENTO);
         return  projeto;
+    }
+
+    public ProjetoDTO buscarPorId(Long id) {
+        Projeto projeto = projetoRepository.findById(id).orElseThrow(() -> new ProjetoNaoEncontradoException("Projeto não encontrado"));
+        return new ProjetoDTO(projeto);
     }
 
 }

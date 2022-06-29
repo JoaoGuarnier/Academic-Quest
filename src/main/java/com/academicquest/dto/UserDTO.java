@@ -18,13 +18,16 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+public class UserDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+
     private String firstName;
+
     private String lastName;
+
     private String email;
 
     private List<RoleDTO> roles = new ArrayList<>();

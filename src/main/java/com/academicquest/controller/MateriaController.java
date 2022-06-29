@@ -20,15 +20,15 @@ public class MateriaController {
 	private MateriaService materiaService;
 	
 	@GetMapping
-	private ResponseEntity<List<MateriaDTO>> getAll() {
-		List<MateriaDTO> listMateriaDTO = materiaService.getAll();
-		return ResponseEntity.ok(listMateriaDTO);
+	private ResponseEntity<List<MateriaDTO>> buscarTodos() {
+		List<MateriaDTO> listaMateriaDTO = materiaService.buscarTodos();
+		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
 	
 	@GetMapping("/turma/{id}")
-	private ResponseEntity<List<MateriaDTO>> getByTurmaId(@PathVariable Long id) {
-		List<MateriaDTO> listMateriaDTO = materiaService.getByTurmaId(id);
-		return ResponseEntity.ok(listMateriaDTO);
+	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable Long id) {
+		List<MateriaDTO> listaMateriaDTO = materiaService.buscarPorTurmaId(id);
+		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
 
 }
