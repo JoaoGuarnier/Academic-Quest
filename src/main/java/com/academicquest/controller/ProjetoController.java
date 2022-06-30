@@ -1,8 +1,6 @@
 package com.academicquest.controller;
 
-import com.academicquest.dto.ProjetoDTO;
-import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.dto.ProjetoPutDTO;
+import com.academicquest.dto.*;
 import com.academicquest.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +48,12 @@ public class ProjetoController {
     private ResponseEntity<ProjetoDTO> atualizar(@RequestBody ProjetoPutDTO projetoPutDTO, @PathVariable Long id) {
         ProjetoDTO projetoDTO = projetoService.atualizarProjeto(projetoPutDTO, id);
         return ResponseEntity.ok().body(projetoDTO);
+    }
+
+    @PostMapping("/avaliar/{projetoId}")
+    private ResponseEntity avaliarProjeto(@PathVariable Long projetoId) {
+        projetoService.avaliarProjeto(projetoId);
+        return ResponseEntity.ok().build();
     }
 
 }

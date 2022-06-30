@@ -1,8 +1,6 @@
 package com.academicquest.service;
 
-import com.academicquest.dto.ProjetoDTO;
-import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.dto.ProjetoPutDTO;
+import com.academicquest.dto.*;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
@@ -14,12 +12,14 @@ import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
 import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.ProjetoJaConcluidoException;
 import com.academicquest.service.exception.ProjetoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,4 +97,25 @@ public class ProjetoService {
         projeto = projetoRepository.save(projeto);
         return new ProjetoDTO(projeto);
     }
+
+    public void avaliarProjeto(Long projetoId) {
+
+        Projeto projeto = projetoRepository.findById(projetoId).orElseThrow(() -> new ProjetoNaoEncontradoException("Projeto não encontrada"));
+        if (projeto.getStatus().equals(STATUS_PROJETO.CONCLUIDO)){
+            throw new ProjetoJaConcluidoException("O projeto já foi concluido");
+        }
+
+        List<ProjetoGrupo> listaProjetoGrupo = projetoGrupoRepository.findByProjetoId(projetoId);
+
+        listaProjetoGrupo.stream().forEach(pg -> {
+            DecimalFormat df = new DecimalFormat("#,###.00");
+            Double notaProjeto = projetoRepository.calcularMediaProjetoGrupo(pg.getProjeto().getId(), pg.getGrupo().getId());
+            Double notaProjetoFormatada = Double.valueOf(df.format(notaProjeto).replace(",","."));
+            pg.setNota(notaProjetoFormatada);
+            projetoGrupoRepository.save(pg);
+        });
+        projeto.setStatus(STATUS_PROJETO.CONCLUIDO);
+        projetoRepository.save(projeto);
+    }
+
 }
