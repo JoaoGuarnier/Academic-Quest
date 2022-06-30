@@ -1,6 +1,7 @@
 package com.academicquest.service;
 
 import static com.academicquest.components.UtilMock.User_ID;
+import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +31,7 @@ public class UserServiceTest {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Test
 	@DisplayName("Deve traser por id um usuario")
 	public void getUserId() {
@@ -44,7 +45,7 @@ public class UserServiceTest {
 	@DisplayName("Deve mostra mensagem do exception, para o id que nao existe")
 	public void getNotUserId() {
 		
-		Executable executable = () -> userService.buscarPorId(User_ID);
+		Executable executable = () -> userService.buscarPorId(User_ID_NAO_EXISTE);
 		
 		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
 		

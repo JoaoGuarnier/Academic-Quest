@@ -75,17 +75,17 @@ public class GrupoControllerMockTest {
         grupoMateriaDTO = createGrupoMateriaDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
 
-        when(grupoService.buscarPorMateriaId(grupoId)).thenReturn(of(grupoMateriaDTO));
-        when(grupoService.buscarPorMateriaId(notGrupoId)).thenThrow(GrupoNaoEncontradoException.class);
+        when(grupoService.buscarPorMateriaId(Grupo_ID)).thenReturn(of(grupoMateriaDTO));
+        when(grupoService.buscarPorMateriaId(Grupo_ID_NAO_EXISTE)).thenThrow(GrupoNaoEncontradoException.class);
 
-        when(grupoService.buscarAlunosSemGrupo(grupoId)).thenReturn(of(userDTO));
-        when(grupoService.buscarAlunosSemGrupo(notGrupoId)).thenThrow(GrupoNaoEncontradoException.class);
+        when(grupoService.buscarAlunosSemGrupo(Grupo_ID)).thenReturn(of(userDTO));
+        when(grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE)).thenThrow(GrupoNaoEncontradoException.class);
         
-        when(grupoService.buscarPorId(grupoId)).thenReturn(grupoDTO);
-        doThrow(GrupoNaoEncontradoException.class).when(grupoService).buscarPorId(notGrupoId);
+        when(grupoService.buscarPorId(Grupo_ID)).thenReturn(grupoDTO);
+        doThrow(GrupoNaoEncontradoException.class).when(grupoService).buscarPorId(Grupo_ID_NAO_EXISTE);
 
-        when(grupoService.atualizarGrupo(any(), eq(grupoId))).thenReturn(grupoUpdateDTO);
-        when(grupoService.atualizarGrupo(any(), eq(notGrupoId))).thenThrow(AlunoLiderNaoEncontradoException.class);
+        when(grupoService.atualizarGrupo(any(), eq(Grupo_ID))).thenReturn(grupoUpdateDTO);
+        when(grupoService.atualizarGrupo(any(), eq(Grupo_ID_NAO_EXISTE))).thenThrow(AlunoLiderNaoEncontradoException.class);
     }
     
     @Test

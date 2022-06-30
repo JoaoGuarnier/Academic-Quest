@@ -38,6 +38,7 @@ import com.academicquest.dto.GrupoPostDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
+import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.User;
@@ -68,9 +69,12 @@ public class GrupoServiceMockTest {
 
 	@BeforeEach
 	public void setUprupoServiceMock() throws Exception {
-		grupo = createGrupo();
+		grupo   = createGrupo();
+		user    = MockDadosTest.createUser();
+		materia	= MockDadosTest.createMateria();
 		
 		doReturn(grupo).when(grupoRepository).getById(Grupo_ID);
+
 		
 		doReturn(Optional.of(grupo)).when(grupoRepository).findById(Grupo_ID);
 		doThrow(EntityNotFoundException.class).when(grupoRepository).getById(Grupo_ID_NAO_EXISTE);
@@ -119,7 +123,7 @@ public class GrupoServiceMockTest {
 		
 		GrupoUpdateDTO grupoUpdateDto = createGrupoUpdateDTO();
 		
-		assertThrows(EntityNotFoundException.class, () -> {
+		assertThrows(GrupoNaoEncontradoException.class, () -> {
 			grupoService.atualizarGrupo(grupoUpdateDto, Grupo_ID_NAO_EXISTE);
 		});
 	}
@@ -151,7 +155,7 @@ public class GrupoServiceMockTest {
 	@DisplayName("Se a lista Alunos Sem Grupo Mock tiver elemento, retorna um true, e se o id existe no banco")
 	public void getAlunosSemGrupo() {
 
-		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(1L);
+		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(Grupo_ID);
 
 		assertThat(userDto2).isNullOrEmpty();
 		
@@ -161,6 +165,10 @@ public class GrupoServiceMockTest {
 	@Test
 	@DisplayName("Se a lista Alunos Sem Grupo Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotAlunosSemGrupo() {
+
+		List<UserDTO> userDto2 = grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE);
+
+		assertThat(userDto2).isNullOrEmpty();
 		
 		verify(grupoRepository, times(1)).buscarAlunosPorMateriaId(Grupo_ID_NAO_EXISTE);
 	}

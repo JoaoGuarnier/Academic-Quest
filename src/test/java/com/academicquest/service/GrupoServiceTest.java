@@ -104,14 +104,12 @@ public class GrupoServiceTest {
 	@Test
 	@DisplayName("Se a lista Alunos Sem Grupo estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotAlunosSemGrupo() {
-		
-		Executable executable = () -> grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE);
-		
-		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
-		
-		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
-	}
 
+		List<UserDTO> grupoDto = grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE);
+
+		assertThat(grupoDto).isNullOrEmpty();
+	}
+	
 	@Test
 	@DisplayName("Deve alterar um GrupoUpdateDto por id.")
 	public void updateGrupo() {
