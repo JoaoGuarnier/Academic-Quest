@@ -1,11 +1,13 @@
 package com.academicquest.dto;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +15,6 @@ import java.time.LocalDateTime;
 public class TarefaGrupoDTO {
 
     private Long id;
-
 
     private String nomeTarefa;
 
@@ -28,5 +29,7 @@ public class TarefaGrupoDTO {
     private UploadDTO upload;
 
     private String consideracoes;
+    
+    private List<ChatDto> chats;
 
 }

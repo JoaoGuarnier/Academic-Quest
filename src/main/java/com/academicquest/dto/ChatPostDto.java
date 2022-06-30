@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
-
-import com.academicquest.model.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,12 +20,11 @@ public class ChatPostDto implements Serializable {
 	@NotEmpty(message="O mensagem nao pode ser ser nulo, tem que ser preenchido")
 	private String mensagem;
 	
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
 	private LocalDateTime dataHoras;
 	
-	private User user;
+	@NotNull(message = "por favor adicionar o id do user")
+	private Long userId;
 	
-	private Long tarefaGrupo;
+	@NotNull(message = "por favor adicionar o id da tarefa dos grupo")
+	private Long tarefaGrupoId;
 }

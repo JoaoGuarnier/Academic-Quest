@@ -44,15 +44,11 @@ public class GrupoControllerTest {
     private WebApplicationContext context;
     
     @Autowired
-    private GrupoRepository grupoRepository;
-    
-    @Autowired
     private MockMvc mockMvc;
 	
 	@Autowired
     private ObjectMapper objectMapper;
 	
-    private GrupoDTO grupoDTO;
     private GrupoUpdateDTO grupoUpdateDTO;
 
     @BeforeEach
@@ -60,7 +56,6 @@ public class GrupoControllerTest {
     	
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     	
-        grupoDTO        = createGrupoDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
     }
     

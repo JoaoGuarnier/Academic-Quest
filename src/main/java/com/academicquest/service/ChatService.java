@@ -31,10 +31,7 @@ public class ChatService {
 	
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private TarefaService tarefaGrupoService;
-    
+
     @Autowired
     private TarefaGrupoRepository tarefaGrupo;
     
@@ -42,11 +39,23 @@ public class ChatService {
     private ModelMapper modelMapper;
 	
 	@Transactional
-	public void save(ChatPostDto dto, Long id) throws ParseException, IOException {
+	public ChatPostDto save(ChatPostDto dto) throws ParseException, IOException {
 		
-		Chat chat = convertToEntity(dto, id);
 		
+		Chat chat = new Chat();
+		User user = userRepository.getById(dto.getUserId());
+		TarefaGrupo tarefa = tarefaGrupo.getById(dto.getTarefaGrupoId());
+
+		dto.setDataHoras(LocalDateTime.now());
+		dto.setUserId(user.getId());
+		dto.setTarefaGrupoId(tarefa.getId());
+		
+		chat.setDataHoras(dto.getDataHoras());
+		chat.setMensagem (dto.getMensagem());
+		chat.setTarefaGrupo(tarefa);
+		chat.setUser(user);
 		chatRepository.save(chat);
+		return dto;
 	}
 
 	@Transactional(readOnly = true)
@@ -56,11 +65,11 @@ public class ChatService {
 		
 		Optional<Chat> chatOptional = chatRepository.findById(id);
 		Chat chat = chatOptional.orElseThrow(() -> new EntityNotFoundException("Mensagem não encontrado"));
-		
+//		ChatDto chatDTO = modelMapper.map(chat, ChatDto.class);
 		chatDTO.setId       (chat.getId());
 		chatDTO.setMensagem (chat.getMensagem());
 		chatDTO.setDataHoras(chat.getDataHoras());
-	//	chatDTO.setUser		(chat.getUser());
+//		chatDTO.setUser		(chat.getUser());
 		
 		return chatDTO;
 	}
@@ -75,21 +84,10 @@ public class ChatService {
 		return tetste;
 	}
 	
-	@Transactional
-	private Chat convertToEntity(ChatPostDto dto, Long id) throws ParseException, IOException {
-
-		Chat chat = new Chat();
-		User user = userRepository.getById(id);
-		TarefaGrupo tarefa = tarefaGrupo.getById(id);
-
-		dto.setDataHoras(LocalDateTime.now());
-		dto.setUser(user);
-		dto.setTarefaGrupo(tarefa.getId());
-		
-		chat.setDataHoras(dto.getDataHoras());
-		chat.setMensagem (dto.getMensagem());
-		chat.setTarefaGrupo(tarefa);
-		chat.setUser(dto.getUser());
-		return chat;
-	} 
+//	@Transactional
+//	private Chat convertToEntity(ChatPostDto dto, Long id) throws ParseException, IOException {
+//
+//;
+//		return chat;
+//	} 
 }

@@ -77,7 +77,10 @@ public class MockDadosTest {
 		
 		Upload upload = new Upload();
 		
-		return new TarefaGrupo(1L, grupo, tarefa, 1.1d, LocalDateTime.now(), STATUS_TAREFA_GRUPO.PENDENTE, upload, "Finalizamos");
+		List<Chat> chats = new ArrayList<Chat>();
+		chats.add(createChat());
+		
+		return new TarefaGrupo(1L, grupo, tarefa, 1.1d, LocalDateTime.now(), STATUS_TAREFA_GRUPO.PENDENTE, upload, "Finalizamos", chats);
 	}
 
 	public static Materia createMateria() {
@@ -111,7 +114,9 @@ public class MockDadosTest {
 	}
 	
 	public static Chat createChat() {
+		User user = new User();
+		TarefaGrupo tarefaGrupo = new TarefaGrupo();
 		
-		return new Chat(1L, "Bom dia!", LocalDateTime.now(), createUser(), createTarefaGrupo());
+		return new Chat(1L, "Bom dia!", LocalDateTime.now(), user, tarefaGrupo);
 	}
 }

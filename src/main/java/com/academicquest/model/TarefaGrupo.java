@@ -1,6 +1,7 @@
 package com.academicquest.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,9 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -53,10 +57,9 @@ public class TarefaGrupo {
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
     
-//    @OneToOne(cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "chat_id")
-//    @NotFound(action = NotFoundAction.IGNORE) 
-//    private Chat chat;
-    
     private String consideracoes;
+    
+    @OneToMany(mappedBy = "tarefaGrupo", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Chat> chats;
 }

@@ -8,6 +8,7 @@ import static com.academicquest.mockDados.MockDadosTest.createRole;
 import static com.academicquest.mockDados.MockDadosTest.createTurma;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +99,6 @@ public class MockDadosDTOTest {
 	
 	public static ChatPostDto createChatPostDTO() {
 		
-		return new ChatPostDto(createChat().getMensagem(), createChat().getDataHoras(), createChat().getUser(), createChat().getTarefaGrupo().getId());
+		return new ChatPostDto("muito bom", LocalDateTime.now(), 1L, 1L);
 	}
 }

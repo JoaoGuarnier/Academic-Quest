@@ -1,6 +1,7 @@
 package com.academicquest.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.academicquest.components.Util;
 import com.academicquest.dto.ChatDto;
@@ -30,18 +32,21 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
-	@PostMapping("/chatssss/{id}")
-	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, @PathVariable Long id, BindingResult bindingResult) throws ParseException, IOException {
+	@PostMapping
+	private ResponseEntity<ChatPostDto> save(@RequestBody @Valid ChatPostDto dto, BindingResult bindingResult) throws ParseException, IOException {
 		
-        String errors = Util.errorHandling(new String[]{"mensagem"}, bindingResult);
+        String errors = Util.errorHandling(new String[]{"mensagem", "userId", "tarefaGrupoId" }, bindingResult);
 
         if (!errors.isEmpty()) {
             throw new BadRequestException(errors);
         }
         
-        chatService.save(dto, id);
+        ChatPostDto chatDto = chatService.save(dto);
         
-        return ResponseEntity.ok().build();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{mensagem}")
+                .buildAndExpand(chatDto.getMensagem()).toUri();
+        
+        return  ResponseEntity.created(uri).body(chatDto);
 	}
 	
 	@GetMapping("/{id}")
