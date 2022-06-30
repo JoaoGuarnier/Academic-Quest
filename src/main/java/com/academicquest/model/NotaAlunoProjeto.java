@@ -7,23 +7,22 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tb_projeto_grupo")
+@Table(name = "tb_nota_aluno_projeto")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjetoGrupo {
+public class NotaAlunoProjeto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double nota = 0.0;
+    private Double nota;
+
+    @ManyToOne
+    private User aluno;
 
     @ManyToOne
     private Projeto projeto;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
 
 }

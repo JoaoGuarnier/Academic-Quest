@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
@@ -65,7 +66,7 @@ public class ControllerExceptionHandler{
         standardError.setError("Erro ao executar ação");
         standardError.setMessage("Erro ao gerar registros do projeto grupo");
         standardError.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
     }
 
     @ExceptionHandler(ProjetoNaoEncontradoException.class)
@@ -99,6 +100,28 @@ public class ControllerExceptionHandler{
         standardError.setMessage("Tarefa Grupo não encontrado");
         standardError.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+    }
+
+    @ExceptionHandler(UsuarioNaoAlunoException.class)
+    public ResponseEntity<StandardError> usuarioNaoAluno(UsuarioNaoAlunoException exception, HttpServletRequest request) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.NOT_FOUND.value());
+        standardError.setError("Erro de perfil");
+        standardError.setMessage("O usuário não é um aluno");
+        standardError.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
+    }
+
+    @ExceptionHandler(ProjetoJaConcluidoException.class)
+    public ResponseEntity<StandardError> projetoJaConcluidoException(ProjetoJaConcluidoException exception, HttpServletRequest request) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.NOT_FOUND.value());
+        standardError.setError("Erro ao avaliar projeto");
+        standardError.setMessage("O projeto já esta concluído");
+        standardError.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

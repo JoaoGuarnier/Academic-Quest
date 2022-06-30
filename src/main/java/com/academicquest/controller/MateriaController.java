@@ -24,6 +24,12 @@ public class MateriaController {
 		List<MateriaDTO> listaMateriaDTO = materiaService.buscarTodos();
 		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
+
+	@GetMapping("/{id}")
+	private ResponseEntity<MateriaDTO> buscarPorId(@PathVariable Long id) {
+		MateriaDTO materiaDTO = materiaService.buscarPorId(id);
+		return ResponseEntity.ok().body(materiaDTO);
+	}
 	
 	@GetMapping("/turma/{id}")
 	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable Long id) {
