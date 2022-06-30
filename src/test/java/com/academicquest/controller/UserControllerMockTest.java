@@ -29,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
 import com.academicquest.service.UserService;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -56,10 +56,10 @@ public class UserControllerMockTest {
         userPageDTO   = new PageImpl<>(of(MockDadosDTOTest.createUserDTO()));
         userDTO   = MockDadosDTOTest.createUserDTO();
         
-        when(userService.findById(User_ID)).thenReturn(userDTO);
-        doThrow(ResourceNotFoundException.class).when(userService).findById(User_ID_NAO_EXISTE);
+        when(userService.buscarPorId(User_ID)).thenReturn(userDTO);
+        doThrow(GrupoNaoEncontradoException.class).when(userService).buscarPorId(User_ID_NAO_EXISTE);
 
-        when(userService.findAll(any())).thenReturn(userPageDTO);
+        when(userService.buscarTodos(any())).thenReturn(userPageDTO);
     }
     
     @Test

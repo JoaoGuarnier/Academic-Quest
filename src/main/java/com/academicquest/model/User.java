@@ -56,7 +56,6 @@ public class User implements Serializable, UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
-    
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList());
@@ -86,4 +85,5 @@ public class User implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+    
 }

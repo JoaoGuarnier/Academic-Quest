@@ -21,7 +21,7 @@ public class GrupoDTO implements Serializable {
 	
 	private String nome;
 	
-	private List<UserDTO> alunos;
+	private List<UserDTO> listaAlunos;
 	
 	private Long alunoLiderId;
 	
@@ -33,8 +33,8 @@ public class GrupoDTO implements Serializable {
 		this.alunoLiderId = grupo.getAlunoLider().getId();
 		this.materiaId = grupo.getMateria().getId();
 		
-		List<UserDTO> userDTOsList = grupo.getAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
-		this.alunos = userDTOsList;
+		List<UserDTO> userDTOsList = grupo.getListaAlunos().stream().map(UserDTO::new).collect(Collectors.toList());
+		this.listaAlunos = userDTOsList;
 	}
 
 }

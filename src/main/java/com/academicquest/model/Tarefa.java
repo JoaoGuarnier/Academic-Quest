@@ -40,7 +40,6 @@ public class Tarefa {
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
 

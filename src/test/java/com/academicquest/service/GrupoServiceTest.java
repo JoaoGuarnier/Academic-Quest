@@ -26,7 +26,7 @@ import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.repository.GrupoRepository;
-import com.academicquest.service.exception.BadRequestException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @SpringBootTest
 @Transactional
@@ -45,20 +45,20 @@ public class GrupoServiceTest {
 		GrupoPostDTO grupoDto = createGrupoPostDTO();
 		Grupo grupo = grupoRepository.save(createGrupo());
 
-		grupoService.save(grupoDto);
+		grupoService.salvar(grupoDto);
 
 		assertEquals(grupoDto.getNome(),         grupo.getNome());
 		assertEquals(grupoDto.getMateriaId(),    grupo.getMateria().getId());
 		assertEquals(grupoDto.getAlunoLiderId(), grupo.getAlunoLider().getId());
 		
-		assertEquals(grupoDto.getAlunosId(), Arrays.asList(grupo.getAlunos().get(0).getId()));
+		assertEquals(grupoDto.getAlunosId(), Arrays.asList(grupo.getListaAlunos().get(0).getId()));
 	}
 
 	@Test
 	@DisplayName("Se a lista de Grupo tiver elemento retorna um true, e se o id existe no banco")
 	public void getGrupo() {
 
-		List<GrupoMateriaDTO> grupoDto = grupoService.getByMateriaId(Grupo_ID);
+		List<GrupoMateriaDTO> grupoDto = grupoService.buscarPorMateriaId(Grupo_ID);
 
 		assertThat(grupoDto).isNotEmpty();
 	}
@@ -67,18 +67,16 @@ public class GrupoServiceTest {
 	@DisplayName("Se a lista Grupo estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotGrupo() {
 
-		Executable executable = () -> grupoService.getByMateriaId(Grupo_ID_NAO_EXISTE);
-		
-		Exception expectedEx = assertThrows(BadRequestException.class, executable);
-		
-		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
+		List<GrupoMateriaDTO> grupoDto = grupoService.buscarPorMateriaId(Grupo_ID_NAO_EXISTE);
+
+		assertThat(grupoDto).isNullOrEmpty();
 	}
 
 	@Test
 	@DisplayName("Deve retorna um grupo se o id, existe no banco")
 	public void getGrupoId() {
 
-		GrupoDTO grupoDto = grupoService.getById(Grupo_ID);
+		GrupoDTO grupoDto = grupoService.buscarPorId(Grupo_ID);
 
 		assertThat(grupoDto).isNotNull();
 	}
@@ -87,9 +85,9 @@ public class GrupoServiceTest {
 	@DisplayName("Deve lanca uma exception quando o valor nao existir no banco")
 	public void getNotGrupoId() {
 		
-		Executable executable = () -> grupoService.getById(Grupo_ID_NAO_EXISTE);
+		Executable executable = () -> grupoService.buscarPorId(Grupo_ID_NAO_EXISTE);
 		
-		Exception expectedEx = assertThrows(BadRequestException.class, executable);
+		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado"); 
 	}
@@ -109,7 +107,7 @@ public class GrupoServiceTest {
 		
 		Executable executable = () -> grupoService.buscarAlunosSemGrupo(Grupo_ID_NAO_EXISTE);
 		
-		Exception expectedEx = assertThrows(BadRequestException.class, executable);
+		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Grupo não encontrado buscarAlunosSemGrupo"); 
 	}
@@ -122,11 +120,11 @@ public class GrupoServiceTest {
 
 		Grupo grupo = grupoRepository.save(createGrupo());
 
-		grupoService.updateGrupo(grupoDto, Grupo_ID);
+		grupoService.atualizarGrupo(grupoDto, Grupo_ID);
 
 		assertEquals(grupoDto.getNome(),         grupo.getNome());
-		assertEquals(grupoDto.getIdAlunoLider(), grupo.getAlunoLider().getId());
+		assertEquals(grupoDto.getAlunoLiderId(), grupo.getAlunoLider().getId());
 		
-		assertEquals(grupoDto.getIdAlunos(), Arrays.asList(grupo.getAlunos().get(0).getId()));
+		assertEquals(grupoDto.getListaAlunosId(), Arrays.asList(grupo.getListaAlunos().get(0).getId()));
 	}
 }

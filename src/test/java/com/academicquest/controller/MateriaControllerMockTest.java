@@ -33,7 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.academicquest.dto.MateriaDTO;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.service.MateriaService;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -61,11 +61,14 @@ public class MateriaControllerMockTest {
         materiaDTO 	  = new ArrayList<>(of(createMateriaDTO()));
         mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
 
-        when(materiaService.getByTurmaId(Materia_ID)).thenReturn(materiaDTO);
-        when(materiaService.getByTurmaId(Materia_ID_NAO_EXISTE)).thenThrow(ResourceNotFoundException.class);
-
+        when(materiaService.buscarPorTurmaId(Materia_ID)).thenReturn(materiaDTO);
+        when(materiaService.buscarPorId(Materia_ID_NAO_EXISTE)).thenThrow(MateriaNaoEncontradaException.class);
+        
+        when(materiaService.buscarPorTurmaId(Materia_ID)).thenReturn(materiaDTO);
+        when(materiaService.buscarPorTurmaId(Materia_ID_NAO_EXISTE)).thenThrow(MateriaNaoEncontradaException.class);
+        
         when(materiaRepository.save(any())).thenReturn(materiaDTO);
-        when(materiaService.getAll()).thenReturn(materiaDTO);
+        when(materiaService.buscarTodos()).thenReturn(materiaDTO);
     }
     
     @Test

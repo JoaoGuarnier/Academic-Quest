@@ -1,10 +1,10 @@
 package com.academicquest.service.exception;
 
-public class ResourceNotFoundException extends RuntimeException{
+public class ProjetoJaConcluidoException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 
-	public ResourceNotFoundException(String msg) {
+	public ProjetoJaConcluidoException(String msg) {
         super(msg);
     }
 

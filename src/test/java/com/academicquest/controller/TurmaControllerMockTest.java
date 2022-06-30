@@ -53,7 +53,7 @@ public class TurmaControllerMockTest {
     	mockMvc  = MockMvcBuilders.webAppContextSetup(context).build();
         turmaDTO = new ArrayList<>(of(MockDadosDTOTest.createTurmaDTO()));
 
-        when(turmaService.getAll()).thenReturn(turmaDTO);
+        when(turmaService.buscarTodos()).thenReturn(turmaDTO);
     }
     
     @Test

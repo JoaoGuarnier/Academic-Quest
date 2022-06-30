@@ -28,10 +28,6 @@ public class Upload {
 
     private String formato;
 
-//    @OneToOne(mappedBy = "upload")
-//    @JsonIgnore
-//    private Tarefa tarefa;
-
     @Lob
     private byte[] arquivoUpload;
 

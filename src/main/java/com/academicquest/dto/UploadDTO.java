@@ -1,5 +1,7 @@
 package com.academicquest.dto;
 
+import java.io.Serializable;
+
 import com.academicquest.model.Upload;
 
 import lombok.AllArgsConstructor;
@@ -9,9 +11,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadDTO {
+public class UploadDTO implements Serializable{
 
-    private Long id;
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String titulo;
 
@@ -25,6 +29,5 @@ public class UploadDTO {
         this.formato = upload.getFormato();
         this.arquivoUpload = upload.getArquivoUpload();
     }
-
 
 }

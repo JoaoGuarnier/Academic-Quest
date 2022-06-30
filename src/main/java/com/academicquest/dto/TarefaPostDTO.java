@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TarefaPostDTO implements Serializable {
+public class TarefaPostDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,5 +27,6 @@ public class TarefaPostDTO implements Serializable {
 
     private MultipartFile arquivoUpload;
 
-    private Long idProjeto;
+    private Long projetoId;
+
 }

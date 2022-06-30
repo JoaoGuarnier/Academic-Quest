@@ -1,5 +1,6 @@
 package com.academicquest.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,9 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TarefaGrupoDTO {
+public class TarefaGrupoDTO implements Serializable{
 
-    private Long id;
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String nomeTarefa;
 

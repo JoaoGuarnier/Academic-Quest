@@ -17,7 +17,7 @@ public class ProjetoGrupo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double nota;
+    private Double nota = 0.0;
 
     @ManyToOne
     private Projeto projeto;

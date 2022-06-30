@@ -49,7 +49,7 @@ public class TurmaServiceMockTest {
 	@DisplayName("Retorna uma lista de Turma Mock se tiver elementos na lista")
 	public void getTurmaAll() {
 		
-		List<TurmaDTO> turmaDto = turmaService.getAll();
+		List<TurmaDTO> turmaDto = turmaService.buscarTodos();
 		
 		assertThat(turmaDto).isNotEmpty();
 		
@@ -60,7 +60,7 @@ public class TurmaServiceMockTest {
 	@DisplayName("Retorna uma lista de Turma Mock se nao tiver elementos na lista")
 	public void getNotTurmaAll() {
 
-		List<TurmaDTO> turmaDto = turmaService.getAll();
+		List<TurmaDTO> turmaDto = turmaService.buscarTodos();
 		turmaDto.clear();
 	
 		assertThat(turmaDto).isNullOrEmpty();

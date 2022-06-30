@@ -5,14 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TarefaDTO {
+public class TarefaDTO implements Serializable{
 
-    private Long id;
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String nome;
 
@@ -27,8 +30,6 @@ public class TarefaDTO {
     private byte[] upload;
 
     private String formato;
-
-
 
     public TarefaDTO(Tarefa tarefa, String nomeArquivoUpload) {
         this.id = tarefa.getId();
@@ -51,4 +52,5 @@ public class TarefaDTO {
         this.dataEntrega = tarefa.getDataEntrega();
         this.formato = tarefa.getUpload().getFormato();
     }
+
 }

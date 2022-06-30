@@ -33,7 +33,13 @@ public class MockDadosDTOTest {
 	
 	public static GrupoDTO createGrupoDTO() {
 		
-		return new GrupoDTO(createGrupo());
+		UserDTO userDTO = new UserDTO();
+		
+		List<UserDTO> listaAlunos = new ArrayList<>();
+		listaAlunos.add(userDTO);
+		
+		
+		return new GrupoDTO(1L, "MALUCATIONS", listaAlunos, 1L, 1L);
 	}
 	
 	public static GrupoMateriaDTO createGrupoMateriaDTO() {
@@ -51,7 +57,7 @@ public class MockDadosDTOTest {
 		List<Long> alunosId = new ArrayList<Long>();
 		alunosId.add(1L);
 		
-		return new GrupoPostDTO(createGrupo().getNome(), alunosId, 1L, 1L);
+		return new GrupoPostDTO("MALUCATIONS", alunosId, 1L, 1L);
 	}
 	
 	public static ProjetoDTO createProjetoDTO() {

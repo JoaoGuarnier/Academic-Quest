@@ -38,11 +38,11 @@ public class ProjetoServiceTest {
 
 		Projeto projeto = projetoRepository.save(createProjeto());
 
-		projetoService.save(projetoDto);
+		projetoService.salvar(projetoDto);
 
 		assertEquals(projetoDto.getNome(),      projeto.getNome());
 		assertEquals(projetoDto.getDescricao(), projeto.getDescricao());
-		assertEquals(projetoDto.getIdMateria(), projeto.getMateria().getId());
+		assertEquals(projetoDto.getMateriaId(), projeto.getMateria().getId());
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class ProjetoServiceTest {
 		
 		projetoRepository.save(createProjeto());
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID);
+		List<ProjetoDTO> projetoDto = projetoService.buscarPorMateriaId(PROJETO_ID);
 
 		assertThat(projetoDto).isNotEmpty();
 	}
@@ -60,7 +60,7 @@ public class ProjetoServiceTest {
 	@DisplayName("Se a lista de todas as Materia estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotMateriaId() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getByMateriaId(PROJETO_ID_NAO_EXISTE);
+		List<ProjetoDTO> projetoDto = projetoService.buscarPorMateriaId(PROJETO_ID_NAO_EXISTE);
 
 		assertThat(projetoDto).isNullOrEmpty();
 	}
@@ -71,7 +71,7 @@ public class ProjetoServiceTest {
 		
 		projetoRepository.save(createProjeto());
 		
-		List<ProjetoDTO> projetoDto = projetoService.getAll();
+		List<ProjetoDTO> projetoDto = projetoService.buscarTodos();
 		
 		assertThat(projetoDto).isNotEmpty();
 	}
@@ -80,7 +80,7 @@ public class ProjetoServiceTest {
 	@DisplayName("Se a lista de todos os Projeto estiver vazia ou nula deve retorna um False")
 	public void getNotProjetoAll() {
 
-		List<ProjetoDTO> projetoDto = projetoService.getAll();
+		List<ProjetoDTO> projetoDto = projetoService.buscarTodos();
 		projetoDto.clear();
 	
 		assertThat(projetoDto).isNullOrEmpty();

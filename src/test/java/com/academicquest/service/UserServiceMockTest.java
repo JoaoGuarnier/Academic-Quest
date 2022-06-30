@@ -34,7 +34,7 @@ import com.academicquest.dto.UserDTO;
 import com.academicquest.mockDados.MockDadosTest;
 import com.academicquest.model.User;
 import com.academicquest.repository.UserRepository;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @ExtendWith(SpringExtension.class)
 public class UserServiceMockTest {
@@ -61,7 +61,7 @@ public class UserServiceMockTest {
         when(userRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
         doReturn(Optional.of(user)).when(userRepository).findById(User_ID);
-        doThrow(ResourceNotFoundException.class).when(userRepository).findById(User_ID_NAO_EXISTE);
+        doThrow(GrupoNaoEncontradoException.class).when(userRepository).findById(User_ID_NAO_EXISTE);
 		
 		doReturn(user).when(userRepository).findByEmail(userEmail);
 		
@@ -74,7 +74,7 @@ public class UserServiceMockTest {
 	@DisplayName("Deve traser por id um usuario Mock")
 	public void getUserId() {
 		
-		UserDTO turmaDto = userService.findById(User_ID);
+		UserDTO turmaDto = userService.buscarPorId(User_ID);
 		
 		assertThat(turmaDto).isNotNull();
 		verify(userRepository, times(1)).findById(User_ID);
@@ -84,8 +84,8 @@ public class UserServiceMockTest {
 	@DisplayName("Deve mostra mensagem do exception Mock, para o id que nao existe")
 	public void getNotUserId() {
 		
-		assertThrows(ResourceNotFoundException.class, () -> {
-			userService.findById(User_ID_NAO_EXISTE);
+		assertThrows(GrupoNaoEncontradoException.class, () -> {
+			userService.buscarPorId(User_ID_NAO_EXISTE);
 			});
 		verify(userRepository, times(1)).findById(User_ID_NAO_EXISTE);
 	}
@@ -96,7 +96,7 @@ public class UserServiceMockTest {
 		
 		PageRequest pageRequest  = PageRequest.of(0,10);
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
+		Page<UserDTO> projetoDto = userService.buscarTodos(pageRequest);
 		
 		assertThat(projetoDto).isNotEmpty();
 		verify(userRepository, times(1)).findAll(pageRequest);

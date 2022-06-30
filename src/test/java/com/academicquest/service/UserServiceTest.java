@@ -1,7 +1,6 @@
 package com.academicquest.service;
 
 import static com.academicquest.components.UtilMock.User_ID;
-import static com.academicquest.components.UtilMock.User_ID_NAO_EXISTE;
 import static com.academicquest.mockDados.MockDadosTest.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.UserDTO;
 import com.academicquest.repository.UserRepository;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @SpringBootTest
 @Transactional
@@ -36,7 +35,7 @@ public class UserServiceTest {
 	@DisplayName("Deve traser por id um usuario")
 	public void getUserId() {
 		
-		UserDTO turmaDto = userService.findById(User_ID);
+		UserDTO turmaDto = userService.buscarPorId(User_ID);
 		
 		assertThat(turmaDto).isNotNull();
 	}
@@ -45,9 +44,9 @@ public class UserServiceTest {
 	@DisplayName("Deve mostra mensagem do exception, para o id que nao existe")
 	public void getNotUserId() {
 		
-		Executable executable = () -> userService.findById(User_ID_NAO_EXISTE);
+		Executable executable = () -> userService.buscarPorId(User_ID);
 		
-		Exception expectedEx = assertThrows(ResourceNotFoundException.class, executable);
+		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Entity not found"); 
 	}
@@ -58,7 +57,7 @@ public class UserServiceTest {
 		
 		PageRequest pageRequest = PageRequest.of(0,10);
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
+		Page<UserDTO> projetoDto = userService.buscarTodos(pageRequest);
 		
 		assertThat(projetoDto).isNotEmpty();
 	}
@@ -69,7 +68,7 @@ public class UserServiceTest {
 		
 		PageRequest pageRequest = PageRequest.of(50,10);
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
+		Page<UserDTO> projetoDto = userService.buscarTodos(pageRequest);
 	
 		assertThat(projetoDto).isNullOrEmpty();
 	}

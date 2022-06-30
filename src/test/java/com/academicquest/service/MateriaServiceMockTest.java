@@ -57,7 +57,7 @@ public class MateriaServiceMockTest {
 	@DisplayName("Se a lista de todas as turma Mock tiver elemento retorna um true, e se o id existe no banco")
 	public void getTurmaId() {
 
-		List<MateriaDTO> materiaDto = materiaService.getByTurmaId(Materia_ID);
+		List<MateriaDTO> materiaDto = materiaService.buscarPorTurmaId(Materia_ID);
 
 		assertThat(materiaDto).isNotEmpty();
 		verify(materiaRepository, times(1)).findByTurmaId(Materia_ID);
@@ -67,7 +67,7 @@ public class MateriaServiceMockTest {
 	@DisplayName("Se a lista de todas as turma Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotTurmaId() {
 
-		List<MateriaDTO> userDto2 = materiaService.getByTurmaId(Materia_ID_NAO_EXISTE);
+		List<MateriaDTO> userDto2 = materiaService.buscarPorTurmaId(Materia_ID_NAO_EXISTE);
 
 		assertThat(userDto2).isNullOrEmpty();
 		verify(materiaRepository, times(1)).findByTurmaId(Materia_ID_NAO_EXISTE);
@@ -77,7 +77,7 @@ public class MateriaServiceMockTest {
 	@DisplayName("Se a lista de todas as Materia Mock tiver elemento retorna um true, e se o id existe no banco")
 	public void getMateriaAll() {
 		
-		List<MateriaDTO> materiaDto = materiaService.getAll();
+		List<MateriaDTO> materiaDto = materiaService.buscarTodos();
 		
 		assertThat(materiaDto).isNotEmpty();
 		
@@ -88,7 +88,7 @@ public class MateriaServiceMockTest {
 	@DisplayName("Se a lista de todas as Materia Mock estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotMateriaAll() {
 
-		List<MateriaDTO> userDto2 = materiaService.getAll();
+		List<MateriaDTO> userDto2 = materiaService.buscarTodos();
 		userDto2.clear();
 	
 		assertThat(userDto2).isNullOrEmpty();

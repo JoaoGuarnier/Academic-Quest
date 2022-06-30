@@ -34,7 +34,7 @@ public class Grupo {
     @JoinTable(name = "tb_grupo_user",
             joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<User> alunos;
+	private List<User> listaAlunos;
 	
     @ManyToOne()
     @JoinColumn(name = "materia_id")
