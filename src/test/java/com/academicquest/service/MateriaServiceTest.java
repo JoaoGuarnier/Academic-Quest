@@ -34,7 +34,7 @@ public class MateriaServiceTest {
 	@DisplayName("Se a lista de todas as turma tiver elemento retorna um true, e se o id existe no banco")
 	public void getTurmaId() {
 
-		List<MateriaDTO> materiaDto = materiaService.getByTurmaId(materiaId);
+		List<MateriaDTO> materiaDto = materiaService.buscarPorTurmaId(materiaId);
 
 		assertThat(materiaDto).isNotEmpty();
 	}
@@ -43,7 +43,7 @@ public class MateriaServiceTest {
 	@DisplayName("Se a lista de todas as turma estiver vazia ou nula deve retorna um False, e se o id nao existe no banco")
 	public void getNotTurmaId() {
 
-		List<MateriaDTO> userDto2 = materiaService.getByTurmaId(notMateriaId);
+		List<MateriaDTO> userDto2 = materiaService.buscarPorTurmaId(notMateriaId);
 
 		assertThat(userDto2).isNullOrEmpty();
 	}
@@ -52,7 +52,7 @@ public class MateriaServiceTest {
 	@DisplayName("Se a lista de todas as Materia tiver elemento retorna um true")
 	public void getMateriaAll() {
 		
-		List<MateriaDTO> materiaDto = materiaService.getAll();
+		List<MateriaDTO> materiaDto = materiaService.buscarTodos();
 		
 		assertThat(materiaDto).isNotEmpty();
 	}
@@ -61,7 +61,7 @@ public class MateriaServiceTest {
 	@DisplayName("Se a lista de todas as Materia estiver vazia ou nula deve retorna um False")
 	public void getNotMateriaAll() {
 
-		List<MateriaDTO> userDto2 = materiaService.getAll();
+		List<MateriaDTO> userDto2 = materiaService.buscarTodos();
 		userDto2.clear();
 	
 		assertThat(userDto2).isNullOrEmpty();

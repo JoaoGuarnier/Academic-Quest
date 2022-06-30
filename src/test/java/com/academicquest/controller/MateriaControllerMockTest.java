@@ -31,7 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.academicquest.dto.MateriaDTO;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.service.MateriaService;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -63,11 +63,14 @@ public class MateriaControllerMockTest {
         materiaDTO 	  = new ArrayList<>(of(createMateriaDTO()));
         mockMvc       = MockMvcBuilders.webAppContextSetup(context).build();
 
-        when(materiaService.getByTurmaId(materiaId)).thenReturn(materiaDTO);
-        when(materiaService.getByTurmaId(notMateriaId)).thenThrow(ResourceNotFoundException.class);
-
+        when(materiaService.buscarPorTurmaId(materiaId)).thenReturn(materiaDTO);
+        when(materiaService.buscarPorId(notMateriaId)).thenThrow(MateriaNaoEncontradaException.class);
+        
+        when(materiaService.buscarPorTurmaId(materiaId)).thenReturn(materiaDTO);
+        when(materiaService.buscarPorTurmaId(notMateriaId)).thenThrow(MateriaNaoEncontradaException.class);
+        
         when(materiaRepository.save(any())).thenReturn(materiaDTO);
-        when(materiaService.getAll()).thenReturn(materiaDTO);
+        when(materiaService.buscarTodos()).thenReturn(materiaDTO);
     }
     
     @Test
@@ -75,7 +78,7 @@ public class MateriaControllerMockTest {
     public void buscarTodasTurmasId() throws Exception {
         ResultActions resultActions = mockMvc.perform(
 							        		MockMvcRequestBuilders
-								        		.get("/materias/turma/{id}", notMateriaId)
+								        		.get("/materias/turma/{id}", 999L)
 								        		.accept(MediaType.APPLICATION_JSON)
         				);
         resultActions.andExpect(status().isNotFound());

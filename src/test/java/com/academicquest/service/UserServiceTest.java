@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.UserDTO;
 import com.academicquest.repository.UserRepository;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @SpringBootTest
 @Transactional
@@ -45,7 +45,7 @@ public class UserServiceTest {
 	@DisplayName("Deve traser por id um usuario")
 	public void getUserId() {
 		
-		UserDTO turmaDto = userService.findById(userId);
+		UserDTO turmaDto = userService.buscarPorId(userId);
 		
 		assertThat(turmaDto).isNotNull();
 	}
@@ -54,9 +54,9 @@ public class UserServiceTest {
 	@DisplayName("Deve mostra mensagem do exception, para o id que nao existe")
 	public void getNotUserId() {
 		
-		Executable executable = () -> userService.findById(notUserId);
+		Executable executable = () -> userService.buscarPorId(notUserId);
 		
-		Exception expectedEx = assertThrows(ResourceNotFoundException.class, executable);
+		Exception expectedEx = assertThrows(GrupoNaoEncontradoException.class, executable);
 		
 		assertEquals(expectedEx.getMessage(), "Entity not found"); 
 	}
@@ -67,7 +67,7 @@ public class UserServiceTest {
 		
 		PageRequest pageRequest = PageRequest.of(0,10);
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
+		Page<UserDTO> projetoDto = userService.buscarTodos(pageRequest);
 		
 		assertThat(projetoDto).isNotEmpty();
 	}
@@ -78,7 +78,7 @@ public class UserServiceTest {
 		
 		PageRequest pageRequest = PageRequest.of(50,10);
 		
-		Page<UserDTO> projetoDto = userService.findAll(pageRequest);
+		Page<UserDTO> projetoDto = userService.buscarTodos(pageRequest);
 	
 		assertThat(projetoDto).isNullOrEmpty();
 	}

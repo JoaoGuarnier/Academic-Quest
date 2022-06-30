@@ -1,10 +1,6 @@
 package com.academicquest.controller;
 
-import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoDTO;
 import static com.academicquest.mockDados.MockDadosDTOTest.createGrupoUpdateDTO;
-import static com.academicquest.mockDados.MockDadosTest.createGrupo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,10 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
-import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
-import com.academicquest.repository.GrupoRepository;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
@@ -44,9 +39,6 @@ public class GrupoControllerTest {
     private WebApplicationContext context;
     
     @Autowired
-    private GrupoRepository grupoRepository;
-    
-    @Autowired
     private MockMvc mockMvc;
 	
 	@Autowired
@@ -54,7 +46,6 @@ public class GrupoControllerTest {
 	
     private Long grupoId;
     private Long notGrupoId;
-    private GrupoDTO grupoDTO;
     private GrupoUpdateDTO grupoUpdateDTO;
 
     @BeforeEach
@@ -64,7 +55,6 @@ public class GrupoControllerTest {
     	
         grupoId         = 1l;
         notGrupoId   	= 999l;
-        grupoDTO        = createGrupoDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
     }
     
@@ -84,8 +74,8 @@ public class GrupoControllerTest {
 
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.nome").exists());
-        resultActions.andExpect(jsonPath("$.idAlunoLider").exists());
-        resultActions.andExpect(jsonPath("$.idAlunos").exists());
+        resultActions.andExpect(jsonPath("$.alunoLiderId").exists());
+        resultActions.andExpect(jsonPath("$.listaAlunosId").exists());
     }
     
     @Test
@@ -94,7 +84,6 @@ public class GrupoControllerTest {
     	
 		String jsonBody = objectMapper.writeValueAsString(MockDadosDTOTest.createGrupoUpdateDTO());
 
-		assertThrows(NestedServletException.class, () -> {
 				mockMvc.perform(MockMvcRequestBuilders
 			            .put("/grupos/{id}", 999L)
 			            .content(jsonBody)
@@ -102,7 +91,6 @@ public class GrupoControllerTest {
 			            .accept(MediaType.APPLICATION_JSON))
 			            .andExpect(status().isNotFound()
             		);
-		});
     }
     
     //Libera essa notação depois de fazer a liberação no controller do tratamento do 200 para 201
@@ -186,21 +174,20 @@ public class GrupoControllerTest {
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.id").exists());
         resultActions.andExpect(jsonPath("$.nome").exists());
-        resultActions.andExpect(jsonPath("$.alunos").exists());
+        resultActions.andExpect(jsonPath("$.listaAlunos").exists());
         resultActions.andExpect(jsonPath("$.alunoLiderId").exists());
     }
 
     @Test
     @DisplayName("Testar se o id nao existente retorna a mensagem da exception e se é 404")
-    public void buscarNotGrupoId() throws Exception, NestedServletException {
+    public void buscarNotGrupoId() throws Exception, GrupoNaoEncontradoException {
     	
-        assertThrows(NestedServletException.class, () -> {
         		mockMvc.perform(
 		    			MockMvcRequestBuilders.
-		    			get("/grupos/{id}", 9l)
+		    			get("/grupos/{id}", 1991919l)
 		    			.accept(MediaType.APPLICATION_JSON))
 		    			.andExpect(status().isNotFound()
 		    			);
-		    });
-        }
+		    }
+        
 }

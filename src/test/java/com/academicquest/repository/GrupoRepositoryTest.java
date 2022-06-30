@@ -104,7 +104,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista estiver vazia ou nula, deve retorna um False se o id nao existe no banco")
     public void buscarAlunosMateriaNaoExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosMateria(notGrupoId);
+    	List<Long> listGrupo = repository.buscarAlunosPorMateriaId(notGrupoId);
     	assertThat(listGrupo).isNullOrEmpty();
     }
     
@@ -112,7 +112,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void buscaAlunosMateriaExistente() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosMateria(grupoId);
+    	List<Long> listGrupo = repository.buscarAlunosPorMateriaId(grupoId);
     	assertThat(listGrupo).isNotEmpty();
     }
     
@@ -120,7 +120,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um false, e se o id nao existe no banco")
     public void buscaAlunosComGrupoMateriaNaoExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(notGrupoId);
+    	List<Long> listGrupo = repository.buscaAlunosComGrupoPorMateriaId(notGrupoId);
     	assertThat(listGrupo).isNullOrEmpty();
     }
     
@@ -128,7 +128,7 @@ public class GrupoRepositoryTest {
     @DisplayName("Se a lista tiver elemento retorna um true, e se o id existe no banco")
     public void buscaAlunosComGrupoMateriaExistir() {
     	
-    	List<Long> listGrupo = repository.buscaAlunosComGrupoMateria(grupoId);
+    	List<Long> listGrupo = repository.buscaAlunosComGrupoPorMateriaId(grupoId);
     	assertThat(listGrupo).isNotEmpty();
     }
 }

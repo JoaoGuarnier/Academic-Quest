@@ -7,7 +7,6 @@ import static com.academicquest.mockDados.MockDadosDTOTest.createUserDTO;
 import static java.util.List.of;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,12 +32,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
-import com.academicquest.dto.GrupoPostDTO;
 import com.academicquest.dto.GrupoUpdateDTO;
 import com.academicquest.dto.UserDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
 import com.academicquest.service.GrupoService;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.AlunoLiderNaoEncontradoException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
@@ -79,19 +77,17 @@ public class GrupoControllerMockTest {
         grupoMateriaDTO = createGrupoMateriaDTO();
         grupoUpdateDTO  = createGrupoUpdateDTO();
 
-        when(grupoService.getByMateriaId(grupoId)).thenReturn(of(grupoMateriaDTO));
-        when(grupoService.getByMateriaId(notGrupoId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.buscarPorMateriaId(grupoId)).thenReturn(of(grupoMateriaDTO));
+        when(grupoService.buscarPorMateriaId(notGrupoId)).thenThrow(GrupoNaoEncontradoException.class);
 
         when(grupoService.buscarAlunosSemGrupo(grupoId)).thenReturn(of(userDTO));
-        when(grupoService.buscarAlunosSemGrupo(notGrupoId)).thenThrow(ResourceNotFoundException.class);
+        when(grupoService.buscarAlunosSemGrupo(notGrupoId)).thenThrow(GrupoNaoEncontradoException.class);
         
-        when(grupoService.getById(grupoId)).thenReturn(grupoDTO);
-        doThrow(ResourceNotFoundException.class).when(grupoService).getById(notGrupoId);
+        when(grupoService.buscarPorId(grupoId)).thenReturn(grupoDTO);
+        doThrow(GrupoNaoEncontradoException.class).when(grupoService).buscarPorId(notGrupoId);
 
-        when(grupoService.updateGrupo(any(), eq(grupoId))).thenReturn(grupoUpdateDTO);
-        when(grupoService.updateGrupo(any(), eq(notGrupoId))).thenThrow(ResourceNotFoundException.class);
-
-        doNothing().when(grupoService).save(Mockito.any(GrupoPostDTO.class));
+        when(grupoService.atualizarGrupo(any(), eq(grupoId))).thenReturn(grupoUpdateDTO);
+        when(grupoService.atualizarGrupo(any(), eq(notGrupoId))).thenThrow(AlunoLiderNaoEncontradoException.class);
     }
     
     @Test
@@ -110,8 +106,7 @@ public class GrupoControllerMockTest {
 
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.nome").exists());
-        resultActions.andExpect(jsonPath("$.idAlunoLider").exists());
-        resultActions.andExpect(jsonPath("$.idAlunos").exists());
+        resultActions.andExpect(jsonPath("$.alunoLiderId").exists());
     }
     
     @Test
@@ -212,7 +207,6 @@ public class GrupoControllerMockTest {
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.id").exists());
         resultActions.andExpect(jsonPath("$.nome").exists());
-        resultActions.andExpect(jsonPath("$.alunos").exists());
         resultActions.andExpect(jsonPath("$.alunoLiderId").exists());
     }
 

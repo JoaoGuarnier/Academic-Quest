@@ -1,27 +1,27 @@
 package com.academicquest.service;
 
-import com.academicquest.dto.*;
-import com.academicquest.enums.STATUS_TAREFA_GRUPO;
-import com.academicquest.model.TarefaGrupo;
-import com.academicquest.repository.GrupoRepository;
-import com.academicquest.repository.TarefaGrupoRepository;
-import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.academicquest.dto.TarefaGrupoDTO;
+import com.academicquest.dto.TarefaGrupoPutDTO;
+import com.academicquest.dto.TarefaGrupoSimplesDTO;
+import com.academicquest.dto.UploadDTO;
+import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+import com.academicquest.model.TarefaGrupo;
+import com.academicquest.repository.TarefaGrupoRepository;
+import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
 
 @Service
 public class TarefaGrupoService {
 
     @Autowired
     private TarefaGrupoRepository tarefaGrupoRepository;
-
-    @Autowired
-    private GrupoRepository grupoRepository;
 
     @Transactional
     public List<TarefaGrupoSimplesDTO> buscarPorTarefaId(Long tarefaId) {

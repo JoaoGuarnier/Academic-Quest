@@ -11,7 +11,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ProjetoPutDTO implements Serializable {
 
-    private String nome;
+	private static final long serialVersionUID = 1L;
+	
+	private String nome;
     private String descricao;
-
 }

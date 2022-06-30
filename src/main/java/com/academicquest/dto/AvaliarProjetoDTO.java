@@ -11,8 +11,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AvaliarProjetoDTO implements Serializable {
 
-    private Long projetoId;
+	private static final long serialVersionUID = 1L;
+
+	private Long projetoId;
 
     private Long grupoId;
-
 }

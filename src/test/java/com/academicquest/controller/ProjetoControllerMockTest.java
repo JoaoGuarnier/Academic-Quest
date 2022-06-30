@@ -2,7 +2,6 @@ package com.academicquest.controller;
 
 import static com.academicquest.mockDados.MockDadosDTOTest.createProjetoDTO;
 import static java.util.List.of;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,8 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,7 @@ import com.academicquest.dto.ProjetoDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.service.ProjetoService;
-import com.academicquest.service.exception.ResourceNotFoundException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
@@ -61,6 +60,7 @@ public class ProjetoControllerMockTest {
     private Long projetoId;
     private Long notProjetoId;
     private List<ProjetoDTO> projetoDTO;
+    private ProjetoDTO projeto;
 
     @BeforeEach
     public void setUpProjetoControllerMock() throws Exception {
@@ -70,15 +70,15 @@ public class ProjetoControllerMockTest {
         projetoId       = 1l;
         notProjetoId  	= 999l;
         projetoDTO 		= new ArrayList<>(of(createProjetoDTO()));
+        projeto 		= MockDadosDTOTest.createProjetoDTO();
 
-        when(projetoService.getByMateriaId(projetoId)).thenReturn(projetoDTO);
-        when(projetoService.getByMateriaId(notProjetoId)).thenThrow(ResourceNotFoundException.class);
+        when(projetoService.buscarPorMateriaId(projetoId)).thenReturn(projetoDTO);
+        when(projetoService.buscarPorMateriaId(notProjetoId)).thenThrow(MateriaNaoEncontradaException.class);
 
-        when(projetoService.getAll()).thenReturn(projetoDTO);
-        doNothing().when(projetoService).save(Mockito.any());
+        when(projetoService.buscarTodos()).thenReturn(projetoDTO);
+		when(projetoService.salvar(ArgumentMatchers.any())).thenReturn(projeto);
     }
    
-    
     @Test
     @DisplayName("Buscar os projetos por materias id que nao existe no banco e retorna um 404")
     public void BuscarNotProjetoMateriaId() throws Exception{

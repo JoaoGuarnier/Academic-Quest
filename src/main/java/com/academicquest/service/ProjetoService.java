@@ -1,6 +1,16 @@
 package com.academicquest.service;
 
-import com.academicquest.dto.*;
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.academicquest.dto.ProjetoDTO;
+import com.academicquest.dto.ProjetoPostDTO;
+import com.academicquest.dto.ProjetoPutDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
@@ -14,15 +24,6 @@ import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoExcep
 import com.academicquest.service.exception.MateriaNaoEncontradaException;
 import com.academicquest.service.exception.ProjetoJaConcluidoException;
 import com.academicquest.service.exception.ProjetoNaoEncontradoException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjetoService {

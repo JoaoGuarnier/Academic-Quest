@@ -1,15 +1,25 @@
 package com.academicquest.controller.exceptions;
 
-import com.academicquest.service.exception.*;
+import java.time.Instant;
+
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.NonUniqueResultException;
-import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
+import com.academicquest.service.exception.AlunoLiderNaoEncontradoException;
+import com.academicquest.service.exception.AlunoNaoEncontradoException;
+import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.ProjetoJaConcluidoException;
+import com.academicquest.service.exception.ProjetoNaoEncontradoException;
+import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
+import com.academicquest.service.exception.TarefaNaoEncontradaException;
+import com.academicquest.service.exception.UsuarioNaoAlunoException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler{

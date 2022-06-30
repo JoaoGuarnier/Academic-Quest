@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TarefaGrupoDTO implements Serializable{
 
-    private Long id;
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String nomeTarefa;
 

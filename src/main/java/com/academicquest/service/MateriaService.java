@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.academicquest.dto.MateriaDTO;
+import com.academicquest.model.Materia;
 import com.academicquest.repository.MateriaRepository;
 
 @Service
