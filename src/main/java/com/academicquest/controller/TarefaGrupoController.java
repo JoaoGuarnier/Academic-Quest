@@ -17,24 +17,22 @@ public class TarefaGrupoController {
     @Autowired
     private TarefaGrupoService tarefaGrupoService;
 
-    @GetMapping("/{idTarefa}")
-    private ResponseEntity<List<TarefaGrupoSimplesDTO>> getByTarefaId(@PathVariable Long idTarefa) {
-        List<TarefaGrupoSimplesDTO> list = tarefaGrupoService.getByTarefaId(idTarefa);
-        return ResponseEntity.ok().body(list);
+    @GetMapping("/{tarefaId}")
+    private ResponseEntity<List<TarefaGrupoSimplesDTO>> buscarPorTarefaId(@PathVariable Long tarefaId) {
+        List<TarefaGrupoSimplesDTO> listaTarefaGrupoSimplesDTO = tarefaGrupoService.buscarPorTarefaId(tarefaId);
+        return ResponseEntity.ok().body(listaTarefaGrupoSimplesDTO);
     }
 
     @GetMapping("/id/{id}")
-    private ResponseEntity<TarefaGrupoDTO> getById(@PathVariable Long id) {
-        TarefaGrupoDTO tarefaGrupoDTO = tarefaGrupoService.getById(id);
+    private ResponseEntity<TarefaGrupoDTO> buscarPorId(@PathVariable Long id) {
+        TarefaGrupoDTO tarefaGrupoDTO = tarefaGrupoService.buscarPorId(id);
         return ResponseEntity.ok().body(tarefaGrupoDTO);
     }
 
-    @PutMapping("/{idTarefaGrupo}")
-    private ResponseEntity avaliarTarefaGrupo(@PathVariable Long idTarefaGrupo, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
-        tarefaGrupoService.avaliarTarefaGrupo(idTarefaGrupo,tarefaGrupoPutDTO);
+    @PutMapping("/{tarefaGrupoId}")
+    private ResponseEntity avaliarTarefaGrupo(@PathVariable Long tarefaGrupoId, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
+        tarefaGrupoService.avaliarTarefaGrupo(tarefaGrupoId,tarefaGrupoPutDTO);
         return ResponseEntity.ok().build();
     }
-
-
 
 }

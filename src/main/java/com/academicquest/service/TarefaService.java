@@ -8,8 +8,11 @@ import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import com.academicquest.repository.TarefaRepository;
+import com.academicquest.service.exception.ProjetoNaoEncontradoException;
+import com.academicquest.service.exception.TarefaNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -32,36 +35,25 @@ public class TarefaService {
     @Autowired
     private TarefaGrupoRepository tarefaGrupoRepository;
 
-
-    public TarefaDTO save(TarefaPostDTO tarefaPostDto) throws IOException {
-
+    @Transactional()
+    public TarefaDTO salvar(TarefaPostDTO tarefaPostDto) throws IOException {
         Tarefa tarefa = new Tarefa();
         tarefa.setNome(tarefaPostDto.getNome());
         tarefa.setDescricao(tarefaPostDto.getDescricao());
         tarefa.setDataEntrega(LocalDate.parse(tarefaPostDto.getDataEntrega()));
-
-        Upload upload = getUpload(tarefaPostDto);
-
+        Upload upload = buscarUpload(tarefaPostDto);
         tarefa.setUpload(upload);
-
-        Projeto projeto = projetoRepository.findById(tarefaPostDto.getIdProjeto()).orElseThrow(() -> new EntityNotFoundException());
-
+        Projeto projeto = projetoRepository.findById(tarefaPostDto.getProjetoId()).orElseThrow(() -> new ProjetoNaoEncontradoException("Projeto não encontrado"));
         tarefa.setProjeto(projeto);
-
         Tarefa tarefaSalva = tarefaRepository.save(tarefa);
-
         TarefaDTO tarefaDTO = new TarefaDTO(tarefaSalva, tarefaPostDto.getArquivoUpload().getOriginalFilename());
-        
         gerarRegistrosTarefaGrupo(tarefaSalva);
-
         return tarefaDTO;
-
     }
 
+    @Transactional()
     private void gerarRegistrosTarefaGrupo(Tarefa tarefaSalva) {
-
-        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateria(tarefaSalva.getProjeto().getMateria().getId());
-
+        List<Long> idsGrupos = grupoRepository.buscaGruposPorMateriaId(tarefaSalva.getProjeto().getMateria().getId());
         idsGrupos.stream().forEach(idGrupo -> {
             Grupo grupo = grupoRepository.findById(idGrupo).get();
             TarefaGrupo tarefaGrupo = new TarefaGrupo();
@@ -69,30 +61,26 @@ public class TarefaService {
             tarefaGrupo.setTarefa(tarefaSalva);
             tarefaGrupoRepository.save(tarefaGrupo);
         });
-
-
-
     }
 
-    public TarefaDTO getById(Long id) {
-        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+    @Transactional(readOnly = true)
+    public TarefaDTO buscarPorId(Long id) {
+        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(() -> new TarefaNaoEncontradaException("Tarefa não encontrada"));
         return new TarefaDTO(tarefa);
     }
 
-    public List<TarefaProjetoDTO> getByProjetoId(Long projetoId) {
-        List<Long> tarefaIds = tarefaRepository.findIdByProjetoId(projetoId);
+    @Transactional(readOnly = true)
+    public List<TarefaProjetoDTO> buscarPorProjetoId(Long projetoId) {
+        List<Long> tarefaIds = tarefaRepository.buscarIdsTarefasPorProjetoId(projetoId);
         List<TarefaProjetoDTO> tarefaDTOList = new ArrayList<>();
         tarefaIds.stream().forEach(tarefaId -> {
-            Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new EntityNotFoundException());
+            Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new TarefaNaoEncontradaException("Tarefa não encontrada"));
             tarefaDTOList.add(new TarefaProjetoDTO(tarefa));
         });
-
         return tarefaDTOList;
-
     }
 
-
-    private Upload getUpload(TarefaPostDTO tarefaPostDto) throws IOException {
+    private Upload buscarUpload(TarefaPostDTO tarefaPostDto) throws IOException {
         Upload upload = new Upload();
         upload.setTitulo(tarefaPostDto.getArquivoUpload().getOriginalFilename());
         upload.setFormato(tarefaPostDto.getArquivoUpload().getContentType());

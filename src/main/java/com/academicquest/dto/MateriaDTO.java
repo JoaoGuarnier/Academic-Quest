@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MateriaDTO implements Serializable {
+public class MateriaDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -26,6 +26,5 @@ public class MateriaDTO implements Serializable {
 	private String nome;
 	
 	private UserDTO professor;
-
 
 }

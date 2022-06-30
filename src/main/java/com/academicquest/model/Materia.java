@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Materia {
-	
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

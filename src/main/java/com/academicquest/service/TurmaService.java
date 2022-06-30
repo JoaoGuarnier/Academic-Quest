@@ -8,14 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.academicquest.dto.TurmaDTO;
 import com.academicquest.repository.TurmaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TurmaService {
 	
 	@Autowired
 	private TurmaRepository turmaRepository;
-	
-	public List<TurmaDTO> getAll() {
+
+	@Transactional(readOnly = true)
+	public List<TurmaDTO> buscarTodos() {
 		return turmaRepository.findAll().stream().map(TurmaDTO::new).collect(Collectors.toList());
 	}
 }

@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TarefaGrupoPutDTO implements Serializable{
+@AllArgsConstructor
+public class ProjetoPutDTO implements Serializable {
 
-    private Double nota;
-
-    private String consideracoes;
+    private String nome;
+    private String descricao;
 
 }
