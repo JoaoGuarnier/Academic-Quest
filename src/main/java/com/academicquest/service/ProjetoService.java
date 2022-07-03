@@ -10,10 +10,7 @@ import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
-import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
-import com.academicquest.service.exception.MateriaNaoEncontradaException;
-import com.academicquest.service.exception.ProjetoJaConcluidoException;
-import com.academicquest.service.exception.ProjetoNaoEncontradoException;
+import com.academicquest.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +51,7 @@ public class ProjetoService {
         Projeto projeto = converterParaEntidade(projetoPostDTO);
         Long idMateria = projetoPostDTO.getMateriaId();
         Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new MateriaNaoEncontradaException("Matéria não encontrada"));
+        verificarSeExistemGruposNaMateria(projetoPostDTO.getMateriaId());
         projeto.setMateria(materia);
         Projeto projetoSalvo = projetoRepository.save(projeto);
         try {
@@ -63,6 +61,15 @@ public class ProjetoService {
         }
         ProjetoDTO projetoDTO = new ProjetoDTO(projetoSalvo);
         return projetoDTO;
+    }
+
+    private void verificarSeExistemGruposNaMateria(Long materiaId) {
+
+        List<Long> listaGruposIds = grupoRepository.buscaGruposPorMateriaId(materiaId);
+        if (listaGruposIds.isEmpty()) {
+            throw new NenhumGrupoCadastradoNaMateriaException("Não existem grupos cadastrados para a materia");
+        }
+
     }
 
     @Transactional()
