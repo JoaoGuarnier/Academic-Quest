@@ -1,10 +1,7 @@
 package com.academicquest.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.academicquest.dto.PessoaTestDTO;
 
@@ -23,8 +20,11 @@ public class TestController {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.ok().body(pessoaTeste);
-		
-		
+	}
+
+	@GetMapping
+	private ResponseEntity teste() {
+		return ResponseEntity.ok().build();
 	}
 
 }
