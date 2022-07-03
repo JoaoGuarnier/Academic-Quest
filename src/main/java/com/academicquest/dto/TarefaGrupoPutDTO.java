@@ -11,7 +11,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TarefaGrupoPutDTO implements Serializable{
 
-    private Double nota;
+	private static final long serialVersionUID = 1L;
+
+	private Double nota;
 
     private String consideracoes;
 

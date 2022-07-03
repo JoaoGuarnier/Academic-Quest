@@ -1,19 +1,23 @@
 package com.academicquest.dto;
 
+import java.io.Serializable;
+
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Projeto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjetoDTO implements Serializable{
 
-    private Long id;
+
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
     private String nome;
     private String descricao;
     private STATUS_PROJETO status;
