@@ -22,6 +22,7 @@ import com.academicquest.repository.ProjetoGrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
 import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.NenhumGrupoCadastradoNaMateriaException;
 import com.academicquest.service.exception.ProjetoJaConcluidoException;
 import com.academicquest.service.exception.ProjetoNaoEncontradoException;
 
