@@ -46,7 +46,7 @@ public class ProjetoService {
         return projetoRepository.findByMateriaId(id).stream().map(ProjetoDTO::new).collect(Collectors.toList());
     }
 
-    @Transactional()
+    @Transactional
     public ProjetoDTO salvar(ProjetoPostDTO projetoPostDTO) {
         Projeto projeto = converterParaEntidade(projetoPostDTO);
         Long idMateria = projetoPostDTO.getMateriaId();
@@ -72,7 +72,7 @@ public class ProjetoService {
 
     }
 
-    @Transactional()
+    @Transactional
     private void criaRegistrosProjetoGrupo(ProjetoPostDTO projetoPostDTO, Projeto projeto) {
         List<Long> idsGrupos = grupoRepository.buscaGruposPorMateriaId(projetoPostDTO.getMateriaId());
         idsGrupos.stream().forEach(idGrupo -> {

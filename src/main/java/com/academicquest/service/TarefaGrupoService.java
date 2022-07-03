@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,13 +74,19 @@ public class TarefaGrupoService {
         }
     }
 
-    @Transactional()
+    @Transactional
     public void avaliarTarefaGrupo(Long idTarefaGrupo, TarefaGrupoPutDTO tarefaGrupoPutDTO) {
         TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(idTarefaGrupo).orElseThrow(() -> new TarefaGrupoNaoEncontradoException("Tarefa grupo não encontrado"));
         tarefaGrupo.setNota(tarefaGrupoPutDTO.getNota());
         tarefaGrupo.setConsideracoes(tarefaGrupoPutDTO.getConsideracoes());
         tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.CORRIGIDA);
         tarefaGrupoRepository.save(tarefaGrupo);
+    }
+
+    @Transactional
+    public void jobModificarStatusTarefasNaoEntregues() {
+        LocalDate now = LocalDate.now();
+        tarefaGrupoRepository.alterarStatusTarefasNaoEntregue(now);
     }
 
 }

@@ -38,7 +38,7 @@ public class GrupoService {
 	@Autowired
 	private MateriaRepository materiaRepository;
 
-	@Transactional()
+	@Transactional
 	public GrupoDTO salvar(GrupoPostDTO grupoPostDTO) {
 		Grupo grupo = converterParaEntidade(grupoPostDTO);
 		Grupo grupoSalvo;
