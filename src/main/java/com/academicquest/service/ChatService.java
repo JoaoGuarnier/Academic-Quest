@@ -15,6 +15,8 @@ import com.academicquest.model.User;
 import com.academicquest.repository.ChatRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import com.academicquest.repository.UserRepository;
+import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
+import com.academicquest.service.exception.UsuarioNaoEncontradoException;
 
 @Service
 public class ChatService {
@@ -31,10 +33,9 @@ public class ChatService {
 	@Transactional
 	public ChatPostDTO save(ChatPostDTO dto) throws ParseException, IOException {
 		
-		
 		Chat chat = new Chat();
-		User user = userRepository.getById(dto.getUserId());
-		TarefaGrupo tarefa = tarefaGrupo.getById(dto.getTarefaGrupoId());
+		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new UsuarioNaoEncontradoException("Usuario nao encontrado"));
+		TarefaGrupo tarefa = tarefaGrupo.findById(dto.getTarefaGrupoId()).orElseThrow(() -> new TarefaGrupoNaoEncontradoException("Tarefa grupo nao encontrado"));
 
 		dto.setDataHoras(LocalDateTime.now());
 		dto.setUserId(user.getId());
