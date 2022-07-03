@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ChatPostDto;
+import com.academicquest.dto.ChatPostDTO;
 import com.academicquest.mockDados.MockDadosDTOTest;
 
 @SpringBootTest
@@ -25,7 +25,7 @@ public class ChatServiceTest {
 	@DisplayName("Deve salvar um ChatService.")
 	public void savechatServiceExistente() throws ParseException, IOException {
 
-		ChatPostDto chatDto = MockDadosDTOTest.createChatPostDTO();
+		ChatPostDTO chatDto = MockDadosDTOTest.createChatPostDTO();
 
 		chatService.save(chatDto);
 

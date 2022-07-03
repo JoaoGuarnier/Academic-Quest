@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatDto implements Serializable {
+public class ChatDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -26,7 +26,7 @@ public class ChatDto implements Serializable {
 	
 	private Long tarefaGrupo;
 	
-	public ChatDto(Chat chat) {
+	public ChatDTO(Chat chat) {
 		this.mensagem    = chat.getMensagem();
 		this.dataHoras   = chat.getDataHoras();
 		this.id          = chat.getId();

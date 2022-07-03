@@ -33,6 +33,6 @@ public class TarefaGrupoDTO implements Serializable{
 
     private String consideracoes;
     
-    private List<ChatDto> chats;
+    private List<ChatDTO> chats;
 
 }

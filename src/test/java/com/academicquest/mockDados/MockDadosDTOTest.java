@@ -15,8 +15,8 @@ import java.util.List;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.academicquest.dto.ChatDto;
-import com.academicquest.dto.ChatPostDto;
+import com.academicquest.dto.ChatDTO;
+import com.academicquest.dto.ChatPostDTO;
 import com.academicquest.dto.GrupoDTO;
 import com.academicquest.dto.GrupoMateriaDTO;
 import com.academicquest.dto.GrupoPostDTO;
@@ -98,13 +98,13 @@ public class MockDadosDTOTest {
 		return new MateriaDTO(createMateria());
 	}
 	
-	public static ChatDto createChatDTO() {
+	public static ChatDTO createChatDTO() {
 		
-		return new ChatDto(createChat());
+		return new ChatDTO(createChat());
 	}
 	
-	public static ChatPostDto createChatPostDTO() {
+	public static ChatPostDTO createChatPostDTO() {
 		
-		return new ChatPostDto("muito bom", LocalDateTime.now(), 1L, 1L);
+		return new ChatPostDTO("muito bom", LocalDateTime.now(), 1L, 1L);
 	}
 }

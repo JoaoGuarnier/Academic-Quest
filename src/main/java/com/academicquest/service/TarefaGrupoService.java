@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ChatDto;
+import com.academicquest.dto.ChatDTO;
 import com.academicquest.dto.TarefaGrupoDTO;
 import com.academicquest.dto.TarefaGrupoPutDTO;
 import com.academicquest.dto.TarefaGrupoSimplesDTO;
@@ -64,7 +64,7 @@ public class TarefaGrupoService {
     private TarefaGrupoDTO converterParaDto(TarefaGrupo tarefaGrupo) {
         try {
             TarefaGrupoDTO tarefaGrupoDTO = new TarefaGrupoDTO();
-    		List<ChatDto> chatDto = chatRepository.findAll().stream().map(ChatDto::new).collect(Collectors.toList());
+    		List<ChatDTO> chatDto = chatRepository.findAll().stream().map(ChatDTO::new).collect(Collectors.toList());
             tarefaGrupoDTO.setId(tarefaGrupo.getId());
             tarefaGrupoDTO.setNomeGrupo(tarefaGrupo.getGrupo().getNome());
             tarefaGrupoDTO.setNomeTarefa(tarefaGrupo.getTarefa().getNome());

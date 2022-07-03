@@ -3,18 +3,12 @@ package com.academicquest.service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ChatDto;
-import com.academicquest.dto.ChatPostDto;
+import com.academicquest.dto.ChatPostDTO;
 import com.academicquest.model.Chat;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.model.User;
@@ -35,7 +29,7 @@ public class ChatService {
     private TarefaGrupoRepository tarefaGrupo;
     
 	@Transactional
-	public ChatPostDto save(ChatPostDto dto) throws ParseException, IOException {
+	public ChatPostDTO save(ChatPostDTO dto) throws ParseException, IOException {
 		
 		
 		Chat chat = new Chat();
@@ -53,37 +47,4 @@ public class ChatService {
 		chatRepository.save(chat);
 		return dto;
 	}
-
-	@Transactional(readOnly = true)
-	public ChatDto getChat(Long id) {
-		
-		ChatDto chatDTO = new ChatDto();
-		
-		Optional<Chat> chatOptional = chatRepository.findById(id);
-		Chat chat = chatOptional.orElseThrow(() -> new EntityNotFoundException("Mensagem não encontrado"));
-//		ChatDto chatDTO = modelMapper.map(chat, ChatDto.class);
-		chatDTO.setId       (chat.getId());
-		chatDTO.setMensagem (chat.getMensagem());
-		chatDTO.setDataHoras(chat.getDataHoras());
-//		chatDTO.setUser		(chat.getUser());
-		
-		return chatDTO;
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ChatDto> getChats() {
-		
-		List<Chat> chat = chatRepository.findAll();
-//		List<ChatDto> tetste = chat.stream().map(user -> modelMapper.map(user, ChatDto.class)).collect(Collectors.toList());
-		List<ChatDto> tetste = chat.stream().map(ChatDto::new).collect(Collectors.toList());
-
-		return tetste;
-	}
-	
-//	@Transactional
-//	private Chat convertToEntity(ChatPostDto dto, Long id) throws ParseException, IOException {
-//
-//;
-//		return chat;
-//	} 
 }
