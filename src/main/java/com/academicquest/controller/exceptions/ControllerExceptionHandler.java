@@ -15,6 +15,7 @@ import com.academicquest.service.exception.AlunoNaoEncontradoException;
 import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
 import com.academicquest.service.exception.GrupoNaoEncontradoException;
 import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.NenhumGrupoCadastradoNaMateriaException;
 import com.academicquest.service.exception.ProjetoJaConcluidoException;
 import com.academicquest.service.exception.ProjetoNaoEncontradoException;
 import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
