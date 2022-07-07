@@ -1,14 +1,13 @@
 package com.academicquest.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.academicquest.model.NotaAlunoProjeto;
 import com.academicquest.model.Projeto;
 import com.academicquest.model.User;
 import com.academicquest.repository.NotaAlunoProjetoRepository;
-import com.academicquest.repository.ProjetoRepository;
-import com.academicquest.repository.UserRepository;
 import com.academicquest.service.exception.UsuarioNaoAlunoException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class NotaAlunoProjetoService {

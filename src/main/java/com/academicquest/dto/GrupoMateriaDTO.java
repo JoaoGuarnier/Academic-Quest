@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GrupoMateriaDTO implements Serializable{
-	
+
+	private static final long serialVersionUID = 1L;
+
 	private Long id;
 	
 	private String nome;
@@ -21,5 +23,4 @@ public class GrupoMateriaDTO implements Serializable{
 		this.id = grupo.getId();
 		this.nome = grupo.getNome();
 	}
-
 }

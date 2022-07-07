@@ -1,14 +1,23 @@
 package com.academicquest.controller;
 
-import com.academicquest.dto.*;
-import com.academicquest.service.ProjetoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.academicquest.dto.ProjetoDTO;
+import com.academicquest.dto.ProjetoPostDTO;
+import com.academicquest.dto.ProjetoPutDTO;
+import com.academicquest.service.ProjetoService;
 
 @RestController
 @RequestMapping("/projetos")
@@ -37,7 +46,7 @@ public class ProjetoController {
     }
 
     @PostMapping
-    private ResponseEntity salvar(@RequestBody ProjetoPostDTO projetoPostDTO) {
+    private ResponseEntity<ProjetoDTO> salvar(@RequestBody ProjetoPostDTO projetoPostDTO) {
         ProjetoDTO projetoDTO = projetoService.salvar(projetoPostDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(projetoDTO.getId()).toUri();
@@ -51,7 +60,7 @@ public class ProjetoController {
     }
 
     @PostMapping("/avaliar/{projetoId}")
-    private ResponseEntity avaliarProjeto(@PathVariable Long projetoId) {
+    private ResponseEntity<?> avaliarProjeto(@PathVariable Long projetoId) {
         projetoService.avaliarProjeto(projetoId);
         return ResponseEntity.ok().build();
     }

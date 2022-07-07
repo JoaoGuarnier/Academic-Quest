@@ -24,7 +24,5 @@ public class TokenVerifyController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
     }
-
 }

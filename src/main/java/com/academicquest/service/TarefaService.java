@@ -1,24 +1,28 @@
 package com.academicquest.service;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.academicquest.dto.TarefaDTO;
 import com.academicquest.dto.TarefaPostDTO;
 import com.academicquest.dto.TarefaProjetoDTO;
-import com.academicquest.model.*;
+import com.academicquest.model.Grupo;
+import com.academicquest.model.Projeto;
+import com.academicquest.model.Tarefa;
+import com.academicquest.model.TarefaGrupo;
+import com.academicquest.model.Upload;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import com.academicquest.repository.TarefaRepository;
 import com.academicquest.service.exception.ProjetoNaoEncontradoException;
 import com.academicquest.service.exception.TarefaNaoEncontradaException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class TarefaService {
