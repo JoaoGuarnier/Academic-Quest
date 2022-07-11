@@ -22,15 +22,15 @@ public class ChatDTO implements Serializable {
 	
 	private LocalDateTime dataHoras;
 	
-	private Long user;
+	private String primeiroNome;
 	
-	private Long tarefaGrupo;
+	private String segundoNome;
 	
 	public ChatDTO(Chat chat) {
 		this.mensagem    = chat.getMensagem();
 		this.dataHoras   = chat.getDataHoras();
 		this.id          = chat.getId();
-		this.user        = chat.getUser().getId();
-		this.tarefaGrupo = chat.getTarefaGrupo().getId();
+		this.primeiroNome = chat.getUser().getFirstName();
+		this.segundoNome  = chat.getUser().getLastName();
 	}
 }

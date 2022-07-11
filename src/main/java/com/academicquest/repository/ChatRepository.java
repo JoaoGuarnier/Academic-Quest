@@ -10,4 +10,6 @@ import com.academicquest.model.User;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 	
 	List<User> findByUserAndMensagem(User user, String mensagem);
+	
+	List<Chat> findByTarefaGrupoId(Long id);
 }

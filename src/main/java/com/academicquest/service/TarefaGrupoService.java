@@ -64,8 +64,7 @@ public class TarefaGrupoService {
     private TarefaGrupoDTO converterParaDto(TarefaGrupo tarefaGrupo) {
         try {
             TarefaGrupoDTO tarefaGrupoDTO = new TarefaGrupoDTO();
-    		List<ChatDTO> chatDto = chatRepository.findAll().stream().map(ChatDTO::new).collect(Collectors.toList());
-            tarefaGrupoDTO.setId(tarefaGrupo.getId());
+    		List<ChatDTO> chatDto = chatRepository.findByTarefaGrupoId(tarefaGrupo.getId()).stream().map(ChatDTO::new).collect(Collectors.toList());            tarefaGrupoDTO.setId(tarefaGrupo.getId());
             tarefaGrupoDTO.setNomeGrupo(tarefaGrupo.getGrupo().getNome());
             tarefaGrupoDTO.setNomeTarefa(tarefaGrupo.getTarefa().getNome());
             tarefaGrupoDTO.setStatusTarefaGrupo(tarefaGrupo.getStatusTarefaGrupo());
