@@ -18,20 +18,18 @@ import com.academicquest.repository.UserRepository;
 
 @Service
 public class ChatService {
-	
+
 	@Autowired
 	private ChatRepository chatRepository;
-	
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private TarefaGrupoRepository tarefaGrupo;
-    
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private TarefaGrupoRepository tarefaGrupo;
+	
 	@Transactional
 	public ChatPostDTO save(ChatPostDTO dto) throws ParseException, IOException {
-		
-		
 		Chat chat = new Chat();
 		User user = userRepository.getById(dto.getUserId());
 		TarefaGrupo tarefa = tarefaGrupo.getById(dto.getTarefaGrupoId());
@@ -39,12 +37,13 @@ public class ChatService {
 		dto.setDataHoras(LocalDateTime.now());
 		dto.setUserId(user.getId());
 		dto.setTarefaGrupoId(tarefa.getId());
-		
+
 		chat.setDataHoras(dto.getDataHoras());
-		chat.setMensagem (dto.getMensagem());
+		chat.setMensagem(dto.getMensagem());
 		chat.setTarefaGrupo(tarefa);
 		chat.setUser(user);
 		chatRepository.save(chat);
+
 		return dto;
 	}
 }

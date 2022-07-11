@@ -1,6 +1,5 @@
 package com.academicquest.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Service;
 import com.academicquest.dto.DashDTO;
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.Chat;
-import com.academicquest.model.Dash;
 import com.academicquest.model.TarefaGrupo;
-import com.academicquest.model.User;
 import com.academicquest.repository.ChatRepository;
 import com.academicquest.repository.DashRepository;
 import com.academicquest.repository.TarefaGrupoRepository;

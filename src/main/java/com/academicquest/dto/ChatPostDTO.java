@@ -22,7 +22,7 @@ public class ChatPostDTO implements Serializable {
 	
 	private LocalDateTime dataHoras;
 	
-	@NotNull(message = "por favor adicionar o id do user")
+//	@NotNull(message = "por favor adicionar o id do user")
 	private Long userId;
 	
 	@NotNull(message = "por favor adicionar o id da tarefa dos grupo")
