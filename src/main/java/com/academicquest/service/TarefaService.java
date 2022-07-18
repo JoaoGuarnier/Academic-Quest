@@ -39,7 +39,7 @@ public class TarefaService {
     @Autowired
     private TarefaGrupoRepository tarefaGrupoRepository;
 
-    @Transactional()
+    @Transactional
     public TarefaDTO salvar(TarefaPostDTO tarefaPostDto) throws IOException {
         Tarefa tarefa = new Tarefa();
         tarefa.setNome(tarefaPostDto.getNome());
@@ -55,7 +55,7 @@ public class TarefaService {
         return tarefaDTO;
     }
 
-    @Transactional()
+    @Transactional
     private void gerarRegistrosTarefaGrupo(Tarefa tarefaSalva) {
         List<Long> idsGrupos = grupoRepository.buscaGruposPorMateriaId(tarefaSalva.getProjeto().getMateria().getId());
         idsGrupos.stream().forEach(idGrupo -> {
