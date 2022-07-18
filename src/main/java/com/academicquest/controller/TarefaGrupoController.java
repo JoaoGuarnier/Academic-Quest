@@ -35,4 +35,10 @@ public class TarefaGrupoController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/job")
+    private ResponseEntity jobTarefasNaoEntregues() {
+        tarefaGrupoService.jobModificarStatusTarefasNaoEntregues();
+        return ResponseEntity.ok().build();
+    }
+
 }
