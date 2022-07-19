@@ -30,7 +30,7 @@ public class TarefaGrupoController {
     }
 
     @PutMapping("/{tarefaGrupoId}")
-    private ResponseEntity avaliarTarefaGrupo(@PathVariable Long tarefaGrupoId, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
+    private ResponseEntity<?> avaliarTarefaGrupo(@PathVariable Long tarefaGrupoId, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
         tarefaGrupoService.avaliarTarefaGrupo(tarefaGrupoId,tarefaGrupoPutDTO);
         return ResponseEntity.ok().build();
     }

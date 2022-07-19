@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
-import com.academicquest.service.exception.AlunoLiderNaoEncontradoException;
-import com.academicquest.service.exception.AlunoNaoEncontradoException;
-import com.academicquest.service.exception.ErroAoSalvarGrupoException;
-import com.academicquest.service.exception.GrupoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +19,10 @@ import com.academicquest.model.User;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.MateriaRepository;
 import com.academicquest.repository.UserRepository;
+import com.academicquest.service.exception.AlunoLiderNaoEncontradoException;
+import com.academicquest.service.exception.AlunoNaoEncontradoException;
+import com.academicquest.service.exception.ErroAoSalvarGrupoException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
 
 @Service
 public class GrupoService {
@@ -105,7 +103,7 @@ public class GrupoService {
 	private Grupo converterParaEntidade(GrupoPostDTO grupoPostDTO) {
 		Grupo grupo = new Grupo();
 		List<User> alunos = new ArrayList<>();
-		grupoPostDTO.getListaAlunosId().stream().forEach( userId -> {
+		grupoPostDTO.getAlunosId().stream().forEach( userId -> {
 			User user = userRepository.getById(userId);
 			alunos.add(user);
 		});

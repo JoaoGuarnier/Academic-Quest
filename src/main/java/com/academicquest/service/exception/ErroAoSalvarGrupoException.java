@@ -2,7 +2,9 @@ package com.academicquest.service.exception;
 
 public class ErroAoSalvarGrupoException extends RuntimeException{
 
-    public ErroAoSalvarGrupoException(String msg) {
+	private static final long serialVersionUID = 1L;
+
+	public ErroAoSalvarGrupoException(String msg) {
         super(msg);
     }
 

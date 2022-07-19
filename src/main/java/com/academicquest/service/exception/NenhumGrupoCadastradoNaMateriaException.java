@@ -2,7 +2,9 @@ package com.academicquest.service.exception;
 
 public class NenhumGrupoCadastradoNaMateriaException extends RuntimeException{
 
-    public NenhumGrupoCadastradoNaMateriaException(String msg) {
+	private static final long serialVersionUID = 1L;
+
+	public NenhumGrupoCadastradoNaMateriaException(String msg) {
         super(msg);
     }
 

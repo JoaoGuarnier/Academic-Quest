@@ -10,14 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService UserService;
-
     @GetMapping
     public ResponseEntity<Page<UserDTO>> buscarTodos(Pageable pageable) {
         Page<UserDTO> UserDTOS = UserService.buscarTodos(pageable);
@@ -29,5 +27,4 @@ public class UserController {
         UserDTO UserDTO = UserService.buscarPorId(id);
         return ResponseEntity.ok().body(UserDTO);
     }
-
 }
