@@ -1,15 +1,28 @@
 package com.academicquest.controller.exceptions;
 
-import com.academicquest.service.exception.*;
+import java.time.Instant;
+
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.NonUniqueResultException;
-import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
+import com.academicquest.service.exception.AlunoLiderNaoEncontradoException;
+import com.academicquest.service.exception.AlunoNaoEncontradoException;
+import com.academicquest.service.exception.BadRequestException;
+import com.academicquest.service.exception.ErroAoCriarRegistrosProjetoGrupoException;
+import com.academicquest.service.exception.GrupoNaoEncontradoException;
+import com.academicquest.service.exception.MateriaNaoEncontradaException;
+import com.academicquest.service.exception.NenhumGrupoCadastradoNaMateriaException;
+import com.academicquest.service.exception.ProjetoJaConcluidoException;
+import com.academicquest.service.exception.ProjetoNaoEncontradoException;
+import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
+import com.academicquest.service.exception.TarefaNaoEncontradaException;
+import com.academicquest.service.exception.UsuarioNaoAlunoException;
+import com.academicquest.service.exception.UsuarioNaoEncontradoException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler{
@@ -101,6 +114,20 @@ public class ControllerExceptionHandler{
         standardError.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
     }
+    
+    @ExceptionHandler(value = {BadRequestException.class})
+    public ResponseEntity<StandardError> handleBadRequestException(BadRequestException e, HttpServletRequest req) {
+
+    	StandardError me = StandardError.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(Instant.now())
+                .error("Valor do atributo vazio")
+                .path(req.getRequestURI())
+                .build();
+
+        return ResponseEntity.badRequest().body(me);
+    }
 
     @ExceptionHandler(UsuarioNaoAlunoException.class)
     public ResponseEntity<StandardError> usuarioNaoAluno(UsuarioNaoAlunoException exception, HttpServletRequest request) {
@@ -112,7 +139,18 @@ public class ControllerExceptionHandler{
         standardError.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
     }
-
+    
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<StandardError> usuarioNaoEncontrado(UsuarioNaoEncontradoException exception, HttpServletRequest request) {
+    	StandardError standardError = new StandardError();
+    	standardError.setTimestamp(Instant.now());
+    	standardError.setStatus(HttpStatus.NOT_FOUND.value());
+    	standardError.setError("Erro de perfil");
+    	standardError.setMessage("O usuário não encontrado");
+    	standardError.setPath(request.getRequestURI());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+    }
+    
     @ExceptionHandler(ProjetoJaConcluidoException.class)
     public ResponseEntity<StandardError> projetoJaConcluidoException(ProjetoJaConcluidoException exception, HttpServletRequest request) {
         StandardError standardError = new StandardError();

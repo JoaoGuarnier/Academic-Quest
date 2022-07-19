@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.academicquest.dto.TurmaDTO;
-import com.academicquest.model.Turma;
 import com.academicquest.repository.TurmaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,5 +20,4 @@ public class TurmaService {
 	public List<TurmaDTO> buscarTodos() {
 		return turmaRepository.findAll().stream().map(TurmaDTO::new).collect(Collectors.toList());
 	}
-
 }

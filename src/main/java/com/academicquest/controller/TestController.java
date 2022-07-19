@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.academicquest.dto.PessoaTestDTO;
 
-
 @RestController
 @RequestMapping("/teste")
 public class TestController {

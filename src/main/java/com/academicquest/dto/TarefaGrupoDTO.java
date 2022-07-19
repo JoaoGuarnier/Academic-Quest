@@ -1,19 +1,23 @@
 package com.academicquest.dto;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TarefaGrupoDTO implements Serializable{
 
-    private Long id;
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String nomeTarefa;
 
@@ -28,5 +32,7 @@ public class TarefaGrupoDTO implements Serializable{
     private UploadDTO upload;
 
     private String consideracoes;
+    
+    private List<ChatDTO> chats;
 
 }
