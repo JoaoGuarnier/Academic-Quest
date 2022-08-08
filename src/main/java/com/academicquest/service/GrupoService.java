@@ -103,7 +103,7 @@ public class GrupoService {
 	private Grupo converterParaEntidade(GrupoPostDTO grupoPostDTO) {
 		Grupo grupo = new Grupo();
 		List<User> alunos = new ArrayList<>();
-		grupoPostDTO.getAlunosId().stream().forEach( userId -> {
+		grupoPostDTO.getListaAlunosId().stream().forEach( userId -> {
 			User user = userRepository.getById(userId);
 			alunos.add(user);
 		});
