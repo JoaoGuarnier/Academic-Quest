@@ -15,16 +15,12 @@ import lombok.NoArgsConstructor;
 public class GrupoPostDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
-	@NotNull(message="O nome nao pode ser ser nulo, tem que ser preenchido")
+
 	private String nome;
-	
-	@NotNull(message="O id da lista nao pode ser nulo, tem que ser preenchido")
-	private List<Long> alunosId;
-	
-	@NotNull(message="o id da aluno lider nao pode ser nulo, tem que ser preenchido")
+
+	private List<Long> listaAlunosId;
+
 	private Long alunoLiderId;
-	
-	@NotNull(message="o id da materia nao pode ser nulo, tem que ser preenchido")
+
 	private Long materiaId;
 }
