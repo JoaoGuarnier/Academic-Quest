@@ -39,6 +39,7 @@ public class AlunoService {
             projetoGrupoAlunoDTO.setNomeMateria(tuple.get(3).toString());
             projetoGrupoAlunoDTO.setGrupoId(Long.valueOf(tuple.get(4).toString()));
             projetoGrupoAlunoDTO.setNomeGrupo(tuple.get(5).toString());
+            projetoGrupoAlunoDTO.setProjetoId(Long.valueOf(tuple.get(6).toString()));
             projetoGrupoAlunoDTOList.add(projetoGrupoAlunoDTO);
         });
 
