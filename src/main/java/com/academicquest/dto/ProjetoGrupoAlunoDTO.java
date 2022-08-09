@@ -15,6 +15,7 @@ public class ProjetoGrupoAlunoDTO {
     private String notaProjeto;
     private String nomeMateria;
     private Long grupoId;
+    private Long projetoId;
     private String nomeGrupo;
 
 }
