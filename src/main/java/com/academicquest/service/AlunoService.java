@@ -3,10 +3,12 @@ package com.academicquest.service;
 import com.academicquest.dto.AlunoGruposDTO;
 import com.academicquest.dto.AlunoTarefaGrupoDTO;
 import com.academicquest.dto.ProjetoGrupoAlunoDTO;
+import com.academicquest.dto.TarefaGrupoProjetoDTO;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
@@ -83,6 +85,22 @@ public class AlunoService {
 
         return alunoTarefaGrupoDTOList;
 
+    }
+
+    public List<TarefaGrupoProjetoDTO> buscarTarefasGrupoPorProjeto(Long grupoId, Long projetoId) {
+        List<Tuple> tupleList = tarefaGrupoRepository.buscarTarefasGrupoPorProjeto(grupoId, projetoId);
+
+        List<TarefaGrupoProjetoDTO> tarefaGrupoProjetoDTOList = new ArrayList<>();
+
+        tupleList.forEach(tuple -> {
+            TarefaGrupoProjetoDTO tarefaGrupoProjetoDTO = new TarefaGrupoProjetoDTO();
+            tarefaGrupoProjetoDTO.setNomeTarefa(tuple.get(1).toString());
+            tarefaGrupoProjetoDTO.setTarefaGrupoId(Long.valueOf(tuple.get(2).toString()));
+            tarefaGrupoProjetoDTO.setStatusTarefa(tuple.get(5).toString());
+            tarefaGrupoProjetoDTO.setDataEntrega(tuple.get(3).toString());
+            tarefaGrupoProjetoDTOList.add(tarefaGrupoProjetoDTO);
+        });
+        return tarefaGrupoProjetoDTOList;
     }
 
 

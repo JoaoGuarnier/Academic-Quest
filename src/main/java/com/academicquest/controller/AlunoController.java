@@ -2,6 +2,7 @@ package com.academicquest.controller;
 
 import com.academicquest.dto.AlunoTarefaGrupoDTO;
 import com.academicquest.dto.ProjetoGrupoAlunoDTO;
+import com.academicquest.dto.TarefaGrupoProjetoDTO;
 import com.academicquest.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,12 @@ public class AlunoController {
     private ResponseEntity<List<ProjetoGrupoAlunoDTO>> buscarProjetosGrupoPorAlunoId(@PathVariable Long idAluno) {
         List<ProjetoGrupoAlunoDTO> projetoGrupoAlunoDTOS = alunoService.buscarProjetosGrupoPorAlunoId(idAluno);
         return ResponseEntity.ok(projetoGrupoAlunoDTOS);
+    }
+
+    @GetMapping("/tarefas/projetoGrupo/{grupoId}/{projetoId}")
+    private ResponseEntity<List<TarefaGrupoProjetoDTO>> buscarTarefasGrupoPorProjeto(@PathVariable Long grupoId, @PathVariable Long projetoId) {
+        List<TarefaGrupoProjetoDTO> tarefaGrupoProjetoDTOList = alunoService.buscarTarefasGrupoPorProjeto(grupoId, projetoId);
+        return ResponseEntity.ok(tarefaGrupoProjetoDTOList);
     }
 
 }
