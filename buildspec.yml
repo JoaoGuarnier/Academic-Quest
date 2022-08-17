@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Installing dependencies
+      - mvn test
+
+  build:
+    commands:
+      - echo Running tests
+      - mvn package
+      - echo Building and tagging Docker image
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 991420018350.dkr.ecr.us-east-1.amazonaws.com
+      - docker build -t academicquest-ecr .
+      - docker tag academicquest-ecr:latest 991420018350.dkr.ecr.us-east-1.amazonaws.com/academicquest-ecr:latest
+
+  post_build:
+    commands:
+      - echo Pushing to ECR
+      - docker push 991420018350.dkr.ecr.us-east-1.amazonaws.com/academicquest-ecr:latest
+      - printf '[{"name":"academicquest-container","imageUri":"991420018350.dkr.ecr.us-east-1.amazonaws.com/academicquest-ecr:latest"}]' > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
