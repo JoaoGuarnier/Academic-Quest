@@ -20,18 +20,18 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
     void alterarStatusTarefasNaoEntregue(@Param("data")LocalDate data);
 
 
-    @Query(value = "SELECT tbm.NOME as NOME_MATERIA, tbt.NOME, tbtg.ID, tbt.DATA_ENTREGA, tbp.NOME as NOME_PROJETO FROM TB_TAREFA_GRUPO tbtg " +
-            "INNER JOIN TB_TAREFA tbt ON tbt.ID = tbtg.TAREFA_ID " +
-            "INNER JOIN TB_PROJETO tbp on tbp.ID = tbt.PROJETO_ID " +
-            "INNER JOIN TB_MATERIA tbm ON tbm.ID = tbp.MATERIA_ID " +
+    @Query(value = "SELECT tbm.NOME as NOME_MATERIA, tbt.NOME, tbtg.ID, tbt.DATA_ENTREGA, tbp.NOME as NOME_PROJETO FROM tb_tarefa_grupo tbtg " +
+            "INNER JOIN tb_tarefa tbt ON tbt.ID = tbtg.TAREFA_ID " +
+            "INNER JOIN tb_projeto tbp on tbp.ID = tbt.PROJETO_ID " +
+            "INNER JOIN tb_materia tbm ON tbm.ID = tbp.MATERIA_ID " +
             "WHERE tbtg.GRUPO_ID = :idGrupo " +
             "AND tbtg.STATUS_TAREFA_GRUPO = 'PENDENTE'", nativeQuery = true)
     List<Tuple> buscarTarefasPendenteGrupoPorAlunoId(@Param("idGrupo") Long idGrupo);
 
-    @Query(value = "SELECT tbm.NOME as NOME_MATERIA, tbt.NOME, tbtg.ID as ID_TAREFA_GRUPO, tbt.DATA_ENTREGA, tbp.NOME as NOME_PROJETO, tbtg.STATUS_TAREFA_GRUPO FROM TB_TAREFA_GRUPO tbtg " +
-            "INNER JOIN TB_TAREFA tbt ON tbt.ID = tbtg.TAREFA_ID " +
-            "INNER JOIN TB_PROJETO tbp on tbp.ID = tbt.PROJETO_ID " +
-            "INNER JOIN TB_MATERIA tbm ON tbm.ID = tbp.MATERIA_ID " +
+    @Query(value = "SELECT tbm.NOME as NOME_MATERIA, tbt.NOME, tbtg.ID as ID_TAREFA_GRUPO, tbt.DATA_ENTREGA, tbp.NOME as NOME_PROJETO, tbtg.STATUS_TAREFA_GRUPO FROM tb_tarefa_grupo tbtg " +
+            "INNER JOIN tb_tarefa tbt ON tbt.ID = tbtg.TAREFA_ID " +
+            "INNER JOIN tb_projeto tbp on tbp.ID = tbt.PROJETO_ID " +
+            "INNER JOIN tb_materia tbm ON tbm.ID = tbp.MATERIA_ID " +
             "WHERE tbtg.GRUPO_ID = :grupoId " +
             "AND tbp.ID = :projetoId", nativeQuery = true)
     List<Tuple> buscarTarefasGrupoPorProjeto(@Param("grupoId") Long grupoId, @Param("projetoId") Long projetoId);
