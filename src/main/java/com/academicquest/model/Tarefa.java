@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.academicquest.enums.STATUS_TAREFA;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +43,9 @@ public class Tarefa {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "upload_id", referencedColumnName = "id")
     private Upload upload;
+    
+    @Enumerated(EnumType.STRING)
+    private STATUS_TAREFA status = STATUS_TAREFA.PENDENTE;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Projeto projeto;
