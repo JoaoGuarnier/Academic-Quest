@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.TarefaDTO;
-import com.academicquest.dto.TarefaPostDTO;
-import com.academicquest.dto.TarefaProjetoDTO;
+import com.academicquest.dto.tarefa.TarefaDTO;
+import com.academicquest.dto.tarefa.TarefaPostDTO;
+import com.academicquest.dto.tarefa.TarefaProjetoDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Projeto;
 import com.academicquest.model.Tarefa;

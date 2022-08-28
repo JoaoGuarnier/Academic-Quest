@@ -1,17 +1,23 @@
 package com.academicquest.service;
 
-import com.academicquest.dto.AlunoGruposDTO;
-import com.academicquest.dto.AlunoTarefaGrupoDTO;
-import com.academicquest.dto.ProjetoGrupoAlunoDTO;
-import com.academicquest.dto.TarefaGrupoProjetoDTO;
+import com.academicquest.dto.aluno.AlunoGruposDTO;
+import com.academicquest.dto.aluno.AlunoTarefaGrupoDTO;
+import com.academicquest.dto.projeto.ProjetoGrupoAlunoDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoProjetoDTO;
+import com.academicquest.enums.STATUS_TAREFA_GRUPO;
+import com.academicquest.model.TarefaGrupo;
+import com.academicquest.model.Upload;
 import com.academicquest.repository.GrupoRepository;
 import com.academicquest.repository.ProjetoRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Tuple;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +110,24 @@ public class AlunoService {
         return tarefaGrupoProjetoDTOList;
     }
 
+    public void entregarTarefaGrupo(MultipartFile arquivoUploadEntrega, Long tarefaGrupoId) {
+        TarefaGrupo tarefaGrupo = tarefaGrupoRepository.findById(tarefaGrupoId).orElseThrow(() -> new EntityNotFoundException());
+        try {
+            Upload upload = formatarUpload(arquivoUploadEntrega);
+            tarefaGrupo.setUpload(upload);
+            tarefaGrupo.setDataEntrega(LocalDateTime.now());
+            tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.ENTREGUE);
+            tarefaGrupoRepository.save(tarefaGrupo);
+        } catch (Exception e) {
+            throw new EntityNotFoundException();
+        }
+    }
 
-
+    private Upload formatarUpload(MultipartFile multipartFile) throws IOException {
+        Upload upload = new Upload();
+        upload.setTitulo(multipartFile.getOriginalFilename());
+        upload.setFormato(multipartFile.getContentType());
+        upload.setArquivoUpload(multipartFile.getBytes());
+        return upload;
+    }
 }

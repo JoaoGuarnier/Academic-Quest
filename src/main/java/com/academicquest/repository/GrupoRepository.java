@@ -1,9 +1,7 @@
 package com.academicquest.repository;
 
-import java.sql.ResultSet;
 import java.util.List;
 
-import com.academicquest.dto.AlunoGruposDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

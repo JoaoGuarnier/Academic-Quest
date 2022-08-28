@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.academicquest.components.Util;
-import com.academicquest.dto.ChatPostDTO;
+import com.academicquest.dto.chat.ChatPostDTO;
 import com.academicquest.service.ChatService;
 import com.academicquest.service.exception.BadRequestException;
 

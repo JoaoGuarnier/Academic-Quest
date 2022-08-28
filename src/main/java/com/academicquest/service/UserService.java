@@ -1,6 +1,6 @@
 package com.academicquest.service;
 
-import com.academicquest.dto.UserDTO;
+import com.academicquest.dto.user.UserDTO;
 import com.academicquest.model.User;
 import com.academicquest.repository.UserRepository;
 import com.academicquest.service.exception.GrupoNaoEncontradoException;

@@ -1,8 +1,8 @@
 package com.academicquest.controller;
 
-import com.academicquest.dto.TarefaGrupoDTO;
-import com.academicquest.dto.TarefaGrupoPutDTO;
-import com.academicquest.dto.TarefaGrupoSimplesDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoPutDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoSimplesDTO;
 import com.academicquest.service.TarefaGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

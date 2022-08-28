@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.academicquest.dto.TurmaDTO;
+import com.academicquest.dto.turma.TurmaDTO;
 import com.academicquest.service.TurmaService;
 
 @RestController

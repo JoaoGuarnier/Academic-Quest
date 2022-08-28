@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.academicquest.dto.ProjetoDTO;
-import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.dto.ProjetoPutDTO;
+import com.academicquest.dto.projeto.ProjetoDTO;
+import com.academicquest.dto.projeto.ProjetoPostDTO;
+import com.academicquest.dto.projeto.ProjetoPutDTO;
 import com.academicquest.service.ProjetoService;
 
 @RestController
