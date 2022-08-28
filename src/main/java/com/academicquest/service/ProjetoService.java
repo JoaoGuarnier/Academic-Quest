@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ProjetoDTO;
-import com.academicquest.dto.ProjetoPostDTO;
-import com.academicquest.dto.ProjetoPutDTO;
+import com.academicquest.dto.projeto.ProjetoDTO;
+import com.academicquest.dto.projeto.ProjetoPostDTO;
+import com.academicquest.dto.projeto.ProjetoPutDTO;
 import com.academicquest.enums.STATUS_PROJETO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;

@@ -8,20 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ChatDTO;
-import com.academicquest.dto.TarefaGrupoDTO;
-import com.academicquest.dto.TarefaGrupoPutDTO;
-import com.academicquest.dto.TarefaGrupoSimplesDTO;
-import com.academicquest.dto.UploadDTO;
+import com.academicquest.dto.chat.ChatDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoPutDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoSimplesDTO;
+import com.academicquest.dto.upload.UploadDTO;
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.repository.ChatRepository;
 import com.academicquest.repository.TarefaGrupoRepository;
 import com.academicquest.service.exception.TarefaGrupoNaoEncontradoException;
-import javax.persistence.EntityNotFoundException;
+
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class TarefaGrupoService {

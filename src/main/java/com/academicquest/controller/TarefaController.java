@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.academicquest.dto.TarefaDTO;
-import com.academicquest.dto.TarefaPostDTO;
-import com.academicquest.dto.TarefaProjetoDTO;
+import com.academicquest.dto.tarefa.TarefaDTO;
+import com.academicquest.dto.tarefa.TarefaPostDTO;
+import com.academicquest.dto.tarefa.TarefaProjetoDTO;
 import com.academicquest.service.TarefaService;
 
 @RestController

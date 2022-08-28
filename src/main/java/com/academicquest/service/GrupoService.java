@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.GrupoDTO;
-import com.academicquest.dto.GrupoMateriaDTO;
-import com.academicquest.dto.GrupoPostDTO;
-import com.academicquest.dto.GrupoUpdateDTO;
-import com.academicquest.dto.UserDTO;
+import com.academicquest.dto.grupo.GrupoDTO;
+import com.academicquest.dto.grupo.GrupoMateriaDTO;
+import com.academicquest.dto.grupo.GrupoPostDTO;
+import com.academicquest.dto.grupo.GrupoUpdateDTO;
+import com.academicquest.dto.user.UserDTO;
 import com.academicquest.model.Grupo;
 import com.academicquest.model.Materia;
 import com.academicquest.model.User;

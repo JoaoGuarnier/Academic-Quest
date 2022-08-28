@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.academicquest.dto.GrupoDTO;
-import com.academicquest.dto.GrupoMateriaDTO;
-import com.academicquest.dto.GrupoPostDTO;
-import com.academicquest.dto.GrupoUpdateDTO;
-import com.academicquest.dto.UserDTO;
+import com.academicquest.dto.grupo.GrupoDTO;
+import com.academicquest.dto.grupo.GrupoMateriaDTO;
+import com.academicquest.dto.grupo.GrupoPostDTO;
+import com.academicquest.dto.grupo.GrupoUpdateDTO;
+import com.academicquest.dto.user.UserDTO;
 import com.academicquest.service.GrupoService;
 
 @RestController

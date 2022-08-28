@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.ChatPostDTO;
+import com.academicquest.dto.chat.ChatPostDTO;
 import com.academicquest.model.Chat;
 import com.academicquest.model.TarefaGrupo;
 import com.academicquest.model.User;

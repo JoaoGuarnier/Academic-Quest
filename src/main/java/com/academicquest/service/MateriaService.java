@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.academicquest.dto.MateriaDTO;
+import com.academicquest.dto.materia.MateriaDTO;
 import com.academicquest.model.Materia;
 import com.academicquest.repository.MateriaRepository;
 

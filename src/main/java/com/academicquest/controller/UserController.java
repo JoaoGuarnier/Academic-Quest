@@ -1,6 +1,6 @@
 package com.academicquest.controller;
 
-import com.academicquest.dto.UserDTO;
+import com.academicquest.dto.user.UserDTO;
 import com.academicquest.service.UserService;
 
 
