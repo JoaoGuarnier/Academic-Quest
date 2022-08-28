@@ -37,11 +37,9 @@ public class ChatService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new UsuarioNaoEncontradoException("Usuario nao encontrado"));
 		TarefaGrupo tarefa = tarefaGrupo.findById(dto.getTarefaGrupoId()).orElseThrow(() -> new TarefaGrupoNaoEncontradoException("Tarefa grupo nao encontrado"));
 
-		dto.setDataHoras(LocalDateTime.now());
 		dto.setUserId(user.getId());
 		dto.setTarefaGrupoId(tarefa.getId());
-		
-		chat.setDataHoras(dto.getDataHoras());
+
 		chat.setMensagem (dto.getMensagem());
 		chat.setTarefaGrupo(tarefa);
 		chat.setUser(user);

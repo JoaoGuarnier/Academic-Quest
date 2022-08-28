@@ -19,9 +19,7 @@ public class ChatPostDTO implements Serializable {
 	
 	@NotEmpty(message="O mensagem nao pode ser ser nulo, tem que ser preenchido")
 	private String mensagem;
-	
-	private LocalDateTime dataHoras;
-	
+
 	@NotNull(message = "por favor adicionar o id do user")
 	private Long userId;
 	
