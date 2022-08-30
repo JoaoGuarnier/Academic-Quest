@@ -36,6 +36,6 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
             "AND tbp.ID = :projetoId", nativeQuery = true)
     List<Tuple> buscarTarefasGrupoPorProjeto(@Param("grupoId") Long grupoId, @Param("projetoId") Long projetoId);
 
-
-
+    @Query(value = "SELECT * FROM tb_tarefa_grupo WHERE status_tarefa_grupo = :status", nativeQuery = true)
+    List<TarefaGrupo> buscarTarefasPorStatus(@Param("status") String status);
 }

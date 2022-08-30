@@ -59,17 +59,10 @@ public class TarefaGrupoService {
 
     @Transactional
     public List<TarefaGrupoDetalhesDto> buscarTarefasEntregues() {
-        List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.findAll();
+        List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.buscarTarefasPorStatus("ENTREGUE");
         List<TarefaGrupoDetalhesDto> tarefaGrupoDetalhesDTOS = tarefaGrupos.stream().map(TarefaGrupoDetalhesDto::new).collect(Collectors.toList());
-        List<TarefaGrupoDetalhesDto> entregues = new ArrayList<>();
 
-        tarefaGrupoDetalhesDTOS.stream().forEach(tarefaGrupoDetalhesDto -> {
-            if (tarefaGrupoDetalhesDto.getStatusTarefaGrupo() == STATUS_TAREFA_GRUPO.ENTREGUE) {
-                entregues.add(tarefaGrupoDetalhesDto);
-            }
-        });
-
-        return entregues;
+        return tarefaGrupoDetalhesDTOS;
     }
 
     @Transactional(readOnly = true)
