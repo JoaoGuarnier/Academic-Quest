@@ -1,7 +1,5 @@
 package com.academicquest.dto.tarefaGrupo;
 
-import com.academicquest.dto.chat.ChatDTO;
-import com.academicquest.dto.upload.UploadDTO;
 import com.academicquest.enums.STATUS_TAREFA_GRUPO;
 import com.academicquest.model.TarefaGrupo;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
