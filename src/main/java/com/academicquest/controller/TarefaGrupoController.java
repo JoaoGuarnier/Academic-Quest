@@ -1,6 +1,7 @@
 package com.academicquest.controller;
 
 import com.academicquest.dto.tarefaGrupo.TarefaGrupoDTO;
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoDetalhesDto;
 import com.academicquest.dto.tarefaGrupo.TarefaGrupoPutDTO;
 import com.academicquest.dto.tarefaGrupo.TarefaGrupoSimplesDTO;
 import com.academicquest.service.TarefaGrupoService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,6 +35,12 @@ public class TarefaGrupoController {
     private ResponseEntity<?> avaliarTarefaGrupo(@PathVariable Long tarefaGrupoId, @RequestBody TarefaGrupoPutDTO tarefaGrupoPutDTO) {
         tarefaGrupoService.avaliarTarefaGrupo(tarefaGrupoId,tarefaGrupoPutDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/entregues")
+    private ResponseEntity<List<TarefaGrupoDetalhesDto>> buscarTarefasEntregues() {
+        List<TarefaGrupoDetalhesDto> listaTarefaGrupoDetalhesDto = tarefaGrupoService.buscarTarefasEntregues();
+        return ResponseEntity.ok().body(listaTarefaGrupoDetalhesDto);
     }
 
     @GetMapping("/job")
