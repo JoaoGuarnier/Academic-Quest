@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.academicquest.dto.tarefaGrupo.TarefaGrupoDetalhesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,21 @@ public class TarefaGrupoService {
         listaFinal.addAll(pendentes);
         listaFinal.addAll(corrigidas);
         return listaFinal;
+    }
+
+    @Transactional
+    public List<TarefaGrupoDetalhesDto> buscarTarefasEntregues() {
+        List<TarefaGrupo> tarefaGrupos = tarefaGrupoRepository.findAll();
+        List<TarefaGrupoDetalhesDto> tarefaGrupoDetalhesDTOS = tarefaGrupos.stream().map(TarefaGrupoDetalhesDto::new).collect(Collectors.toList());
+        List<TarefaGrupoDetalhesDto> entregues = new ArrayList<>();
+
+        tarefaGrupoDetalhesDTOS.stream().forEach(tarefaGrupoDetalhesDto -> {
+            if (tarefaGrupoDetalhesDto.getStatusTarefaGrupo() == STATUS_TAREFA_GRUPO.ENTREGUE) {
+                entregues.add(tarefaGrupoDetalhesDto);
+            }
+        });
+
+        return entregues;
     }
 
     @Transactional(readOnly = true)
