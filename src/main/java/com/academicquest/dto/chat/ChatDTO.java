@@ -25,6 +25,8 @@ public class ChatDTO implements Serializable {
 	private String primeiroNome;
 	
 	private String segundoNome;
+
+	private Long idUser;
 	
 	public ChatDTO(Chat chat) {
 		this.mensagem    = chat.getMensagem();
@@ -32,5 +34,6 @@ public class ChatDTO implements Serializable {
 		this.id          = chat.getId();
 		this.primeiroNome = chat.getUser().getFirstName();
 		this.segundoNome  = chat.getUser().getLastName();
+		this.idUser = chat.getIdUser();
 	}
 }

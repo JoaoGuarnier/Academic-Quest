@@ -43,6 +43,7 @@ public class ChatService {
 		chat.setMensagem (dto.getMensagem());
 		chat.setTarefaGrupo(tarefa);
 		chat.setUser(user);
+		chat.setIdUser(dto.getUserId());
 		chatRepository.save(chat);
 		return dto;
 	}

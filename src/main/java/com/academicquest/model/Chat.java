@@ -46,4 +46,6 @@ public class Chat {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "tarefa_grupo_id", nullable = false)
     private TarefaGrupo tarefaGrupo;
+
+	private Long idUser;
 }
