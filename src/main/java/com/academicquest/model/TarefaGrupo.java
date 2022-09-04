@@ -62,4 +62,6 @@ public class TarefaGrupo {
     @OneToMany(mappedBy = "tarefaGrupo", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Chat> chats;
+    
+    private Long idTarefa;
 }

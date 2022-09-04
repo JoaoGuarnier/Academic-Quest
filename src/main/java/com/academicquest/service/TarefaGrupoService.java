@@ -84,6 +84,8 @@ public class TarefaGrupoService {
             tarefaGrupoDTO.setDataEntrega(tarefaGrupo.getDataEntrega());
             tarefaGrupoDTO.setUpload(tarefaGrupo.getUpload() != null ? new UploadDTO(tarefaGrupo.getUpload()) : null);
             tarefaGrupoDTO.setChats(chatDto);
+            tarefaGrupo.setIdTarefa(tarefaGrupo.getTarefa().getId());
+            tarefaGrupoDTO.setIdTarefa(tarefaGrupo.getIdTarefa());
             return tarefaGrupoDTO;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao converter para tarefa grupo dto");
