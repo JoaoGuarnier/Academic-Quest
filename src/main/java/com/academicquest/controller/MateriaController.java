@@ -31,9 +31,9 @@ public class MateriaController {
 		return ResponseEntity.ok().body(materiaDTO);
 	}
 	
-	@GetMapping("/turma/{id}")
-	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable Long id) {
-		List<MateriaDTO> listaMateriaDTO = materiaService.buscarPorTurmaId(id);
+	@GetMapping("/turma/{idTurma}/{idUser}")
+	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable  Long idTurma, @PathVariable  Long idUser) throws Exception {
+		List<MateriaDTO> listaMateriaDTO = materiaService.buscarPorTurmaId(idTurma, idUser);
 		return ResponseEntity.ok().body(listaMateriaDTO);
 	}
 
