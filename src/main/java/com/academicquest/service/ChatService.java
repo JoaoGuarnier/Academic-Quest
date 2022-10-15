@@ -29,6 +29,9 @@ public class ChatService {
 
     @Autowired
     private TarefaGrupoRepository tarefaGrupo;
+
+	@Autowired
+	private NotificacaoService notificacaoService;
     
 	@Transactional
 	public ChatPostDTO save(ChatPostDTO dto) throws ParseException, IOException {
@@ -45,6 +48,7 @@ public class ChatService {
 		chat.setUser(user);
 		chat.setIdUser(dto.getUserId());
 		chatRepository.save(chat);
+		notificacaoService.notificar(chat);
 		return dto;
 	}
 }

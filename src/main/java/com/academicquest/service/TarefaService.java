@@ -39,6 +39,9 @@ public class TarefaService {
     @Autowired
     private TarefaGrupoRepository tarefaGrupoRepository;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @Transactional
     public TarefaDTO salvar(TarefaPostDTO tarefaPostDto) throws IOException {
         Tarefa tarefa = new Tarefa();
@@ -52,6 +55,7 @@ public class TarefaService {
         Tarefa tarefaSalva = tarefaRepository.save(tarefa);
         TarefaDTO tarefaDTO = new TarefaDTO(tarefaSalva, tarefaPostDto.getArquivoUpload().getOriginalFilename());
         gerarRegistrosTarefaGrupo(tarefaSalva);
+        notificacaoService.notificar(tarefa);
         return tarefaDTO;
     }
 

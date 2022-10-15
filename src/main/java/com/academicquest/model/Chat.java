@@ -36,7 +36,7 @@ public class Chat {
 	
 	private String mensagem;
 
-	private LocalDateTime  dataHoras = LocalDateTime.now();
+	private LocalDateTime dataHoras = LocalDateTime.now();
 	
 	@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
