@@ -30,6 +30,9 @@ public class TarefaGrupoService {
 	
 	@Autowired
 	private ChatRepository chatRepository;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
     
     @Transactional
     public List<TarefaGrupoSimplesDTO> buscarPorTarefaId(Long tarefaId) {
@@ -98,6 +101,7 @@ public class TarefaGrupoService {
         tarefaGrupo.setConsideracoes(tarefaGrupoPutDTO.getConsideracoes());
         tarefaGrupo.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.CORRIGIDA);
         tarefaGrupoRepository.save(tarefaGrupo);
+        notificacaoService.notificar(tarefaGrupo);
     }
 
     @Transactional
