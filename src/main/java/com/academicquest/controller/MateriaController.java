@@ -31,7 +31,7 @@ public class MateriaController {
 		return ResponseEntity.ok().body(materiaDTO);
 	}
 	
-	@GetMapping("/turma/{idTurma}/{idUser}")
+	@GetMapping("/turma/{idTurma}/idProfessor/{idUser}")
 	private ResponseEntity<List<MateriaDTO>> buscarPorTurmaId(@PathVariable  Long idTurma, @PathVariable  Long idUser) throws Exception {
 		List<MateriaDTO> listaMateriaDTO = materiaService.buscarPorTurmaId(idTurma, idUser);
 		return ResponseEntity.ok().body(listaMateriaDTO);
