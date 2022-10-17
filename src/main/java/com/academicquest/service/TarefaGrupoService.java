@@ -58,8 +58,8 @@ public class TarefaGrupoService {
     }
 
     @Transactional
-    public List<TarefaGrupoDetalhesDto> buscarTarefasEntregues() {
-        return tarefaGrupoRepository.buscarTarefasPorStatus("ENTREGUE").stream().map(TarefaGrupoDetalhesDto::new).collect(Collectors.toList());
+    public List<TarefaGrupoDetalhesDto> buscarTarefasEntregues(Long id) {
+        return tarefaGrupoRepository.buscarTarefasPorStatus("ENTREGUE", id).stream().map(TarefaGrupoDetalhesDto::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

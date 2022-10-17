@@ -42,9 +42,9 @@ public class TarefaGrupoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/entregues")
-    private ResponseEntity<List<TarefaGrupoDetalhesDto>> buscarTarefasEntregues() {
-        List<TarefaGrupoDetalhesDto> listaTarefaGrupoDetalhesDto = tarefaGrupoService.buscarTarefasEntregues();
+    @GetMapping("/entregues/professorId/{professorId}")
+    private ResponseEntity<List<TarefaGrupoDetalhesDto>> buscarTarefasEntregues(@PathVariable Long professorId) {
+        List<TarefaGrupoDetalhesDto> listaTarefaGrupoDetalhesDto = tarefaGrupoService.buscarTarefasEntregues(professorId);
         return ResponseEntity.ok().body(listaTarefaGrupoDetalhesDto);
     }
 

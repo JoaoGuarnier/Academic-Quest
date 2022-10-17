@@ -22,7 +22,8 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
 	@Query(value = "SELECT tbm.NOME as NOME_MATERIA, tbt.NOME, tbtg.ID, tbt.DATA_ENTREGA, tbp.NOME as NOME_PROJETO FROM tb_tarefa_grupo tbtg "
 			+ "INNER JOIN tb_tarefa tbt ON tbt.ID = tbtg.TAREFA_ID "
 			+ "INNER JOIN tb_projeto tbp on tbp.ID = tbt.PROJETO_ID "
-			+ "INNER JOIN tb_materia tbm ON tbm.ID = tbp.MATERIA_ID " + "WHERE tbtg.GRUPO_ID = :idGrupo "
+			+ "INNER JOIN tb_materia tbm ON tbm.ID = tbp.MATERIA_ID " 
+			+ "WHERE tbtg.GRUPO_ID = :idGrupo "
 			+ "AND tbtg.STATUS_TAREFA_GRUPO = 'PENDENTE'", nativeQuery = true)
 	List<Tuple> buscarTarefasPendenteGrupoPorAlunoId(@Param("idGrupo") Long idGrupo);
 
@@ -33,6 +34,9 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
 			+ "AND tbp.ID = :projetoId", nativeQuery = true)
 	List<Tuple> buscarTarefasGrupoPorProjeto(@Param("grupoId") Long grupoId, @Param("projetoId") Long projetoId);
 
-	@Query(value = "SELECT tbtg.id, tbtg.consideracoes, tbtg.DATA_ENTREGA, tbtg.nota, tbtg.STATUS_TAREFA_GRUPO,  tbtg.GRUPO_ID,  tbtg.TAREFA_ID, tbtg.UPLOAD_ID FROM tb_tarefa_grupo tbtg WHERE status_tarefa_grupo = :status", nativeQuery = true)
-	List<TarefaGrupo> buscarTarefasPorStatus(@Param("status") String status);
+	@Query(value = "SELECT tbtg.id, tbtg.consideracoes, tbtg.DATA_ENTREGA, tbtg.nota, tbtg.STATUS_TAREFA_GRUPO,  tbtg.GRUPO_ID,  tbtg.TAREFA_ID, tbtg.UPLOAD_ID FROM tb_tarefa_grupo tbtg \r\n"
+			+ "INNER JOIN tb_user tbu on tbu.ID = tbu.ID "
+			+ "WHERE tbu.ID = :professorId "
+			+ "and tbtg.STATUS_TAREFA_GRUPO = :status", nativeQuery = true)
+	List<TarefaGrupo> buscarTarefasPorStatus(@Param("status") String status, @Param("professorId") Long professorId);
 }
