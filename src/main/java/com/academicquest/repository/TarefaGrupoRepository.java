@@ -34,9 +34,12 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
 			+ "AND tbp.ID = :projetoId", nativeQuery = true)
 	List<Tuple> buscarTarefasGrupoPorProjeto(@Param("grupoId") Long grupoId, @Param("projetoId") Long projetoId);
 
-	@Query(value = "SELECT tbtg.id, tbtg.consideracoes, tbtg.DATA_ENTREGA, tbtg.nota, tbtg.STATUS_TAREFA_GRUPO,  tbtg.GRUPO_ID,  tbtg.TAREFA_ID, tbtg.UPLOAD_ID FROM tb_tarefa_grupo tbtg \r\n"
-			+ "INNER JOIN tb_user tbu on tbu.ID = tbu.ID "
+	@Query(value = "SELECT tbtg.id, tbtg.consideracoes, tbtg.DATA_ENTREGA, tbtg.nota, tbtg.STATUS_TAREFA_GRUPO,  tbtg.GRUPO_ID,  tbtg.TAREFA_ID, tbtg.UPLOAD_ID FROM tb_tarefa_grupo tbtg "
+			+ "INNER JOIN tb_tarefa tbt ON tbt.ID = tbtg.TAREFA_ID "
+			+ "INNER JOIN tb_projeto tbp on tbp.ID = tbt.PROJETO_ID "
+			+ "INNER JOIN tb_materia tbm ON tbm.ID = tbp.MATERIA_ID "
+			+ "INNER JOIN tb_user tbu on tbu.ID = tbm.PROFESSOR_ID "
 			+ "WHERE tbu.ID = :professorId "
-			+ "and tbtg.STATUS_TAREFA_GRUPO = :status", nativeQuery = true)
-	List<TarefaGrupo> buscarTarefasPorStatus(@Param("status") String status, @Param("professorId") Long professorId);
+			+ "and tbtg.STATUS_TAREFA_GRUPO = 'ENTREGUE'", nativeQuery = true)
+	List<TarefaGrupo> buscarTarefasPorStatus(@Param("professorId") Long professorId);
 }
