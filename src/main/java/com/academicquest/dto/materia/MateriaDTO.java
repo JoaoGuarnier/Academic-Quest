@@ -6,12 +6,14 @@ import com.academicquest.dto.user.UserDTO;
 import com.academicquest.model.Materia;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MateriaDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -27,5 +29,5 @@ public class MateriaDTO implements Serializable{
 	private String nome;
 	
 	private UserDTO professor;
-
+	
 }
