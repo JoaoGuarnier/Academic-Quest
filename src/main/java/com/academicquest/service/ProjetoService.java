@@ -41,6 +41,9 @@ public class ProjetoService {
     @Autowired
     private ProjetoGrupoRepository projetoGrupoRepository;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @Transactional(readOnly = true)
     public List<ProjetoDTO> buscarTodos() {
         return projetoRepository.findAll().stream().map(ProjetoDTO::new).collect(Collectors.toList());
@@ -61,6 +64,7 @@ public class ProjetoService {
         Projeto projetoSalvo = projetoRepository.save(projeto);
         try {
             criaRegistrosProjetoGrupo(projetoPostDTO,projetoSalvo);
+            notificacaoService.notificar(projetoSalvo);
         } catch (Exception e) {
             throw new ErroAoCriarRegistrosProjetoGrupoException("Erro ao gerar registros do projeto grupo");
         }
@@ -128,6 +132,8 @@ public class ProjetoService {
         });
         projeto.setStatus(STATUS_PROJETO.CONCLUIDO);
         projetoRepository.save(projeto);
+        notificacaoService.notificarProjetoFinalizado(projeto);
+
     }
 
 }
