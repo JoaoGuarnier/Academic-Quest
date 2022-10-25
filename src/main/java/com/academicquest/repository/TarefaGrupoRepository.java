@@ -42,4 +42,10 @@ public interface TarefaGrupoRepository extends JpaRepository<TarefaGrupo, Long> 
 			+ "WHERE tbu.ID = :professorId "
 			+ "and tbtg.STATUS_TAREFA_GRUPO = 'ENTREGUE'", nativeQuery = true)
 	List<TarefaGrupo> buscarTarefasPorStatus(@Param("professorId") Long professorId);
+	
+	@Query(value = "SELECT tbtg.id, tbtg.consideracoes, tbtg.DATA_ENTREGA, tbt.DATA_ENTREGA, tbtg.nota, tbtg.STATUS_TAREFA_GRUPO,  tbtg.GRUPO_ID,  tbtg.TAREFA_ID, tbtg.UPLOAD_ID FROM tb_tarefa_grupo tbtg \r\n"
+			+ "INNER JOIN tb_tarefa tbt ON tbt.ID = tbtg.TAREFA_ID\r\n"
+			+ "WHERE tbtg.STATUS_TAREFA_GRUPO = 'PENDENTE'\r\n"
+			+ "and tbt.DATA_ENTREGA < :data", nativeQuery = true)
+	List<TarefaGrupo> buscarTarefasNaoEntregue(@Param("data") LocalDate data);
 }

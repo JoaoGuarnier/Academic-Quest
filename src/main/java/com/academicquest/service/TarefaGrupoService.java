@@ -103,8 +103,11 @@ public class TarefaGrupoService {
 
     @Transactional
     public void jobModificarStatusTarefasNaoEntregues() {
-        LocalDate now = LocalDate.now();
-        tarefaGrupoRepository.alterarStatusTarefasNaoEntregue(now);
+        
+        List<TarefaGrupo> lista = tarefaGrupoRepository.buscarTarefasNaoEntregue(LocalDate.now());
+        System.out.println("Executando job...");
+        lista.stream().forEach(x -> x.setStatusTarefaGrupo(STATUS_TAREFA_GRUPO.NAO_ENTREGUE));
+        System.out.println("Executando com sucesso...");
     }
 
 }
